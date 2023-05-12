@@ -9,7 +9,7 @@
     --bg-main:#0f0f0f;
 
     --title-color: #f0f0f0;
-    --subtitle-color: #999999;
+    --subtitle-color: #d9d9d9;
     --dark-font: #0f0f0f;
 }
 
@@ -99,7 +99,7 @@ a{
 .header_nav ul a{
     display: block;
     padding: .3rem .95rem;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     font-weight: 500;
     border-radius: .3rem;
     color: var(--title-color);
@@ -152,7 +152,7 @@ a{
 }
 .header_nav ul ul li a {
    padding: .77rem 1.6rem;
-   font-size: 1.38rem;
+   font-size: 1.5rem;
    text-align: right;
    transition: .3s;
 }
