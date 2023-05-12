@@ -6,7 +6,7 @@
     ;
 
     --bg-box: #2e2e2e;
-    --bg-main:#1a1a1a;
+    --bg-main:#0f0f0f;
 
     --title-color: #f0f0f0;
     --subtitle-color: #999999;
@@ -34,6 +34,7 @@ html, body{
     background: rgb(255,178,0);
     background: linear-gradient(90deg, rgba(255,178,0,1) 0%, rgba(255,109,0,1) 100%);
 }
+
 
 
 /* HEADER */
@@ -161,3 +162,4 @@ a{
     transition: .3s;
     background: #272626;
 }
+
