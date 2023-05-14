@@ -6,7 +6,7 @@
     ;
 
     --bg-box: #2e2e2e;
-    --bg-main:#0f0f0f;
+    --bg-main:#141414;
 
     --title-color: #f0f0f0;
     --subtitle-color: #d9d9d9;
@@ -31,9 +31,17 @@ html, body{
     margin: 0 auto;
 }
 .gb_btn {
-    background: rgb(255,178,0);
-    background: linear-gradient(90deg, rgba(255,178,0,1) 0%, rgba(255,109,0,1) 100%);
+    background: rgb(255,75,0);
+    background: linear-gradient(323deg, rgba(255,75,0,1) 33%, rgba(255,191,0,1) 70%);
+    background-size: 150% auto;
+    background-position: center;
+    transition: .2s;
 }
+.gb_btn:hover {
+    background-position: right center;
+    transition: .2s;
+}
+
 
 
 
@@ -41,9 +49,9 @@ html, body{
 header{
     width: 100%;
     position: sticky;
-    z-index: 1000;
+    z-index: 9000;
     background-color: var(--gray);
-    box-shadow: 0 3px 15px rgba(0, 0, 0, .35);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, .6);
 }
 a{
     text-decoration: none;
@@ -54,7 +62,7 @@ a{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .6rem 1rem ;
+    padding: .8rem 1rem ;
 }
 .box_logo{
     /* width: 100px; */
@@ -107,7 +115,6 @@ a{
 }
 .header_nav ul a:hover,
 .header_nav ul a:hover i{
-    background-color: var(--orange);
     box-shadow: 0px 2px 0 var(--dark-font);
     color: var(--dark-font);
     background: rgb(255,178,0);
@@ -135,7 +142,7 @@ a{
     z-index: 999;
     right: 0;
 
-    width: 200px; height: 0;
+    width: 250px; height: 0;
     margin-top: 1rem;
     border-radius: .3rem;
 
@@ -151,10 +158,12 @@ a{
     margin: 0rem;
 }
 .header_nav ul ul li a {
-   padding: .77rem 1.6rem;
-   font-size: 1.5rem;
+    display: block;
+   padding: .9rem 1.6rem;
+   font-size: 1.65rem;
    text-align: right;
    transition: .3s;
+   
 }
 .header_nav ul ul li a:hover{
     box-shadow: none;
