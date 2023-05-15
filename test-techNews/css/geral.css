@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;300;400;500;600;700;800&display=swap');
 
 :root {
-    --orange: #ff8000;
-    --gray: #383838
-    ;
+    --orange: #ff6200;
+    --gray: #383838;
 
     --bg-box: #2e2e2e;
     --bg-main:#141414;
 
     --title-color: #f0f0f0;
-    --subtitle-color: #d9d9d9;
+    --subtitle-color: #bfbfbf;
     --dark-font: #0f0f0f;
 }
 
@@ -25,21 +24,36 @@ html, body{
     background: var(--bg-main);
 }
 
+section {
+    margin-bottom: 4.1rem;
+}
 .site_width{
     width: 94%;
     max-width: 1400px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 .gb_btn {
-    background: rgb(255,75,0);
-    background: linear-gradient(323deg, rgba(255,75,0,1) 33%, rgba(255,191,0,1) 70%);
+    background: rgb(255,97,0);
+    background: linear-gradient(82deg, rgba(255,97,0,1) 40%, rgba(255,204,0,1) 100%);
     background-size: 150% auto;
     background-position: center;
+    box-shadow: 0 2px 0 var(--dark-font);
+    color: var(--dark-font);
+    cursor: pointer;
+    border-radius: .8rem;
+    font-weight: 800;
     transition: .2s;
 }
 .gb_btn:hover {
-    background-position: right center;
+    background-position: left center;
     transition: .2s;
+}
+.title_section {
+    margin-bottom: 1.5rem;
+    font-size: clamp(22px, 3.7vw, 32px);
+    text-align: center;
+    color: var(--title-color);
 }
 
 
@@ -63,9 +77,6 @@ a{
     justify-content: space-between;
     align-items: center;
     padding: .8rem 1rem ;
-}
-.box_logo{
-    /* width: 100px; */
 }
 .box_logo h1{
     display: flex;
