@@ -7,3 +7,4 @@ function toggleMenu() {
 btnMenu.onclick = toggleMenu;
 
 console.log(btnMenu);
+alert("fdfsf");
