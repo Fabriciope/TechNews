@@ -13,18 +13,12 @@
             <div class="container_article_left">
                 <article class="article_left_best effect_article_best">
                     <img src="<?= theme("assets/images/articles/img-article.jpg") ?>" alt="">
-                    <div class="title_article_best article_left">
+                    <div class="title_article_best title_article_left">
                         <h4>YouTube Premium vai ganhar novos recursos no iOS</h4>
                     </div>
                 </article>
             </div>
             <div class="container_articles_right">
-                <article class="effect_article_best">
-                    <img src="<?= theme("assets/images/articles/img-article.jpg") ?>" alt="">
-                    <div class="title_article_best">
-                        <h4>YouTube Premium vai ganhar novos recursos no iOS</h4>
-                    </div>
-                </article>
                 <article class="effect_article_best">
                     <img src="<?= theme("assets/images/articles/img-article.jpg") ?>" alt="">
                     <div class="title_article_best">
@@ -55,7 +49,7 @@
     <div class="container_article">
 
         <div class="container_article">
-            <?php for ($i = 0; $i < 6; $i++) : ?>
+            <?php for ($i = 0; $i < 9; $i++) : ?>
                 <?= $this->insert("includes::article-list", []) ?>
             <?php endfor; ?>
         </div>
