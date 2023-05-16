@@ -24,6 +24,10 @@ html, body{
     background: var(--bg-main);
 }
 
+main {
+    width: 100%;
+}
+
 section {
     margin-bottom: 4.1rem;
 }

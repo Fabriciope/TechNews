@@ -5,7 +5,9 @@
             "Source\\": "source/"
         },
         "files": [
-            "source/Boot/Config.php"
+            "source/Boot/Config.php",
+            "source/Boot/Helpers.php",
+            "source/Boot/Minify.php"
         ]
     },
     "authors": [
@@ -16,6 +18,7 @@
     ],
     "require": {
         "coffeecode/router": "^2.0",
-        "league/plates": "^3.5"
+        "league/plates": "^3.5",
+        "matthiasmullie/minify": "^1.3"
     }
 }
