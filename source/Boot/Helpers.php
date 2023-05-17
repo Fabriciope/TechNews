@@ -8,7 +8,7 @@
 {
     function url(?string $path = null): string
     {
-        if(true) {
+        if(false) {
             if ($path) {
                 return CONF_URL_SENAC . "/views" . "/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
             }
@@ -34,7 +34,7 @@
  */ {
     function theme(string $path = null): string
     {
-        if(true) {
+        if(false) {
             if ($path) {
                 return CONF_URL_SENAC . "/views" . "/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
             }

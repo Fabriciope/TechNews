@@ -12,6 +12,5 @@ class Controller
     {
         $this->views = new ViewsEngine($pathViews, $ext);
         $this->views->addFolder("layouts", __DIR__ . "/../../views/layouts");
-        $this->views->addFolder("includes", __DIR__ . "/../../views/includes");
     }
 }

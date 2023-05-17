@@ -9,9 +9,10 @@ class IndexController extends Controller
     public function __construct()
     {
         parent::__construct(__DIR__ . "/../../views");
+        $this->views->addFolder("includes", __DIR__ . "/../../views/includes");
     }
 
-    public function home()
+    public function pageHome()
     {
         echo $this->views->render("home", [
             "title" => "TechNews"
@@ -23,5 +24,10 @@ class IndexController extends Controller
         echo $this->views->render("articles", [
             "title" => "Artigos"
         ]);
+    }
+
+    public function error(array $data) 
+    {
+        var_dump($data);
     }
 }

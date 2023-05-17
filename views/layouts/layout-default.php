@@ -16,33 +16,33 @@
 
 <body>
 
-    <div class="container_menu_active">
-        <nav class="box_name">
-        <nav class="nav_mobile_active">
-                <button class="btn_menu_mobile_active">
-                <i class="fa-solid fa-xmark"></i>
-                </button>
-                <ul class="ul_main_mobile_active">
-                    <li><a href="<?=url("/")?>">Home</a></li>
-                    <li><a href="<?=url("/artigos")?>">Artigos</a></li>
-                    <li><a href="">Sobre</a></li>
-                    <?php if(true): ?>
-                        <li class="active_dropdown">
-                        <a href="">Perfil <i class="fa-solid fa-angle-down"></i> </a>
-                        <ul class="dropdown_menu_mobile_active">
-                            <li><a href="">Perfil</a></li>
-                            <li><a href="">Artigos já publicados</a></li>
-                            <li><a href="">Artigos salvos</a></li>
-                            <li><a href="">Adicionar novo artigo</a></li>
-                        </ul>
-                    </li>
-                    <?php else: ?>
-                        <li><a class="btn_active" href="<?=url("/entrar")?>">Entrar</a></li>
-                    <?php endif; ?>
-                </ul>
-            </nav>
-        </nav>
-    </div>
+<!-- CONTAINER MENU MOBILE -->
+<div class="container_menu_active">
+    <nav class="nav_mobile_active">
+        <button class="btn_menu_mobile_active">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <ul class="ul_main_mobile_active">
+            <li><a href="<?= url("/") ?>">Home</a></li>
+            <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
+            <li><a href="">Sobre</a></li>
+            <?php if (true) : ?>
+                <li class="li_profile">
+                    <span>Perfil <i class="fa-solid fa-angle-down"></i></span> 
+                    <ul class="dropdown_menu_mobile_active">
+                        <li><a href="<?=url("/perfil")?>">Perfil</a></li>
+                        <li><a href="">Artigos já publicados</a></li>
+                        <li><a href="">Artigos salvos</a></li>
+                        <li><a href="">Adicionar novo artigo</a></li>
+                    </ul>
+                </li>
+            <?php else : ?>
+                <li><a class="btn_active" href="<?= url("/entrar") ?>">Entrar</a></li>
+            <?php endif; ?>
+        </ul>
+
+    </nav>
+</div>
 
     <header>
         <div class="site_width center_header">
@@ -60,21 +60,21 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <ul class="ul_main">
-                    <li><a href="<?=url("/")?>">Home</a></li>
-                    <li><a href="<?=url("/artigos")?>">Artigos</a></li>
+                    <li><a href="<?= url("/") ?>">Home</a></li>
+                    <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
                     <li><a href="">Sobre</a></li>
-                    <?php if(false): ?>
+                    <?php if (true) : ?>
                         <li>
-                        <a href="">Perfil <i class="fa-solid fa-angle-down"></i> </a>
-                        <ul class="dropdown_menu">
-                            <li><a href="">Perfil</a></li>
-                            <li><a href="">Artigos já publicados</a></li>
-                            <li><a href="">Artigos salvos</a></li>
-                            <li><a href="">Adicionar novo artigo</a></li>
-                        </ul>
-                    </li>
-                    <?php else: ?>
-                        <li><a class="btn_active" href="<?=url("/entrar")?>">Entrar</a></li>
+                            <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
+                            <ul class="dropdown_menu">
+                                <li><a href="<?=url("/perfil")?>">Perfil</a></li>
+                                <li><a href="">Artigos já publicados</a></li>
+                                <li><a href="">Artigos salvos</a></li>
+                                <li><a href="">Adicionar novo artigo</a></li>
+                            </ul>
+                        </li>
+                    <?php else : ?>
+                        <li><a class="btn_active" href="<?= url("/entrar") ?>">Entrar</a></li>
                     <?php endif; ?>
                 </ul>
             </nav>
@@ -122,7 +122,7 @@
         </div>
     </footer>
 
-    <script src="<?=theme("assets/scripts.js")?>"></script>
+    <script src="<?= theme("assets/scripts.js") ?>"></script>
 
 </body>
 

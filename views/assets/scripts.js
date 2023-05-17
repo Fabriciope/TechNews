@@ -1,2 +1,3 @@
-const btnMenu=document.querySelector(".btn_menu");function toggleMenu(){document.body.classList.toggle("menu_active")}
-btnMenu.onclick=toggleMenu;console.log(btnMenu);alert("fdfsf")
+const btnMenu=document.querySelector(".btn_menu");const btnCloseMenu=document.querySelector(".btn_menu_mobile_active");function toggleMenu(){document.body.classList.toggle("menu_active");console.log(this)}
+btnMenu.onclick=toggleMenu;btnCloseMenu.onclick=toggleMenu;const liDropDown=document.querySelector(".li_profile");function toggleActionsProfile(){this.classList.toggle("active_dropdown");console.log(this)}
+liDropDown.onclick=toggleActionsProfile

@@ -7,11 +7,14 @@ use CoffeeCode\Router\Router;
 $router = new Router(url(), "@");
 
 $router->namespace("Source\Controllers");
-$router->get("/", "IndexController@home");
+$router->get("/", "IndexController@pageHome");
 $router->get("/artigos", "IndexController@pageArticles");
 
-$router->group("error")->namespace("Test");
-$router->get("/{errcode}", "Coffee:notFound");
+$router->group("/perfil");
+$router->get("/", "UserController@pageProfile");
+
+$router->group("error")->namespace("Source\Controllers");
+$router->get("/{errcode}", "IndexController@error");
 
 
 $router->dispatch();
