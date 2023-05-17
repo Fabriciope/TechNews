@@ -38,5 +38,21 @@
     filter: contrast(1.5);
 }
 
+.container_profile {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.aside_profile {
+    width: 40%;
+    border: 1px solid red;
+}
+
+
+.content_profile {
+    width: 55%;
+    border: 2px solid green;
+}
+
 
 /* ASIDE */

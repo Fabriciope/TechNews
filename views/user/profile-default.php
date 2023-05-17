@@ -1,5 +1,5 @@
 <?php $this->layout("layouts::layout-profile", []) ?>
 
-<div>
+<div class="content_profile">
     
 </div>
