@@ -1,6 +1,4 @@
-.content_profile {
-    width: 70%;
-}
+
 .content_form_profile {
     width: 100%;
     display: flex;
@@ -15,34 +13,6 @@
 
 .box_content_profile_left {
     width: 55%;
-}
-.box_input {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 1.5rem;
-}
-
-.box_input label {
-    margin-left: .4rem;
-    margin-bottom: .5rem;
-    font-size: 1.5rem;
-    color: var(--subtitle-color);
-}
-.box_input input,
-.box_input textarea {
-    width: 100%;
-    box-shadow: 0 2px 0 var(--orange);
-}
-.box_input input:hover,
-.box_input textarea:hover,
-.box_input input:focus,
-.box_input textarea:focus {
-    box-shadow: 0 3px 0 var(--orange);
-}
-.box_input textarea {
-    resize: vertical;
 }
 
 

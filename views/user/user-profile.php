@@ -1,52 +1,51 @@
 <?php $this->layout("layouts::profile", ["title" => $title]) ?>
 
-<div class="content_profile">
-    <form action="#" class="form_content_profile">
-        <div class="content_form_profile">
-            <div class="box_content_profile_left">
-                <div class="box_input">
-                    <label for="first_name">Primeiro nome:</label>
-                    <input type="text" class="input" placeholder="Digite seu primeiro nome...">
-                </div>
-                <div class="box_input">
-                    <label for="first_name">Sobrenome:</label>
-                    <input type="text" class="input" placeholder="Digite seu sobrenome...">
-                </div>
-                <div class="box_input">
-                    <label for="first_name">Bio:</label>
-                    <textarea name="" class="input" id="" cols="30" rows="10" placeholder="Faça uma breve descrição sobre você..."></textarea>
-                </div>
+
+<form action="#" class="form_content_profile">
+    <div class="content_form_profile">
+        <div class="box_content_profile_left">
+            <div class="box_input">
+                <label for="first_name">Primeiro nome:</label>
+                <input type="text" class="input" placeholder="Digite seu primeiro nome...">
             </div>
-            <div class="box_content_profile_right">
-                <div class="box_profile_verify">
-                    <?php if (true) : ?>
-                        <p class="email_verify">
-                            Perfil verificado
-                            <img src="<?= theme("assets/images/email-verify.png") ?>" alt="">
-                        </p>
-                    <?php else : ?>
-                        <div class="box_check_the_password">
-                            <a href="">Verificar meu perfil</a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="box_photo_profile">
-                    <img src="<?= theme("assets/images/profile/img39 edit 2.1.jpg") ?>" alt="">
-                    <div>
-                        <input type="file" id="photo_profile">
-                        <label for="photo_profile" class="label_input_file">
-                            <span>Selecione uma imagem</span>
-                            <span>Procurar</span>
-                        </label>
+            <div class="box_input">
+                <label for="first_name">Sobrenome:</label>
+                <input type="text" class="input" placeholder="Digite seu sobrenome...">
+            </div>
+            <div class="box_input">
+                <label for="first_name">Bio:</label>
+                <textarea name="" class="input" id="" rows="10" placeholder="Faça uma breve descrição sobre você..."></textarea>
+            </div>
+        </div>
+        <div class="box_content_profile_right">
+            <div class="box_profile_verify">
+                <?php if (true) : ?>
+                    <p class="email_verify">
+                        Perfil verificado
+                        <img src="<?= theme("assets/images/email-verify.png") ?>" alt="">
+                    </p>
+                <?php else : ?>
+                    <div class="box_check_the_password">
+                        <a href="">Verificar meu perfil</a>
                     </div>
-                </div>
-                <div class="box_alter_password">
-                    <a href="#">Alterar Senha</a>
+                <?php endif; ?>
+            </div>
+            <div class="box_photo_profile">
+                <img src="<?= theme("assets/images/profile/img39 edit 2.1.jpg") ?>" alt="">
+                <div>
+                    <input type="file" id="photo_profile">
+                    <label for="photo_profile" class="label_input_file">
+                        <span>Selecione uma imagem</span>
+                        <span>Procurar</span>
+                    </label>
                 </div>
             </div>
+            <div class="box_alter_password">
+                <a href="#">Alterar Senha</a>
+            </div>
         </div>
-        <div class="button_submit_form_profile">
-            <button type="submit">Salvar</button>
-        </div>
-    </form>
-</div>
+    </div>
+    <div class="button_submit_form_profile">
+        <button type="submit">Salvar</button>
+    </div>
+</form>

@@ -1,0 +1,40 @@
+.container_paragraphs {
+    border: 2px solid red;
+}
+
+.box_actions_paragraph {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .9rem;
+}
+
+.box_remove_paragraph span.icon_remove_paragraph {
+    margin-right: .5rem;
+}
+.box_remove_paragraph span.icon_remove_paragraph i {
+    font-size: 2rem;
+    color: #ed3b3b;
+}
+
+
+.text_remove_paragraph,
+.box_add_paragraph span.text_add_paragraph {
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--subtitle-color);
+}
+
+.box_add_paragraph {
+    border: 2px solid blue;
+}
+.box_add_paragraph span.icon_add_paragraph {
+    margin-left: .7rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+.box_add_paragraph span.icon_add_paragraph i {
+    font-size: 2.2rem;
+    color: var(--orange);
+}

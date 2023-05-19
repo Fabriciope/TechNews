@@ -23,7 +23,9 @@
             </ul>
         </aside>
 
-        <?= $this->section("content") ?>
+        <div class="content_profile">
+            <?= $this->section("content") ?>
+        </div>
 
     </div>
    
