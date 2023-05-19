@@ -4,7 +4,6 @@ const btnCloseMenu = document.querySelector(".btn_menu_mobile_active");
 
 function toggleMenu() {
     document.body.classList.toggle("menu_active");
-    console.log(this);
 }
 btnMenu.onclick = toggleMenu;
 btnCloseMenu.onclick = toggleMenu;
@@ -15,6 +14,5 @@ const liDropDown = document.querySelector(".li_profile");
 
 function toggleActionsProfile() {
     this.classList.toggle("active_dropdown");
-    console.log(this);
 }
 liDropDown.onclick = toggleActionsProfile;

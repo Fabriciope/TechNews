@@ -80,14 +80,22 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
+.title_paragraph,
 .box_input label {
     margin-left: .4rem;
-    margin-bottom: .5rem;
+    margin-bottom: .65rem;
     font-size: 1.5rem;
     color: var(--subtitle-color);
 }
+.title_paragraph {
+    margin-bottom: .45rem;
+}
+.box_input label.small_label {
+    font-size: 1.31rem;
+}
+
 .box_input input,
 .box_input textarea {
     width: 100%;

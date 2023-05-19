@@ -19,6 +19,11 @@ class IndexController extends Controller
         ]);
     }
 
+    public function teste(array $data): void
+    {
+        var_dump($data);
+    }
+
     public function pageArticles()
     {
         echo $this->views->render("articles", [

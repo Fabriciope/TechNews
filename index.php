@@ -8,6 +8,7 @@ $router = new Router(url(), "@");
 
 $router->namespace("Source\Controllers");
 $router->get("/", "IndexController@pageHome");
+$router->post("/teste", "IndexController@teste");
 $router->get("/artigos", "IndexController@pageArticles");
 
 $router->group("/perfil");

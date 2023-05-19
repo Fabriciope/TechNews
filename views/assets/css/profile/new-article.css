@@ -1,19 +1,26 @@
 .container_paragraphs {
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
-
+.box_paragraph {
+    margin-bottom: 1.8rem;
+}
 .box_actions_paragraph {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     gap: .9rem;
+    margin-top: -.7rem;
+    padding: 0 1rem;
+}
+.box_actions_paragraph.new_box_paragraph {
+    justify-content: space-between;
 }
 
 .box_remove_paragraph span.icon_remove_paragraph {
-    margin-right: .5rem;
+    margin-right: .25rem;
 }
 .box_remove_paragraph span.icon_remove_paragraph i {
-    font-size: 2rem;
+    font-size: 1.75rem;
     color: #ed3b3b;
 }
 
@@ -26,7 +33,7 @@
 }
 
 .box_add_paragraph {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
 }
 .box_add_paragraph span.icon_add_paragraph {
     margin-left: .7rem;
