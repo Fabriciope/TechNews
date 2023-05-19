@@ -57,11 +57,12 @@ $jsDir = scandir(__DIR__ . "./../../views/assets/scripts");
 if (count($jsDir) > 2) {
 
     foreach ($jsDir as $js) {
-        $jsFIle =  __DIR__ . "./../../views/assets/scripts/{$js}";
+        
+        $jsFile =  __DIR__ . "./../../views/assets/scripts/{$js}";
 
 
-        if (is_file($jsFile) && pathinfo($jsFIle)['extension'] == "js") {
-            $minJS->add($jsFIle);
+        if (is_file($jsFile) && pathinfo($jsFile)['extension'] == "js") {
+            $minJS->add($jsFile);
         }
     }
 }

@@ -11,8 +11,17 @@ class UserController extends Controller
         parent::__construct(__DIR__ . "./../../views/user");
     }
 
-    public function pageProfile()
+    public function pageProfile(): void
     {
-        echo $this->views->render("profile-default", []);
+        echo $this->views->render("user-profile", [
+            "title" => "Perfil"
+        ]);
+    }
+
+    public function pageNewArticle(): void
+    {
+        echo $this->views->render("new-article", [
+            "title" => "Novo Artigo"
+        ]);
     }
 }

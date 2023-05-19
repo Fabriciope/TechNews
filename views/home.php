@@ -1,4 +1,4 @@
-<?php $this->layout("layouts::layout-default", ["title" => $title]); ?>
+<?php $this->layout("layouts::default", ["title" => $title]); ?>
 
 <!-- BANNER -->
 <section class="banner">
@@ -53,10 +53,10 @@
         <div class="box_right_register">
             <form action="#">
                 <h3>Cadastrar-se</h3>
-                <input type="text" name="first_name" placeholder="Primeiro nome:" />
-                <input type="text" name="last_name" placeholder="Último nome:" />
-                <input type="email" name="email" placeholder="Melhor e-mail:" />
-                <input type="password" name="password" placeholder="Senha de acesso:" />
+                <input type="text" name="first_name" class="input" placeholder="Primeiro nome:" />
+                <input type="text" name="last_name" class="input" placeholder="Último nome:" />
+                <input type="email" name="email" class="input" placeholder="Melhor e-mail:" />
+                <input type="password" name="password" class="input" placeholder="Senha de acesso:" />
                 <button class="gb_btn">Criar minha conta</button>
             </form>
         </div>

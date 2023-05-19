@@ -165,7 +165,7 @@
 .box_right_register form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.3rem;
     width: 80%;
     margin: 0 auto;
 }
@@ -178,14 +178,6 @@
 }
 .box_right_register input {
     width: 100%;
-    padding: 1.45rem 1.2rem;
-    font-size: 1.4rem;
-    color: var(--subtitle-color);
-    border-radius: .5rem;
-    border: none;
-    background: var(--bg-box);
-    outline: none;
-    transition: .2s;
     border-right: 3px solid var(--orange);
 }
 .box_right_register input:focus,

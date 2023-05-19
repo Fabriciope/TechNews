@@ -1,5 +1,5 @@
 .section_banner_profile {
-    margin-top: 3rem;
+    margin-top: 1.75rem;
 }
 .banner_profile {
     position: relative;
@@ -25,6 +25,7 @@
     width: 130px; height: 130px;
     border-radius: 50rem;
     border: 3px solid var(--title-color);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
 }
 .box_info_banner {
     display: flex;
@@ -38,21 +39,36 @@
     filter: contrast(1.5);
 }
 
+.section_content_profile {
+    margin-top: 8.4rem;
+}
 .container_profile {
+    height: auto;
     display: flex;
     justify-content: space-around;
-    align-items: center;
+
 }
+
+
 .aside_profile {
-    width: 40%;
-    border: 1px solid red;
+    min-width: 215px;
+    height: auto;
+    margin-right: 1rem;
+    background: rgb(255,255,255);
+    background: linear-gradient(208deg, rgba(255,255,255,0.1) 0%, rgba(255,191,0,0) 82%);
+    border-radius: .7rem;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+}
+.aside_profile ul {
+    list-style: none;
+}
+.aside_profile ul li a {
+    display: block;
+    padding: 1.5rem 2rem;
+    font-size: 1.7rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: var(--title-color);
 }
 
 
-.content_profile {
-    width: 55%;
-    border: 2px solid green;
-}
-
-
-/* ASIDE */

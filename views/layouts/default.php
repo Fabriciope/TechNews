@@ -33,7 +33,7 @@
                         <li><a href="<?=url("/perfil")?>">Perfil</a></li>
                         <li><a href="">Artigos já publicados</a></li>
                         <li><a href="">Artigos salvos</a></li>
-                        <li><a href="">Adicionar novo artigo</a></li>
+                        <li><a href="<?=url("/perfil/novo-artigo")?>">Adicionar novo artigo</a></li>
                     </ul>
                 </li>
             <?php else : ?>
@@ -70,7 +70,7 @@
                                 <li><a href="<?=url("/perfil")?>">Perfil</a></li>
                                 <li><a href="">Artigos já publicados</a></li>
                                 <li><a href="">Artigos salvos</a></li>
-                                <li><a href="">Adicionar novo artigo</a></li>
+                                <li><a href="<?=url("/perfil/novo-artigo")?>">Adicionar novo artigo</a></li>
                             </ul>
                         </li>
                     <?php else : ?>

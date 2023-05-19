@@ -1,4 +1,4 @@
-<?php $this->layout("layouts::layout-default", []) ?>
+<?php $this->layout("layouts::default", ["title" => $title]) ?>
 
 <section class="site_width section_banner_profile">
     <div class="banner_profile" 
@@ -12,17 +12,19 @@
     </div>
 </section>
 
-<section class="site_width">
+<section class="site_width section_content_profile">
     <div class="container_profile">   
         <aside class="aside_profile">
             <ul>
-                <li><a href="">Perfil</a></li>
+                <li><a href="<?=url("/perfil")?>">Perfil</a></li>
                 <li><a href="">Artigos publicados</a></li>
                 <li><a href="">Salvo para publicação</a></li>
-                <li><a href="">Novo Artigo</a></li>
+                <li><a href="<?=url("/perfil/novo-artigo")?>">Novo Artigo</a></li>
             </ul>
         </aside>
+
         <?= $this->section("content") ?>
+
     </div>
    
 </section>

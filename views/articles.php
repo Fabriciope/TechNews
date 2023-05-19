@@ -1,4 +1,4 @@
-<?php $this->layout("layouts::layout-default", ["title" => $title]) ?>
+<?php $this->layout("layouts::default", ["title" => $title]) ?>
 
 <!-- MELHORES ARTIGOS -->
 <section class="site_width" style="margin-top: 2rem;">

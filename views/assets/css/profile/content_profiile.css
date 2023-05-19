@@ -1,0 +1,189 @@
+.content_profile {
+    width: 70%;
+}
+.content_form_profile {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    grid-template-rows: auto;
+    gap: 4.5rem 3rem; */
+}
+
+.box_content_profile_left {
+    width: 55%;
+}
+.box_input {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.box_input label {
+    margin-left: .4rem;
+    margin-bottom: .5rem;
+    font-size: 1.5rem;
+    color: var(--subtitle-color);
+}
+.box_input input,
+.box_input textarea {
+    width: 100%;
+    box-shadow: 0 2px 0 var(--orange);
+}
+.box_input input:hover,
+.box_input textarea:hover,
+.box_input input:focus,
+.box_input textarea:focus {
+    box-shadow: 0 3px 0 var(--orange);
+}
+.box_input textarea {
+    resize: vertical;
+}
+
+
+
+
+
+
+
+
+.box_content_profile_right {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+
+.box_profile_verify {
+    margin: 0 0 3rem 0;
+}
+.box_profile_verify p.email_verify {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .85rem;
+    font-size: 1.3rem;
+    text-shadow: 1px 1px 0 black;
+    color: var(--title-color);
+}
+.box_profile_verify p.email_verify img {
+    width: 20px;
+}
+.box_check_the_password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .85rem;
+}
+.box_check_the_password a {
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 0 black;
+    text-decoration: underline;
+    color: var(--title-color);
+    transition: .2s;
+}
+.box_check_the_password a:hover {
+    color: var(--orange);
+    transition: .2s;
+}
+
+
+.box_photo_profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3rem;
+    margin-bottom: .9rem;
+}
+.box_photo_profile img{
+    width: 130px; height: 130px;
+    border-radius: 50rem;
+    border: 3px solid var(--title-color);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+.box_photo_profile input[type="file"]{
+    display: none;
+}
+.label_input_file {
+    width: 70%;
+    min-width: 240px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .6rem;
+    cursor: pointer;
+    border-radius: .5rem;
+    border: 2px solid var(--orange);
+}
+.label_input_file span:first-child {
+    font-size: 1.25rem;
+    color: var(--subtitle-color);
+}
+.label_input_file span:last-child {
+    padding: .7rem .9rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 0 var(--dark-font);
+    border-radius: .5rem;
+    color: var(--title-color);
+    background-color: var(--orange);
+}
+.box_alter_password {
+    margin: 2.6rem 0;
+}
+.box_alter_password a{
+    padding: .8rem 1rem;
+    font-size: 1.3rem;
+    text-shadow: 1px 1px 0 var(--dark-font);
+    color: var(--title-color);
+    border-radius: .5rem;
+    background-color: var(--bg-box);
+    box-shadow: 1px 1px 9px rgba(0, 0, 0, 0.6);
+}
+.button_submit_form_profile {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1.8rem;
+}
+.button_submit_form_profile button{
+    padding: .9rem 1.8em;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 black;
+    cursor: pointer;
+    color: var(--title-color);
+    border-radius: .5rem;
+    border: none;
+    background-color: #00aeff;
+    box-shadow: 2px 2px 11px black;
+}
+
+@media (max-width: 975px) {
+    .content_form_profile {
+        flex-direction: column;
+    }
+
+    .box_content_profile_left,
+    .box_content_profile_right {
+        width: 95%;
+        margin: 0 auto;
+    }
+    .box_content_profile_right  {
+        margin-bottom: 1.3rem;
+        order: -1;
+    }
+
+    .button_submit_form_profile {
+        justify-content: center;
+    }
+    
+}
