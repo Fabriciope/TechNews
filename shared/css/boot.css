@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;300;400;500;600;700;800&display=swap');
 
+@font-face {
+    font-family: 'tommy';
+    src: url('./../../views/assets/fonts/MADETOMMY.woff');
+}
+
 :root {
     --orange: #ff6200;
     --gray: #33333d;
@@ -16,7 +21,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'tommy';
 }
 
 html, body{
@@ -65,6 +70,8 @@ section {
     text-align: center;
     color: var(--title-color);
 }
+
+
 .input {
     padding: 1.45rem 1.2rem;
     font-size: 1.4rem;
@@ -75,4 +82,20 @@ section {
     outline: none;
     transition: .2s;
     box-shadow: 1px 1px 11px rgba(0, 0, 0, 0.5);
+}
+
+.btn_green {
+    padding: .9rem 1.8em;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 black;
+    cursor: pointer;
+    color: var(--title-color);
+    border-radius: .5rem;
+    border: none;
+    background-color: #14cc2a;
+    box-shadow: 0 3px 0 #107d1d;
+}
+.btn_green:hover {
+    box-shadow: 0 4px 0 #107d1d;
 }

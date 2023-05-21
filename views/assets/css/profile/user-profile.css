@@ -79,33 +79,8 @@
     border: 3px solid var(--title-color);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
 }
-.box_photo_profile input[type="file"]{
-    display: none;
-}
-.label_input_file {
-    width: 70%;
-    min-width: 240px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .6rem;
-    cursor: pointer;
-    border-radius: .5rem;
-    border: 2px solid var(--orange);
-}
-.label_input_file span:first-child {
-    font-size: 1.25rem;
-    color: var(--subtitle-color);
-}
-.label_input_file span:last-child {
-    padding: .7rem .9rem;
-    font-size: 1.4rem;
-    font-weight: 600;
-    text-shadow: 1px 1px 0 var(--dark-font);
-    border-radius: .5rem;
-    color: var(--title-color);
-    background-color: var(--orange);
-}
+
+
 .box_alter_password {
     margin: 2.6rem 0;
 }
@@ -123,18 +98,6 @@
     justify-content: flex-end;
     align-items: center;
     margin-top: 1.8rem;
-}
-.button_submit_form_profile button{
-    padding: .9rem 1.8em;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-shadow: 1px 1px 0 black;
-    cursor: pointer;
-    color: var(--title-color);
-    border-radius: .5rem;
-    border: none;
-    background-color: #00aeff;
-    box-shadow: 2px 2px 11px black;
 }
 
 @media (max-width: 975px) {

@@ -32,9 +32,9 @@
             </div>
             <div class="box_photo_profile">
                 <img src="<?= theme("assets/images/profile/img39 edit 2.1.jpg") ?>" alt="">
-                <div>
+                <div class="box_file">
                     <input type="file" id="photo_profile">
-                    <label for="photo_profile" class="label_input_file">
+                    <label for="photo_profile" >
                         <span>Selecione uma imagem</span>
                         <span>Procurar</span>
                     </label>
@@ -46,6 +46,6 @@
         </div>
     </div>
     <div class="button_submit_form_profile">
-        <button type="submit">Salvar</button>
+        <button type="submit" class="btn_green">Salvar</button>
     </div>
 </form>

@@ -32,7 +32,7 @@
                     <ul class="dropdown_menu_mobile_active">
                         <li><a href="<?=url("/perfil")?>">Perfil</a></li>
                         <li><a href="">Artigos já publicados</a></li>
-                        <li><a href="">Artigos salvos</a></li>
+                        <li><a href="<?=url("/perfil/artigos-salvos")?>">Artigos salvos</a></li>
                         <li><a href="<?=url("/perfil/novo-artigo")?>">Adicionar novo artigo</a></li>
                     </ul>
                 </li>
@@ -60,8 +60,8 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <ul class="ul_main">
-                    <li><a href="<?= url("/") ?>">Home</a></li>
-                    <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
+                    <li><a href="<?=url("/") ?>">Home</a></li>
+                    <li><a href="<?=url("/artigos")?>">Artigos</a></li>
                     <li><a href="">Sobre</a></li>
                     <?php if (true) : ?>
                         <li>
@@ -69,7 +69,7 @@
                             <ul class="dropdown_menu">
                                 <li><a href="<?=url("/perfil")?>">Perfil</a></li>
                                 <li><a href="">Artigos já publicados</a></li>
-                                <li><a href="">Artigos salvos</a></li>
+                                <li><a href="<?=url("/perfil/artigos-salvos")?>">Artigos salvos</a></li>
                                 <li><a href="<?=url("/perfil/novo-artigo")?>">Adicionar novo artigo</a></li>
                             </ul>
                         </li>

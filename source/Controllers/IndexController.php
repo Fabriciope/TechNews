@@ -8,14 +8,14 @@ class IndexController extends Controller
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . "/../../views");
-        $this->views->addFolder("includes", __DIR__ . "/../../views/includes");
+        parent::__construct(__DIR__ . '/../../views');
+        $this->views->addFolder('includes', __DIR__ . '/../../views/includes');
     }
 
     public function pageHome()
     {
-        echo $this->views->render("home", [
-            "title" => "TechNews"
+        echo $this->views->render('home', [
+            'title' => 'TechNews'
         ]);
     }
 
@@ -26,8 +26,8 @@ class IndexController extends Controller
 
     public function pageArticles()
     {
-        echo $this->views->render("articles", [
-            "title" => "Artigos"
+        echo $this->views->render('articles', [
+            'title' => 'Artigos'
         ]);
     }
 

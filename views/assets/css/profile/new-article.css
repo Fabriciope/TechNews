@@ -1,15 +1,14 @@
-.container_paragraphs {
-    /* border: 2px solid red; */
-}
 .box_paragraph {
     margin-bottom: 1.8rem;
+}
+.box_textarea {
+    margin-bottom: 1.2rem;
 }
 .box_actions_paragraph {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: .9rem;
-    margin-top: -.7rem;
     padding: 0 1rem;
 }
 .box_actions_paragraph.new_box_paragraph {
@@ -26,22 +25,35 @@
 
 
 .text_remove_paragraph,
+.box_add_paragraph_new span.text_add_paragraph,
 .box_add_paragraph span.text_add_paragraph {
     font-size: 1.4rem;
     cursor: pointer;
     color: var(--subtitle-color);
 }
 
-.box_add_paragraph {
-    /* border: 2px solid blue; */
-}
+.box_add_paragraph_new span.icon_add_paragraph,
 .box_add_paragraph span.icon_add_paragraph {
     margin-left: .7rem;
     cursor: pointer;
     border: none;
     background: none;
 }
+.box_add_paragraph_new span.icon_add_paragraph i,
 .box_add_paragraph span.icon_add_paragraph i {
-    font-size: 2.2rem;
+    
+    font-size: 2rem;
     color: var(--orange);
+}
+.box_input_img_article {
+    margin-bottom: 2rem;
+}
+.box_input_file_article {
+    max-width: 240px;
+    margin-top: .9rem;
+}
+
+.btn_new_article {
+    display: block;
+    margin: .9rem auto 0 auto;
 }

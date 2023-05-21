@@ -13,6 +13,7 @@ $router->get("/artigos", "IndexController@pageArticles");
 
 $router->group("/perfil");
 $router->get("/", "UserController@pageProfile");
+$router->get("/artigos-salvos", "UserController@pageSavedArticles");
 $router->get("/novo-artigo", "UserController@pageNewArticle");
 
 $router->group("error")->namespace("Source\Controllers");

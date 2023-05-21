@@ -50,7 +50,6 @@
 }
 
 /* BOX ARTIGO */
-
 .article_post .link_img_post {
     display: inline-block;
     margin-bottom: .8rem;
@@ -95,3 +94,20 @@
 .article_post .subtitle_post a:hover {
     text-decoration: underline;
 } 
+
+.article_post .box_comment {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .6rem;
+    margin-top: .85rem;
+    padding-left: .9rem;
+}
+.article_post .box_comment i {
+    font-size: 1.6rem;
+    color: var(--orange);
+}
+.article_post .box_comment span {
+    font-size: 1.3rem;
+    color: var(--subtitle-color);
+}
