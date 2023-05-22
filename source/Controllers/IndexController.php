@@ -18,6 +18,13 @@ class IndexController extends Controller
         ]);
     }
 
+    public function pageArticlePost(array $data): void
+    {
+        echo $this->views->render('article-post', [
+            'title' => $data['uri']
+        ]);
+    }
+
     public function teste(array $data): void
     {
 
@@ -71,6 +78,16 @@ class IndexController extends Controller
             'title' => 'Entrar'
         ]);
     }
+
+    public function pageRegister(): void
+    {
+        echo $this->views->render('auth-register', [
+            'title' => 'Cadastrar'
+        ]);
+    }
+
+
+
 
     public function error(array $data)
     {

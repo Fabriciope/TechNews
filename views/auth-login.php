@@ -4,7 +4,7 @@
     <article class="container_auth">
         <header class="header_auth">   
             <h2>Fazer login</h2>
-            <p>Ainda não tem conta? <a href="">Cadastre-se!</a></p>
+            <p>Ainda não tem conta? <a href="<?=url('/cadastrar')?>">Cadastre-se!</a></p>
         </header>
         <form action="">
             <div class="ajax_response">

@@ -3,7 +3,6 @@
 $minCSS = new MatthiasMullie\Minify\CSS();
 
 $minCSS->add(__DIR__ . './../../shared/css/boot.css');
-$minCSS->add(__DIR__ . './../../shared/css/layout-default.css');
 
 // $cssDir = array_map(function($nameFileOrFolder){
 //     $fileOrDir = __DIR__ . './../../views/assets/css/{$nameFileOrFolder}';

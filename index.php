@@ -9,10 +9,15 @@ $router = new Router(url(), "@");
 
 $router->namespace("Source\Controllers");
 $router->get("/", "IndexController@pageHome");
-$router->get("/artigos", "IndexController@pageArticles");
+
+$router->group('/artigos');
+$router->get("/", "IndexController@pageArticles");
+$router->get('/{uri}', 'IndexController@pageArticlePost');
 
 // AUTH ROUTES
+$router->group(null);
 $router->get('/entrar', 'IndexController@pageLogin');
+$router->get('/cadastrar', 'IndexController@pageRegister');
 
 // PROFILE ROUTES
 $router->group("/perfil");

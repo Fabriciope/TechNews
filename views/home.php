@@ -15,12 +15,12 @@
 
         </div>
         <div class="container_right_banner">
-            <img src="<?= theme("assets/images/img-banner.png") ?>" alt="">
+            <img src="<?= theme("assets/images/5.png") ?>" alt="">
         </div>
     </div>
 </section>
 
-<!-- TEXTOS DE SERVIÇOS E BENEFÍCIOS DA PLATAFORmA -->
+<!-- TEXTOS DE SERVIÇOS E BENEFÍCIOS DA PLATAFORMA -->
 <section class="site_width">
     <h2 class="title_section">Benefícios da plataforma</h2>
 

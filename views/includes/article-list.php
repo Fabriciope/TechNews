@@ -1,5 +1,5 @@
 <article class="article_post">
-    <a class="link_img_post" href="">
+    <a class="link_img_post" href="<?=url('artigos/teste')?>">
         <img src="<?= theme("assets/images/articles/img-article.jpg") ?>" alt="">
     </a>
     <div class="box_info_post">

@@ -5,7 +5,7 @@
     position: sticky;
     z-index: 8000;
     background-color: var(--gray);
-    box-shadow: 0 3px 15px rgba(0, 0, 0, .42);
+    box-shadow: 0 4px 17px rgba(0, 0, 0, .45);
 }
 
 
@@ -228,15 +228,16 @@
 footer {
     position: relative;
     width: 100%;
+    margin-top: 10rem;
     padding: 1.9rem 0;
     overflow: hidden;
-    border-radius: 2rem 2rem 0 0;
+    border-radius: 1rem 1rem 0 0;
     font-size: 3rem;
 
-    background: rgb(255,191,0);
-    background: linear-gradient(305deg, rgba(255,191,0,1) 10%, rgba(255,49,0,1) 96%);
+    background: #ff8800;
+    background: linear-gradient(305deg, #ff8800 10%, rgba(255,49,0,1) 96%);
 
-    box-shadow: 0 -5px 25px black;
+    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.385);
 
     border: 1px solid red;
 }

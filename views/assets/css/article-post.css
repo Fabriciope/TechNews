@@ -1,0 +1,89 @@
+.section_article_post {
+    margin-top: 3.3rem;
+}
+.container_article_post {
+}
+.container_article_post h1 {
+    position: relative;
+    z-index: 100;
+    width: 92%;
+    max-width: 900px;
+    margin: 0 auto 2rem auto;
+    font-size: clamp(25px, 3vw, 35px);
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 3px 3px 0 black;
+    color: var(--title-color);
+}
+.container_article_post h1::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 10px;
+    right: 10px;
+    bottom: 0px;
+    top: 18px;
+    background: rgb(255,62,0);
+    background: linear-gradient(82deg, rgba(255,62,0,1) 14%, rgba(255,157,0,1) 100%);
+    box-shadow: 3px 3px 0 black;
+}
+.header_article_post {
+
+}
+.box_info_article_post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 92%;
+    max-width: 1000px;
+    margin: 1rem auto;
+    padding: 0 1rem;
+}
+.box_info_article_post .box_info_left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .8rem;
+}
+.box_info_article_post .photo_author_article_post{
+    width: 45px; height: 45px;
+    border-radius: 50rem;
+    border: 1px solid var(--subtitle-color);
+}
+.box_info_article_post .box_info_left  .name_author_article {
+    font-size: 1.6rem;
+    font-weight: 100;
+    color: var(--subtitle-color);
+}
+.box_info_article_post .box_info_left  .name_author_article span {
+    margin-left: .5rem;
+    font-size: 1.5rem;
+}
+
+.box_info_article_post .date_article {
+    font-size: 1.5rem;
+    color: var(--subtitle-color);
+}
+
+.container_article_content {
+    width: 92%;
+    max-width: 1000px;
+    margin: 3rem auto 1rem auto;
+}
+
+.container_article_content h2 {
+    margin-bottom: 2rem;
+    font-size: clamp(23px, 2vw, 29px);
+    color: var(--title-color);
+}
+.container_article_content h3 {
+    margin: 1.8rem 0 1rem 0;
+    font-size: clamp(19px, 2vw, 25px);
+    color: var(--subtitle-color);
+}
+.container_article_content p {
+    margin-bottom: 1rem;
+    padding-left: .4rem;
+    font-size: clamp(16px, 1vw, 18px);
+    color: var(--subtitle-color);
+}

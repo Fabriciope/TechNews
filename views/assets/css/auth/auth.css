@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    margin: 6.5rem auto 25rem auto;
 }
 .container_auth {
     width: 33%;
@@ -55,9 +55,21 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 1.5rem;
     padding: 1rem .9rem;
     border-radius: .8rem;
     border: 1px solid var(--subtitle-color);
+}
+label.label_box_input {
+    display: block;
+    margin-bottom: .8rem;
+    margin-left: .6rem;
+    font-size: 1.55rem;
+    color: var(--title-color);
+}
+label.label_box_input span {
+    margin-right: .17rem;
+    font-size: 1.3rem;
 }
 .box_password_auth input {
     width: 100%;
@@ -93,7 +105,6 @@
 .box_forget_password a:hover {
     text-decoration: underline;
 }
-
 .box_remember_data {
     display: flex;
     align-items: center;
@@ -106,19 +117,6 @@
 
 .btn_submit {
     width: 100%;
-    margin-top: 1.2rem;
+    margin-top: 1.4rem;
     font-size: 1.82rem;
-}
-
-
-/* BOOT */
-label.label_box_input {
-    display: block;
-    margin-bottom: .8rem;
-    margin-left: .6rem;
-    font-size: 1.55rem;
-    color: var(--title-color);
-}
-label.label_box_input span {
-    margin-right: .4rem;
 }

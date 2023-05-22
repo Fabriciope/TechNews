@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="<?= theme("assets/style.css") ?>">
-    <link rel="stylesheet" href="./css/home.css">
 
     <script src="https://kit.fontawesome.com/d5c56409b7.js" crossorigin="anonymous"></script>
 
@@ -26,7 +25,7 @@
             <li><a href="<?= url("/") ?>">Home</a></li>
             <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
             <li><a href="">Sobre</a></li>
-            <?php if (false) : ?>
+            <?php if (true) : ?>
                 <li class="li_profile">
                     <span>Perfil <i class="fa-solid fa-angle-down"></i></span> 
                     <ul class="dropdown_menu_mobile_active">
@@ -63,7 +62,7 @@
                     <li><a href="<?=url("/") ?>">Home</a></li>
                     <li><a href="<?=url("/artigos")?>">Artigos</a></li>
                     <li><a href="">Sobre</a></li>
-                    <?php if (false) : ?>
+                    <?php if (true) : ?>
                         <li>
                             <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
                             <ul class="dropdown_menu">
@@ -121,6 +120,24 @@
             </article>
         </div>
     </footer>
+    
+<!-- 
+    <svg viewBox="0 0 243 243" style="display: ;">
+        <filter id="noiseFilter">
+            <feTurbulence type="franctalNoise" baseFrequency="6.29" numOctaves="6" stichTiles="stitch"></feTurbulence>
+        </filter>
+    </svg>
+        
+    <svg>
+      <filter id="noiseFilter">
+        <feTurbulence
+          type="franctalNoise"
+          baseFrequency="5.7"
+          numOctaves="6"
+          stichTiles="stitch"
+        ></feTurbulence>
+      </filter>
+    </svg> -->
 
     <script src="<?= theme("assets/scripts.js") ?>"></script>
 
