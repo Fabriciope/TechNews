@@ -1,5 +1,5 @@
 .section_banner_profile {
-    margin-top: 1.75rem;
+    margin-top: 1.74rem;
 }
 .banner_profile {
     position: relative;
@@ -39,15 +39,16 @@
     filter: contrast(1.5);
 }
 
+
+
 .section_content_profile {
-    margin-top: 8.4rem;
+    margin-top: 6.5rem;
 }
 .container_profile {
     display: flex;
     justify-content: space-around;
 
 }
-
 
 .aside_profile {
     min-width: 215px;

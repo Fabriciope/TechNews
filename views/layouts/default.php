@@ -26,12 +26,12 @@
             <li><a href="<?= url("/") ?>">Home</a></li>
             <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
             <li><a href="">Sobre</a></li>
-            <?php if (true) : ?>
+            <?php if (false) : ?>
                 <li class="li_profile">
                     <span>Perfil <i class="fa-solid fa-angle-down"></i></span> 
                     <ul class="dropdown_menu_mobile_active">
                         <li><a href="<?=url("/perfil")?>">Perfil</a></li>
-                        <li><a href="">Artigos já publicados</a></li>
+                        <li><a href="<?=url("/perfil/artigos-publicados")?>">Artigos já publicados</a></li>
                         <li><a href="<?=url("/perfil/artigos-salvos")?>">Artigos salvos</a></li>
                         <li><a href="<?=url("/perfil/novo-artigo")?>">Adicionar novo artigo</a></li>
                     </ul>
@@ -44,7 +44,7 @@
     </nav>
 </div>
 
-    <header>
+    <header class="header_default">
         <div class="site_width center_header">
             <div class="box_logo">
                 <a href="">
@@ -63,12 +63,12 @@
                     <li><a href="<?=url("/") ?>">Home</a></li>
                     <li><a href="<?=url("/artigos")?>">Artigos</a></li>
                     <li><a href="">Sobre</a></li>
-                    <?php if (true) : ?>
+                    <?php if (false) : ?>
                         <li>
                             <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
                             <ul class="dropdown_menu">
                                 <li><a href="<?=url("/perfil")?>">Perfil</a></li>
-                                <li><a href="">Artigos já publicados</a></li>
+                                <li><a href="<?=url("/perfil/artigos-publicados")?>">Artigos já publicados</a></li>
                                 <li><a href="<?=url("/perfil/artigos-salvos")?>">Artigos salvos</a></li>
                                 <li><a href="<?=url("/perfil/novo-artigo")?>">Adicionar novo artigo</a></li>
                             </ul>

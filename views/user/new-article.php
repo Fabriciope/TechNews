@@ -31,15 +31,15 @@
             <div class="box_input">
                 <p class="title_paragraph">Parágrafo 1°</p>
                 <label for="paragraph1" class="small_label">Titulo deste parágrafo (opcional)</label>
-                <input type="text" name="titleParagraph1" class="input" placeholder="Digite o titulo deste parágrafo...">
+                <input type="text" name="titleParagraph-1" class="input input_title_paragraph" placeholder="Digite o titulo deste parágrafo...">
             </div>
             <div class="box_input box_textarea">
-                <textarea name="contentParagraph1" class="input" id="" rows="10" placeholder="Desenvolva o primeiro parágrafo do seu artigo......"></textarea>
+                <textarea name="contentParagraph-1" class="input text_content_paragraph" id="" rows="10" placeholder="Desenvolva o primeiro parágrafo do seu artigo......"></textarea>
             </div>
             <div class="box_actions_paragraph">
                 <div class="box_add_paragraph">
-                    <span class="add_paragraph text_add_paragraph">Adicionar parágrafo</span>
-                    <span class="add_paragraph icon_add_paragraph"><i class="fa-solid fa-file-circle-plus"></i></span>
+                    <span class="btn_add_paragraph text_add_paragraph">Adicionar parágrafo</span>
+                    <span class="btn_add_paragraph icon_add_paragraph"><i class="fa-solid fa-file-circle-plus"></i></span>
                 </div>
             </div>
         </div>

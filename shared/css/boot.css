@@ -15,6 +15,9 @@
     --title-color: #f0f0f0;
     --subtitle-color: #bfbfbf;
     --dark-font: #0f0f0f;
+
+    --green-button-color: #14cc2a;
+    --green-button-shadow: #107d1d;
 }
 
 *{
@@ -49,6 +52,7 @@ section {
     margin-right: auto;
 }
 .gb_btn {
+    padding: 1rem;
     background: rgb(255,97,0);
     background: linear-gradient(82deg, rgba(255,97,0,1) 40%, rgba(255,204,0,1) 100%);
     background-size: 150% auto;
@@ -56,8 +60,9 @@ section {
     box-shadow: 0 2px 0 var(--dark-font);
     color: var(--dark-font);
     cursor: pointer;
-    border-radius: .8rem;
     font-weight: 800;
+    border-radius: .8rem;
+    border: none;
     transition: .2s;
 }
 .gb_btn:hover {
@@ -93,8 +98,8 @@ section {
     color: var(--title-color);
     border-radius: .5rem;
     border: none;
-    background-color: #14cc2a;
-    box-shadow: 0 3px 0 #107d1d;
+    background-color: var(--green-button-color);
+    box-shadow: 0 3px 0  var(--green-button-shadow);
 }
 .btn_green:hover {
     box-shadow: 0 4px 0 #107d1d;

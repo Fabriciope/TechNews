@@ -9,7 +9,6 @@ class IndexController extends Controller
     public function __construct()
     {
         parent::__construct(__DIR__ . '/../../views');
-        $this->views->addFolder('includes', __DIR__ . '/../../views/includes');
     }
 
     public function pageHome()
@@ -21,7 +20,42 @@ class IndexController extends Controller
 
     public function teste(array $data): void
     {
+
         var_dump($data);
+
+        // $paragraphs =  [];
+        // foreach ($data as $field => $content) {
+        //     if (strpos($field, 'contentParagraph') !== false) {
+        //         $explode = explode('-', $field);
+        //         $paragraphs[$explode[1]] = $content;
+            
+        //     }
+        // }
+        // var_dump($paragraphs);
+
+        // $titles =  [];
+        // foreach ($data as $field => $content) {
+        //     if (strpos($field, 'titleParagraph') !== false) {
+        //         $explode = explode('-', $field);
+        //         $titles[$explode[1]] = $content;
+            
+        //     }
+        // }
+        // var_dump($titles);
+        
+        
+        // $separation = [];
+
+        // foreach($paragraphs as $position => $content) {
+        //     if(!empty($titles[$position])) {
+        //         var_dump($content, $titles[$position]);
+        //     } else {
+        //         var_dump($content, $titles[$position]); 
+        //     }
+        // }
+        
+
+        // var_dump($data);
     }
 
     public function pageArticles()
@@ -31,7 +65,14 @@ class IndexController extends Controller
         ]);
     }
 
-    public function error(array $data) 
+    public function pageLogin(): void
+    {
+        echo $this->views->render('auth-login', [
+            'title' => 'Entrar'
+        ]);
+    }
+
+    public function error(array $data)
     {
         var_dump($data);
     }

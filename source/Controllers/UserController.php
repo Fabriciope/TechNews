@@ -31,4 +31,11 @@ class UserController extends Controller
             'title' => 'Artigos salvos'
         ]);
     }
+
+    public function pagePublishedArticles(): void
+    {
+        echo $this->views->render('published-articles', [
+            'title' => 'Artigos publicados'
+        ]);
+    }
 }

@@ -1,11 +1,11 @@
 
 /* HEADER */
-header{
+.header_default{
     width: 100%;
     position: sticky;
     z-index: 8000;
     background-color: var(--gray);
-    box-shadow: 0 3px 15px rgba(0, 0, 0, .6);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, .42);
 }
 
 
@@ -236,12 +236,12 @@ footer {
     background: rgb(255,191,0);
     background: linear-gradient(305deg, rgba(255,191,0,1) 10%, rgba(255,49,0,1) 96%);
 
-    box-shadow: 0 -5px 25px 8px black;
+    box-shadow: 0 -5px 25px black;
 
     border: 1px solid red;
 }
 
-footer::before {
+/* footer::before {
     content: '';
     position: absolute;
     top: 0;
@@ -254,7 +254,7 @@ footer::before {
     filter: url(#noiseFilter);
     opacity: .75;
     overflow: hidden;
-}
+} */
 .container_footer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

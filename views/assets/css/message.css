@@ -1,0 +1,28 @@
+.message {
+    display: block;
+    margin-bottom: 1.5rem;
+    padding: 1.1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    border-radius: .8rem;
+    border: 2px solid white;
+}
+
+.message.success {
+    color: var(--green-button-color);
+    border-color: var(--green-button-color);
+}
+
+.message.info {
+    color: #399ed9;
+    border-color: #399ed9;
+}
+.message.warning {
+    color: #ffa800;
+    border-color: #ffa800;
+}
+.message.error {
+    color: #ff031c;
+    border-color: #ff031c;
+}
