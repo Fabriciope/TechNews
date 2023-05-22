@@ -2,6 +2,7 @@
     margin-top: 3.3rem;
 }
 .container_article_post {
+    margin-bottom: 3rem
 }
 .container_article_post h1 {
     position: relative;
@@ -76,8 +77,25 @@
     font-size: clamp(23px, 2vw, 29px);
     color: var(--title-color);
 }
+
+.box_video {
+    position: relative;
+    width: 88%;
+    margin: 0.7rem auto 3.5rem auto;
+    padding-bottom: 56.25%;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.6);
+}
+.box_video iframe {
+    position: absolute;
+    width: 100%; height: 100%;
+    position: absolute;
+    border: none;
+}
+
 .container_article_content h3 {
-    margin: 1.8rem 0 1rem 0;
+    margin: 2rem 0 1rem 0;
     font-size: clamp(19px, 2vw, 25px);
     color: var(--subtitle-color);
 }
@@ -86,4 +104,70 @@
     padding-left: .4rem;
     font-size: clamp(16px, 1vw, 18px);
     color: var(--subtitle-color);
+}
+
+
+
+.section_related_articles {
+    margin-top: 2rem;
+}
+.section_related_articles h4{
+    margin-bottom: 1.4rem;
+    font-size: 3rem;
+    text-align: center;
+    color: var(--title-color);
+}
+
+.box_related_articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, .3fr));
+    grid-template-rows: auto;
+    place-content: center;
+    gap: 3.5rem;
+    margin: .7rem auto;
+}
+
+
+
+.container_comments {
+    margin: 2rem 0;
+}
+
+.section_new_comment h4,
+.section_comments h4{
+    margin-left: 2rem;
+    font-size: 3rem;
+    text-align: left;
+    color: var(--title-color);
+}
+
+
+
+.section_new_comment h4 {
+    margin-bottom: 1.3rem;
+}
+
+.box_new_comment form {
+    display: flex;
+    flex-direction: column;
+    width: 94%;
+    max-width: 850px;
+}
+.box_new_comment form textarea {
+    width: 100%;
+    padding: 1rem .9rem;
+    margin-bottom: 1rem;
+    resize: vertical;
+    font-size: 1.4rem;
+    border-radius: .8rem;
+    color: var(--subtitle-color);
+    background: none;
+    border: 1px solid var(--subtitle-color);
+    outline: none;
+}
+.box_new_comment form button {
+    width: 92%;
+    max-width: 360px;
+    margin: .9rem auto;
+    font-size: 2rem;
 }

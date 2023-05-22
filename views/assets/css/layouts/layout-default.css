@@ -161,7 +161,7 @@
 
 .ul_main li:hover ul {
     display: block;
-    height: 570%;
+    height: 585%;
     visibility: visible;
     transition: height .3s;
 }

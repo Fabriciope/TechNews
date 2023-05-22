@@ -116,6 +116,7 @@ function addActionButtons() {
     if(buttonsRemoveParagraph) {
         buttonsRemoveParagraph.forEach(button => {
             button.addEventListener("click", removeBoxParagraph);
+            console.log()
         }); 
     }
     

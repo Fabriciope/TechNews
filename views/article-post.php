@@ -16,6 +16,10 @@
         <div class="container_article_content">
             <h2>Embora a biblioteca seja em javascript, conseguimos fazer a chamada de todas as propriedades com o PHP usando uma técnica para informar os dados via data-attributes</h2>
 
+            <div class="box_video">
+            <iframe src="https://www.youtube.com/embed/SnH-UP6dUEQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+            </div>
+
             <h3>Lib javascript</h3>
 
             <p>Realmente a biblioteca que baixamos é em javascript! Você até poderia ter um caminho mais curto para desenvolver essa estrutura, se você colocasse código PHP dentro da tag script.</p>
@@ -34,4 +38,36 @@
         </div>
 
     </article>
+
+    <section class="section_related_articles">
+        <h4>Artigos relacionados</h4>
+
+        <div class="box_related_articles">
+            <?php for($i = 0; $i < 3; $i ++): ?>
+                <?= $this->insert('includes::article-list', []) ?>
+            <?php endfor; ?>
+        </div>
+    </section>
+
+    <section class="section_comments">
+        <h4>Comentários</h4>
+        <div class="container_comments">
+        <?php for($i = 0; $i <= 3; $i ++): ?>
+            <?= $this->insert('includes::comment-list', []) ?>
+        <?php endfor; ?>
+        </div>
+    </section>
+
+    <?php if(true): ?>
+        <section class="section_new_comment">
+            <h4>Adicionar um comentário</h4>
+    
+            <div class="box_new_comment">
+                <form action="">
+                    <textarea name="" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
+                    <button class="gb_btn">Comentar</button>
+                </form>
+            </div>
+        </section>
+    <?php endif; ?>
 </section>
