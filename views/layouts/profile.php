@@ -1,5 +1,6 @@
 <?php $this->layout("layouts::default", ["title" => $title]) ?>
 
+<?= $this->insert('includes::user-banner', []) ?>
 
 <section class="site_width section_content_profile">
     <div class="container_profile">   

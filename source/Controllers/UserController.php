@@ -8,7 +8,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . './../../views/user');
+        parent::__construct(__DIR__ . './../../views/profile');
     }
 
     public function pageProfile(): void

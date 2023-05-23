@@ -7,6 +7,7 @@ use CoffeeCode\Router\Router;
 
 $router = new Router(url(), "@");
 
+// WEB ROUTES
 $router->namespace("Source\Controllers");
 $router->get("/", "IndexController@pageHome");
 
@@ -14,8 +15,10 @@ $router->group('/artigos');
 $router->get("/", "IndexController@pageArticles");
 $router->get('/{uri}', 'IndexController@pageArticlePost');
 
-// AUTH ROUTES
 $router->group(null);
+$router->get('/usuario/{userUri}', 'IndexController@pageUser');
+
+// AUTH ROUTES
 $router->get('/entrar', 'IndexController@pageLogin');
 $router->get('/cadastrar', 'IndexController@pageRegister');
 

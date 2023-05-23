@@ -1,0 +1,27 @@
+.container_info_user {
+    margin: 5rem auto;
+}
+.container_info_user .box_description {
+    margin: 2rem 2rem 2.5rem 2rem;
+}
+
+.container_user_articles h3,
+.container_info_user .box_description h3{
+    margin-bottom: .5rem;
+    margin-left: .7rem;
+    font-size: 2rem;
+    color: var(--title-color);
+}
+.container_info_user .box_description p {
+    width: 90%;
+    max-width: 850px;
+    font-size: 1.75rem;
+    color: var(--subtitle-color);
+}
+.container_user_published_articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-rows: auto;
+    gap: 2rem;
+    margin-top: 1.7rem;
+}

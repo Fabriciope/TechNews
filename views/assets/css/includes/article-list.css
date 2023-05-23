@@ -25,6 +25,12 @@
     font-size: 1.5rem;
     color: var(--subtitle-color);
 }
+.article_post .info_post a {
+    color: var(--subtitle-color);
+}
+.article_post .info_post a:hover {
+    text-decoration: underline;
+}
 
 .article_post .title_post a {
     display: inline-block;
@@ -43,6 +49,8 @@
 .article_post .subtitle_post a:hover {
     text-decoration: underline;
 } 
+
+
 
 .article_post .box_comment {
     display: flex;

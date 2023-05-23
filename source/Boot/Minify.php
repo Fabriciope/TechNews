@@ -60,7 +60,6 @@ if (count($jsDir) > 2) {
         
         $jsFile =  __DIR__ . "./../../views/assets/scripts/{$js}";
 
-
         if (is_file($jsFile) && pathinfo($jsFile)['extension'] == 'js') {
             $minJS->add($jsFile);
         }

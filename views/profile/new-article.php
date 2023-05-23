@@ -11,6 +11,19 @@
         <label for="first_name">Subtitulo do artigo:</label>
         <textarea name="subtitle" class="input" id="" rows="3" placeholder="Digite o subtitulo deste artigo..."></textarea>
     </div>
+    <div class="box_select">
+        <label for="">Selecione uma categoria:</label>
+        <select class="input" name="" id="">
+            <option selected value="">Selecione</option>
+            <option value="">Programação</option>
+            <option value="">Inteligência artificial</option>
+            <option value="">Internet das coisas</option>
+            <option value="">Hardware</option>
+            <option value="">Robótica</option>
+            <option value="">Cibersegurança</option>
+            <option value="">Aparelhos eletrônicos</option>
+        </select>
+    </div>
     <div class="box_input_img_article">
         <label for="photo_profile" class="label_input_file">Escolha uma imagem de capa para o artigo:</label>
         <div class="box_file box_input_file_article">

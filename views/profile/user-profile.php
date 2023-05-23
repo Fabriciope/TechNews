@@ -1,6 +1,5 @@
 <?php $this->layout("layouts::profile", ["title" => $title]) ?>
 
-
 <form action="#" class="form_content_profile">
     <div class="content_form_profile">
         <div class="box_content_profile_left">
@@ -13,8 +12,18 @@
                 <input type="text" class="input" placeholder="Digite seu sobrenome...">
             </div>
             <div class="box_input">
-                <label for="first_name">Bio:</label>
+                <label for="first_name">Descrição:</label>
                 <textarea name="" class="input" id="" rows="10" placeholder="Faça uma breve descrição sobre você..."></textarea>
+            </div>
+            <div class="box_edit_banner">
+                <h4>Alterar banner</h4>
+                <div class="box_file">
+                    <input type="file" id="photo_profile">
+                    <label for="photo_profile">
+                        <span>Selecione uma imagem</span>
+                        <span>Procurar</span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="box_content_profile_right">
@@ -34,7 +43,7 @@
                 <img src="<?= theme("assets/images/profile/img39 edit 2.1.jpg") ?>" alt="">
                 <div class="box_file">
                     <input type="file" id="photo_profile">
-                    <label for="photo_profile" >
+                    <label for="photo_profile">
                         <span>Selecione uma imagem</span>
                         <span>Procurar</span>
                     </label>

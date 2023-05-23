@@ -2,7 +2,7 @@
 
 <!-- MELHORES ARTIGOS -->
 <section class="site_width" style="margin-top: 2rem;">
-    <h2 class="title_section">Artigos mais visualizados</h2>
+    <!-- <h2 class="title_section">Artigos mais visualizados</h2> -->
     <div class="best">
 
         <!-- <img class="orange_circle_1" src="./images/orange-circle2.png" alt="">

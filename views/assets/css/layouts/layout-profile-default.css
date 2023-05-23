@@ -32,6 +32,21 @@
     color: var(--title-color);
 }
 
+.content_profile {
+    width: 71%;
+}
+
+@media (max-width: 780px) {
+    .aside_profile {
+        display: none;
+    }
+    .content_profile {
+        width: 98%;
+    }
+}
+
+
+
 
 /* BOOT CONTENTS PROFILE */
 /* INPUT OR TEXTAREA */
@@ -42,6 +57,8 @@
     width: 100%;
     margin-bottom: 2rem;
 }
+
+.box_select label,
 .label_input_file,
 .title_paragraph,
 .box_input label {
@@ -63,9 +80,27 @@
     width: 100%;
     border-bottom: 2px solid var(--orange);
 }
+
+.box_select {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 240px;
+    margin-bottom: 2rem;
+}
+.box_select select{
+    border-bottom: 2px solid var(--orange);
+}
+.box_select select option {
+    padding: 3rem ;
+    height: 20px;
+    border: 1px solid red;
+}
 .box_input textarea {
     resize: vertical;
 }
+
+
 /* INPUT FILE */
 .box_file input[type="file"]{
     display: none;
@@ -95,8 +130,4 @@
     background-color: var(--orange);
 }
 
-
-.content_profile {
-    width: 71%;
-}
 

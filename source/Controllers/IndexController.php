@@ -25,6 +25,13 @@ class IndexController extends Controller
         ]);
     }
 
+    public function pageUser(): void
+    {
+        echo $this->views->render('user', [
+            'title' => 'Nome usuário'
+        ]);
+    }
+
     public function teste(array $data): void
     {
 
