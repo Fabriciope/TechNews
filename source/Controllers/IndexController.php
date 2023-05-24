@@ -4,6 +4,8 @@ namespace Source\Controllers;
 
 use Source\Core\Controller;
 
+use Source\Models\User;
+
 class IndexController extends Controller
 {
     public function __construct()
@@ -30,6 +32,15 @@ class IndexController extends Controller
         echo $this->views->render('user', [
             'title' => 'Nome usuário'
         ]);
+    }
+
+    public function teste2()
+    {
+        $user = new User([],[]);
+
+        $teste = $user->find()->fetch();
+
+        var_dump($teste);
     }
 
     public function teste(array $data): void

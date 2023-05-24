@@ -51,13 +51,11 @@ $minCSS->minify(__DIR__ . './../../views/assets/style.css');
 
 $minJS = new MatthiasMullie\Minify\JS();
 
-$minJS->add(__DIR__ . './../../shared/scripts/menu.js');
+$minJS->add(__DIR__ . './../../shared/scripts/ajaxForm.js');
 
 $jsDir = scandir(__DIR__ . './../../views/assets/scripts');
 if (count($jsDir) > 2) {
-
     foreach ($jsDir as $js) {
-        
         $jsFile =  __DIR__ . "./../../views/assets/scripts/{$js}";
 
         if (is_file($jsFile) && pathinfo($jsFile)['extension'] == 'js') {

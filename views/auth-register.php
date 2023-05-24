@@ -6,19 +6,20 @@
             <h2>Cadastre-se</h2>
             <p>AJá tem uma conta? <a href="<?=url('/entrar')?>">Fazer login!!</a></p>
         </header>
-        <form action="">
+        <form class="formAjax" action="asdasdasdad" method="POST">
+            
             <div class="ajax_response">
-                <!-- <div class="message success">
-                    insira seu email para entrar
-                </div> -->
+             <?= flash() ?>
             </div>
+
+            <?= csrf_input() ?>
 
             <div class="box_input_auth">
                 <label for="" class="label_box_input"> 
                     <span><i class="fa-solid fa-user"></i></span> 
                     Nome:
                 </label>
-                <input type="text" type="email" placeholder="Primeiro nome:">
+                <input type="text" name="first_name" type="email" placeholder="Primeiro nome:">
             </div>
 
             <div class="box_input_auth">
@@ -26,7 +27,7 @@
                     <span><i class="fa-solid fa-user-plus"></i></span> 
                     Sobrenome:
                 </label>
-                <input type="text" type="email" placeholder="Segundo nome:">
+                <input type="text" name="last_name" type="email" placeholder="Segundo nome:">
             </div>
 
             <div class="box_input_auth">
@@ -34,7 +35,7 @@
                     <span><i class="fa-solid fa-envelope"></i></span> 
                     Email:
                 </label>
-                <input type="text" type="email" placeholder="Informe seu e-mail:">
+                <input type="text" name="email" type="email" placeholder="Informe seu e-mail:">
             </div>
 
             <div class="box_input_pass_auth">
@@ -43,7 +44,7 @@
                     Senha:
                 </label>
                 <div class="box_password_auth">
-                    <input type="password" type="email" placeholder="Informe sua senha:">
+                    <input type="password" name="password" type="email" placeholder="Informe sua senha:">
                     <span>
                         <i class="open_eye fa-solid fa-eye"></i>
                         <i class="closed_eye fa-solid fa-eye-slash"></i>
@@ -57,7 +58,7 @@
                     Confirme a senha:
                 </label>
                 <div class="box_password_auth">
-                    <input type="password" type="email" placeholder="Confirme sua senha:">
+                    <input type="password" name="password_confirmation" type="email" placeholder="Confirme sua senha:">
                     <span>
                         <i class="open_eye fa-solid fa-eye"></i>
                         <i class="closed_eye fa-solid fa-eye-slash"></i>

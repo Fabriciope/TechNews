@@ -15,7 +15,6 @@ btnOpenEye.forEach( btn => {
         btnCloseEye.style.display = 'block';
 
         input.type = 'text';
-
     }
 });
 
