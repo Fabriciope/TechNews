@@ -8,7 +8,7 @@ class ViewsEngine
 {
     private Engine $platesEngine;
 
-    public function __construct(string $pathViews, string $ext)
+    public function __construct(string $pathViews, string $ext = 'php')
     {
         $this->platesEngine = new Engine($pathViews, $ext);
     }

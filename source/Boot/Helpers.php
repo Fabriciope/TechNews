@@ -23,15 +23,15 @@ use Source\Core\Session;
         return false;
     }
 
-    function generatePassword(string $password): ?string
+    function generatePassword(string $password): string
     {
         if(empty(password_get_info($password)['algo'])) {
             return password_hash($password, CONF_PASSWD_ALGO, CONF_PASSWD_OPTIONS);
         }
-        return null;
+        return $password;
     }
 
-    function passwordVeriry(string $password, string $hash): bool
+    function passwordVerify(string $password, string $hash): bool
     {
         return password_verify($password, $hash);
     }
@@ -115,7 +115,7 @@ use Source\Core\Session;
         $session = session();
         $session->csrf();
 
-        return "<input type='text' name='csrf' value='". ($session->csrf_token ?? "") . "'/>";
+        return "<input type='hidden' name='csrf' value='". ($session->csrf_token ?? "") . "'/>";
     }
 
     function csrf_verify(array $request): bool

@@ -6,7 +6,7 @@
             <h2>Cadastre-se</h2>
             <p>AJá tem uma conta? <a href="<?=url('/entrar')?>">Fazer login!!</a></p>
         </header>
-        <form class="formAjax" action="asdasdasdad" method="POST">
+        <form class="formAjax" action="<?=url('/cadastrar')?>" method="POST">
             
             <div class="ajax_response">
              <?= flash() ?>

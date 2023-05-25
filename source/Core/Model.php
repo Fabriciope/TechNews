@@ -5,16 +5,20 @@ namespace Source\Core;
 use Source\Core\Connection;
 use Source\Support\Message;
 
+use Source\Traits\ModelTrait;
+
 class Model
 {   
+    use ModelTrait;
+
     /** @var Message|null */
     protected ?Message $message;
 
-    /**  @var \PDOStatement|null */
-    protected ?\PDOStatement $data = null;
+    /**  @var object|null */
+    protected ?object $data = null;
 
     /**  @var \PDOException|null */
-    protected ?\PDOException $fail;
+    protected ?\PDOException $fail = null;
 
     /**  @var string */
     protected ?string $query;   
@@ -144,19 +148,44 @@ class Model
     public function create(array $data): ?int
     {
         try {
+            
+            if(isset($data['password_confirmation'])) {
+                unset($data['password_confirmation']);
+            }
+
             $columns = implode(', ', array_keys($data));
             $values = ':' . implode(', :', array_keys($data));
 
             $stmt = Connection::getInstance()
                     ->prepare("INSERT INTO " . static::$entity . "({$columns}) VALUES ({$values})");
-            $stmt->execute($this->filter($data));
+
+            $data = $this->filter($data);
+            $stmt->execute($data);
             return Connection::getInstance()->lastInsertId();
         } catch (\PDOException $exception) {
             $this->fail = $exception;
             return null;
         }
+    }
 
-        return 3;
+    public function update(array $data, string $terms, string $params)
+    {
+        try {
+            $dataSet = [];
+            foreach($data as $bind => $value) {
+                $dataSet[] = "{$bind} = :{$bind}, ";
+            }
+            $dataSet = implode(', ', $dataSet);
+            parse_str($params, $this->params);
+
+            $stmt = Connection::getInstance()
+                    ->prepare("UPDATE {static::$entity} SET {$dataSet} WHERE {$terms}");
+
+            $dataBind = $this->filter(array_merge($data, $this->params));
+            $stmt->execute($dataBind);
+        } catch (\PDOException $exception) {
+            $this->fail = $exception;
+        }
     }
 
     protected function safe(): ?array
@@ -181,5 +210,17 @@ class Model
         }
 
         return $filter;
+    }
+
+    public function required():bool
+    {
+        $data = (array) $this->data;
+        foreach(static::$required as $field) {
+            if(!isset($data[$field]) || empty($data[$field])) {
+                return false;
+                break;
+            }
+        }
+        return true;
     }
 }

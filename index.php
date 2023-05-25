@@ -13,6 +13,7 @@ $router->get('/', 'IndexController@pageHome');
 
 $router->get('/teste', 'IndexController@teste2');
 
+// ARTICLES ROUTES
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
 $router->get('/{uri}', 'IndexController@pageArticlePost');
@@ -20,11 +21,14 @@ $router->get('/{uri}', 'IndexController@pageArticlePost');
 $router->group(null);
 $router->get('/usuario/{userUri}', 'IndexController@pageUser');
 
+
 // AUTH ROUTES
 $router->get('/entrar', 'IndexController@pageLogin');
 
 $router->get('/cadastrar', 'IndexController@pageRegister');
 $router->post('/cadastrar', 'AuthController@registerUser');
+
+$router->get('/confirma', 'AuthController@confirm');
 
 // PROFILE ROUTES
 $router->group('/perfil');

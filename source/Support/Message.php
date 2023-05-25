@@ -7,8 +7,8 @@ class Message
     private string $type;
     private string $message;
 
-    private string $before;
-    private string $after;
+    private ?string $before = null;
+    private ?string $after = null;
 
 
     public function __toString()
@@ -16,9 +16,14 @@ class Message
         $this->render();
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function getMessage(): string
     {
-        return $this->message;
+        return "{$this->before} {$this->message} {$this->after}";
     }
 
     public function before(string $textBefore): Message
@@ -64,8 +69,8 @@ class Message
     public function render(): string
     {
         return <<<DIV
-            <div class="message {$this->type}">
-                {$this->before} {$this->message} {$this->after}
+            <div class="message {$this->getType()}">
+                {$this->getMessage()}
             </div>
         DIV;
     }

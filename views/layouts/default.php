@@ -62,7 +62,7 @@
                     <li><a href="<?=url("/") ?>">Home</a></li>
                     <li><a href="<?=url("/artigos")?>">Artigos</a></li>
                     <li><a href="">Sobre</a></li>
-                    <?php if (true) : ?>
+                    <?php if (false) : ?>
                         <li>
                             <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
                             <ul class="dropdown_menu">
