@@ -4,6 +4,7 @@ Object.values(document.forms).forEach( form => {
             event.preventDefault();
 
             //iniciar load
+            document.querySelector(".ajax_load").style.display = "flex";
 
             const formData = new FormData(form);
 
@@ -24,6 +25,7 @@ Object.values(document.forms).forEach( form => {
                     }
     
                     //terminar load
+                    document.querySelector(".ajax_load").style.display = "none";
                 })
             } catch(error) {
                 //location.href = 'url' + '/oops/problemas/'; 
