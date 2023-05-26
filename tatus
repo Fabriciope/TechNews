@@ -1,0 +1,35 @@
+[33m513064e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m envio de e-mail para recuperação de senha finalizado
+[33m432ba38[m logica de login finalizada
+[33m75daba4[m animação de load nas requisições ajax finalizada
+[33md8946d5[m lógica de cadastro finalizada
+[33mbe713c4[m fazendo Core\Model, Message, Email, Connection, db, ajaxForm
+[33mbd68833[m .txt do sql do banco e das  tabelas adicionado
+[33m425e0f8[m finalizando páginas e o responsivo
+[33m290632b[m fazendo front página do artigo
+[33m80c1264[m fazendo a página do artigo
+[33m1840c2c[m as páginas saves-articles, publisehd-articles e login estão finalizadas
+[33m09beb82[m reajustando a lógica de adição de novo paragráfo com js
+[33m17c9ff4[m logica de adição e remoção de parágrafos implementada
+[33mab02cbf[m iniciando front novo artigo
+[33me154b91[m front do content-profile finalizado
+[33m5153c2d[m tatuys
+[33m69e7ad2[m iniciando front page-profile
+[33me85db48[m teste de ambiente 2
+[33m9e64270[m adptando ambiente
+[33mee2c0ed[m iniciando front  page-profile
+[33m0c37356[m adaptando ambiente
+[33mc801062[m fazendo responsividade da home e artigos
+[33mb95b0f6[m ajustando a página home e artigos ao controle de views
+[33ma81a171[m fazendo front home
+[33mb9a2270[m iniciando a estrutura MVC, já com as rotas controllers e views
+[33m574c5b5[m fazendo o front da home
+[33mdfa112f[m fazendo banner
+[33mba1d1fe[m continuando o front da home
+[33me898bbb[m 3° teste de ambiente
+[33ma791605[m outro teste de ambiente
+[33mc5a51bc[m teste ambiente remoto
+[33m2f04a5d[m fazendo front da home
+[33mac8de0e[m iniciando o front
+[33m21acf1a[m merge
+[33m71575c3[m first commit
+[33m362b966[m Initial commit
