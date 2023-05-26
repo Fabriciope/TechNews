@@ -4,8 +4,13 @@ namespace Source\Models;
 
 use Source\Core\Model;
 
+use Source\Traits\ModelTrait;
+
 class User extends Model
 {
+
+    use ModelTrait;
+
     protected static $entity = 'users';
 
     public function __construct()
@@ -20,14 +25,12 @@ class User extends Model
         string $firstName,
         string $lastName,
         string $email,
-        string $password,
-        string $passwordConfirmation
+        string $password
     ) {
         $this->first_name = $firstName;
         $this->last_name = $lastName;
         $this->email = $email;
         $this->password = $password;
-        $this->password_confirmation = $passwordConfirmation;
         return $this;
     }
 
@@ -37,14 +40,35 @@ class User extends Model
         return $find->fetch();
     }
 
-    public function updateUser()
+    public function updateUser(): bool
     {
+        if(!$this->checkFields()) {
+            return false;
+        }
 
+        $findEmail = $this->find('email = :email AND id <> :id', "email={$this->email}&id={$this->id}")->fetch();
+        if($findEmail) {
+            $this->message->warning('O e-mail informado já existe');
+            return false;
+        }
+
+        $this->update(
+            $this->safe(),
+            'id = :id',
+            "id={$this->id}"
+        );
+        if($this->fail()) {
+            $this->message->error('Erro ao atualizar, verifique os dados passados');
+            return false;
+        }
+
+        $this->data = ($this->findById($this->id))->data();
+        return true;
     }
 
-    public function createUser(bool $create = true): bool
+    public function createUser(?string $passwordConfirmation = null): bool
     {   
-        if(!$this->checkFields($create)) {
+        if(!$this->checkFields($passwordConfirmation)) {
             return false;
         }
 
@@ -57,7 +81,7 @@ class User extends Model
 
         $userId = $this->create($this->safe());
         if($this->fail()) {
-            $this->message->error('Erro ao cadastrar.');
+            $this->message->error('Erro ao cadastrar');
             return false;
         }
 
@@ -66,20 +90,25 @@ class User extends Model
 
     }
 
-    public function checkFields(bool $create = false): bool 
+    public function checkFields(?string $passwordConfirmation = null): bool 
     {
+        if(!$this->required()) {
+            $this->message->info('Preencha todos os campos requeridos');
+            return false;
+        }
         if(!is_email($this->email)) {
-            $this->message->warning('Insira um email válido')->after('!');
+            $this->message->warning('Insira um email válido');
             return false;
         }
 
-        if($create) {
-            if($this->password != $this->password_confirmation) {
+        if($passwordConfirmation) {
+            if($this->password != $passwordConfirmation) {
                 $this->message->warning('A confirmação de senhas está incorreta');
                 return false;
             }
         }
 
+        // revisar esta verificação
         if(!is_password($this->password)) {
             $min = CONF_PASSWD_MIN_LEN;
             $max = CONF_PASSWD_MAX_LEN;

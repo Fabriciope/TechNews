@@ -92,15 +92,19 @@ class IndexController extends Controller
 
     public function pageLogin(): void
     {
+        if(\Source\Models\AuthUser::user()) {
+            redirect('/perfil');
+        }
         echo $this->views->render('auth-login', [
-            'title' => 'Entrar'
+            'title' => 'Entrar',
+            'rememberEmail' => filter_input(INPUT_COOKIE, 'authEmail')
         ]);
     }
 
     public function pageRegister(): void
     {
         echo $this->views->render('auth-register', [
-            'title' => 'Cadastrar'
+            'title' => 'Cadastrar',
         ]);
     }
 

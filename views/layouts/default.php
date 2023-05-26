@@ -23,6 +23,11 @@
 
 <body>
 
+
+<?= flash() ?>
+
+
+
 <!-- CONTAINER MENU MOBILE -->
 <div class="container_menu_active">
     <nav class="nav_mobile_active">

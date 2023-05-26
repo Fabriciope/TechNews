@@ -17,7 +17,7 @@ use Source\Core\Session;
     {
         $passLen = mb_strlen($password);
 
-        if ($passLen >= CONF_PASSWD_MIN_LEN && $passLen <= CONF_PASSWD_MAX_LEN) {
+        if (password_get_info($password)['algo'] || ($passLen >= CONF_PASSWD_MIN_LEN && $passLen <= CONF_PASSWD_MAX_LEN)) {
             return true;
         }
         return false;
@@ -34,6 +34,11 @@ use Source\Core\Session;
     function passwordVerify(string $password, string $hash): bool
     {
         return password_verify($password, $hash);
+    }
+
+    function password_rehash(string $hash): bool
+    {
+        return password_needs_rehash($hash, CONF_PASSWD_ALGO, CONF_PASSWD_OPTIONS);
     }
 }
 
@@ -129,12 +134,37 @@ use Source\Core\Session;
         return true;
     }
 
-    function flash(): ?string
+    function request_limit(string $requestName, int $requestLimit, int $seconds): bool
     {
-        return session()->getFlashMessage();
+        $session = session();
+        $requestTime = $session->$requestName->time ?? null;
+        $numberRequests = $session->$requestName->numberRequests;
+        if($session->has($requestName) && $requestTime >= time() && $numberRequests < $requestLimit) {
+            $session->set($requestName, [
+                'time' => time() + $seconds,
+                'numberRequests' => ++$numberRequests
+            ]);
+            return false;
+        }
+
+        if($session->has($requestName) && $requestTime >= time() && $numberRequests >= $requestLimit) {
+            return true;
+        }
+
+        $session->set($requestName, [
+            'time' => time() + $seconds,
+            'numberRequests' => 1
+        ]);
+        return false;
+
     }
+
 }
 
+function flash(): ?\Source\Support\Message
+{
+    return session()->getFlashMessage();
+}
 
 
 

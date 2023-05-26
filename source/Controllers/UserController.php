@@ -4,6 +4,8 @@ namespace Source\Controllers;
 
 use Source\Core\Controller;
 
+use Source\Core\Session;
+
 class UserController extends Controller
 {
     public function __construct()

@@ -24,11 +24,14 @@ $router->get('/usuario/{userUri}', 'IndexController@pageUser');
 
 // AUTH ROUTES
 $router->get('/entrar', 'IndexController@pageLogin');
+$router->post('/entrar', 'AuthController@login');
 
 $router->get('/cadastrar', 'IndexController@pageRegister');
-$router->post('/cadastrar', 'AuthController@registerUser');
+$router->post('/cadastrar', 'AuthController@register');
 
-$router->get('/confirma', 'AuthController@confirm');
+// OPTIN
+$router->get('/confirma', 'AuthController@pageConfirmEmail');
+$router->get("/obrigado/{email}", 'AuthController@pageConfirmedEmail');
 
 // PROFILE ROUTES
 $router->group('/perfil');

@@ -2,10 +2,13 @@
 
 namespace Source\Support;
 
+use Source\Core\Session;
+
 class Message
 {
     private string $type;
     private string $message;
+    private bool $fixed = false;
 
     private ?string $before = null;
     private ?string $after = null;
@@ -13,15 +16,15 @@ class Message
 
     public function __toString()
     {
-        $this->render();
+        return $this->render();
     }
 
-    public function getType(): string
+    private function getType(): string
     {
         return $this->type;
     }
 
-    public function getMessage(): string
+    private function getMessage(): string
     {
         return "{$this->before} {$this->message} {$this->after}";
     }
@@ -68,11 +71,23 @@ class Message
 
     public function render(): string
     {
+        $fixed = $this->fixed ? 'fixed' : '';
         return <<<DIV
-            <div class="message {$this->getType()}">
+            <div class="message {$fixed} {$this->getType()}">
                 {$this->getMessage()}
             </div>
         DIV;
+    }
+
+    public function fixed(): Message
+    {
+        $this->fixed = true;
+        return $this;
+    }
+
+    public function flash(): void
+    {
+        (new Session)->set('flashMessage', $this);
     }
 
     private function filter(string $text): string

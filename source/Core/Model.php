@@ -5,12 +5,9 @@ namespace Source\Core;
 use Source\Core\Connection;
 use Source\Support\Message;
 
-use Source\Traits\ModelTrait;
 
 class Model
-{   
-    use ModelTrait;
-
+{  
     /** @var Message|null */
     protected ?Message $message;
 
@@ -173,18 +170,20 @@ class Model
         try {
             $dataSet = [];
             foreach($data as $bind => $value) {
-                $dataSet[] = "{$bind} = :{$bind}, ";
+                $dataSet[] = "{$bind} = :{$bind}";
             }
             $dataSet = implode(', ', $dataSet);
             parse_str($params, $this->params);
 
             $stmt = Connection::getInstance()
-                    ->prepare("UPDATE {static::$entity} SET {$dataSet} WHERE {$terms}");
+                    ->prepare("UPDATE " . static::$entity . " SET {$dataSet} WHERE {$terms}");
 
             $dataBind = $this->filter(array_merge($data, $this->params));
             $stmt->execute($dataBind);
+            // return ($stmt->rowCount() ?? 1);
         } catch (\PDOException $exception) {
             $this->fail = $exception;
+            var_dump($exception);
         }
     }
 
@@ -206,7 +205,7 @@ class Model
         $filter = [];
 
         foreach($data as $key => $value) {
-            $filter[$key] = is_null($value) ? null : filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+            $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS));
         }
 
         return $filter;

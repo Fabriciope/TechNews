@@ -53,16 +53,17 @@ section {
 }
 .gb_btn {
     padding: 1rem;
+    font-weight: 800;
+    text-align: center;
+    border-radius: .8rem;
+    cursor: pointer;
+    border: none;
+    color: var(--dark-font);
+    box-shadow: 0 2px 0 var(--dark-font);
     background: rgb(255,97,0);
     background: linear-gradient(82deg, rgba(255,97,0,1) 40%, rgba(255,204,0,1) 100%);
     background-size: 150% auto;
     background-position: center;
-    box-shadow: 0 2px 0 var(--dark-font);
-    color: var(--dark-font);
-    cursor: pointer;
-    font-weight: 800;
-    border-radius: .8rem;
-    border: none;
     transition: .2s;
 }
 .gb_btn:hover {

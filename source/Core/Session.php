@@ -63,11 +63,11 @@ class Session
         return $this;
     }
 
-    public function getFlashMessage(): ?Source\Support\Message
+    public function getFlashMessage(): ?\Source\Support\Message
     {
-        if($this->has('flash')) {
-            $flash = $this->flash;
-            $this->unset('flash');
+        if($this->has('flashMessage')) {
+            $flash = $this->flashMessage;
+            $this->unset('flashMessage');
             return $flash;
         }
         return null;

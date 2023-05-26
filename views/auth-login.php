@@ -6,7 +6,7 @@
             <h2>Fazer login</h2>
             <p>Ainda não tem conta? <a href="<?= url('/cadastrar') ?>">Cadastre-se!</a></p>
         </header>
-        <form action="">
+        <form class="formAjax" action="<?=url('/entrar')?>" method="POST">
             
             <div class="ajax_response">
                 <?= flash() ?>
@@ -19,7 +19,7 @@
                     <span><i class="fa-solid fa-envelope"></i></span>
                     Email:
                 </label>
-                <input type="text" type="email" placeholder="Informe seu e-mail:">
+                <input name="email" type="email" value="<?=$rememberEmail ?? null?>" placeholder="Informe seu e-mail:">
             </div>
 
             <div class="box_input_pass_auth">
@@ -28,7 +28,7 @@
                     Senha:
                 </label>
                 <div class="box_password_auth">
-                    <input type="password" type="email" placeholder="Informe sua senha:">
+                    <input name="password" type="password" type="email" placeholder="Informe sua senha:">
                     <span>
                         <i class="open_eye fa-solid fa-eye"></i>
                         <i class="closed_eye fa-solid fa-eye-slash"></i>
@@ -40,7 +40,7 @@
             </div>
 
             <label for="remember_data" class="box_remember_data">
-                <input id="remember_data" type="checkbox" name="save">
+                <input type="checkbox" name="save" <?= $rememberEmail ? 'checked' : '' ?> />
                 <span>Lembrar dados?</span>
             </label>
 
