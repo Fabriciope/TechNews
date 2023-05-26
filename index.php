@@ -1,4 +1,3 @@
-
 <?php
 
 require __DIR__ . './vendor/autoload.php';
@@ -28,6 +27,9 @@ $router->post('/entrar', 'AuthController@login');
 
 $router->get('/cadastrar', 'IndexController@pageRegister');
 $router->post('/cadastrar', 'AuthController@register');
+
+$router->get('/recuperar-senha', 'IndexController@pageForgetPassword');
+$router->post('/recuperar-senha', 'AuthController@forgetPassword');
 
 // OPTIN
 $router->get('/confirma', 'AuthController@pageConfirmEmail');

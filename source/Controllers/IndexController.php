@@ -108,6 +108,13 @@ class IndexController extends Controller
         ]);
     }
 
+    public function pageForgetPassword(): void
+    {
+        echo $this->views->render('auth-forget-password', [
+            'title' => 'Recuperar senha'
+        ]);
+    }
+
 
 
 

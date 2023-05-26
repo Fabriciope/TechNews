@@ -71,6 +71,7 @@ class AuthController extends Controller
             $user->status = 'confirmed';
             if(!$user->updateUser()) {
                 //tratar o erro de outra maneira
+                //recuperar o a message d0 update e renderizar como fixed
                 redirect('/');
             }
         }
@@ -89,7 +90,7 @@ class AuthController extends Controller
 
     public function login(array $data): void
     {
-        
+
         if(!csrf_input($data)) {
             $json['message'] = $this->message->error('Favor use o formulário')->after('!')->render();
             echo json_encode($json);
@@ -97,6 +98,13 @@ class AuthController extends Controller
         }
 
 
+        
+        if(empty($data['email']) || empty($data['password'])) {
+            $json['message'] = $this->message->info('Preencha todos os campos')->after('!')->render();
+            echo json_encode($json);
+            return;
+        }
+        
         $numberRequests = 2;
         if(request_limit('login', 5, 60 * $numberRequests)) {
             $json['message'] = $this->message
@@ -107,27 +115,54 @@ class AuthController extends Controller
             return;
         }
 
-        if(empty($data['email']) || empty($data['password'])) {
-            $json['message'] = $this->message->info('Preencha todos os campos')->after('!')->render();
-            echo json_encode($json);
-            return;
-        }
-
-        //verificar o limite de requisição
-
 
         $save = (!empty($data['save']) && $data['save'] == 'on') ? true : false;
-        $auth = new AuthUser;
-        $login = $auth->login($data['email'], $data['password'], $save);
+        $authUser = new AuthUser;
+        $login = $authUser->login($data['email'], $data['password'], $save);
 
         if($login) {
             $this->message->success("Seja bem vindo(a) {$login->first_name}")->fixed()->flash();
             $json['redirect'] = url('/perfil');
         } else {     
-            $json['message'] = $auth->message()->before('Oops!')->render();
+            $json['message'] = $authUser->message()->before('Oops!')->render();
         }
         
         echo json_encode($json);
         return;
+    }
+
+    public function forgetPassword(array $data): void
+    {
+        if(!csrf_verify($data)) {
+            $json['message'] = $this->message->error('Favor use o formulário')->render();
+            echo json_encode($json);
+            return;
+        }
+
+        if(empty($data['email'])) {
+            $json['message'] = $this->message->info('Informe o e-mail')->render();
+            echo json_encode($json);
+            return;
+        }
+
+        if(request_repeat('email', $data['email'])) {
+            $json['message'] = $this->message->info('Este e-mail já foi utilizado.')->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $authUser = new AuthUser;
+        $email = trim($data['email']);
+
+        if($authUser->forgetPassword($email)) {
+            $json['message'] = $this->message->success('Acesse seu e-mail para recuperar a senha')->render();
+        } else {
+            $json['message'] = $authUser->message()->render();
+        }
+
+        echo json_encode($json);
+        return;
+
+
     }
 }

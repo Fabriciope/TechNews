@@ -5,13 +5,13 @@
     margin: 6.5rem auto 25rem auto;
 }
 .container_auth {
-    width: 33%;
+    width: 37%;
     min-width: 350px;
 }
 
 .header_auth {
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 3rem;
 }
 .header_auth h2 {
     margin-bottom: .6rem;
@@ -62,10 +62,17 @@
 }
 label.label_box_input {
     display: block;
-    margin-bottom: .8rem;
-    margin-left: .6rem;
+    margin: .1rem .65rem .8rem .65rem;
+    margin-right: 2rem;
     font-size: 1.55rem;
     color: var(--title-color);
+}
+label.label_box_input.forget_password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: .7rem;
 }
 label.label_box_input span {
     margin-right: .17rem;
@@ -97,11 +104,16 @@ label.label_box_input span {
     align-items: center;
     margin-top: .9rem;
 }
+label.label_box_input.forget_password a,
 .box_forget_password a {
     font-size: 1.35rem;
     text-shadow: 1px 1px 0 black;
     color: var(--orange);
 }
+label.label_box_input.forget_password a {
+    font-size: 1.6rem;
+}
+label.label_box_input.forget_password a:hover,
 .box_forget_password a:hover {
     text-decoration: underline;
 }

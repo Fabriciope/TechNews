@@ -142,7 +142,7 @@ class Model
         }
     }
 
-    public function create(array $data): ?int
+    protected function create(array $data): ?int
     {
         try {
             
@@ -165,7 +165,7 @@ class Model
         }
     }
 
-    public function update(array $data, string $terms, string $params)
+    protected function update(array $data, string $terms, string $params)
     {
         try {
             $dataSet = [];

@@ -35,7 +35,7 @@
                     </span>
                 </div>
                 <div class="box_forget_password">
-                    <span><a href="">Esqueceu a senha?</a></span>
+                    <span><a href="<?=url('/recuperar-senha')?>">Esqueceu a senha?</a></span>
                 </div>
             </div>
 

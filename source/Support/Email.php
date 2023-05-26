@@ -101,7 +101,8 @@ class Email
         }
     }
     
-    public function message(): Message{
+    public function message(): Message
+    {
         return $this->message;
     }
 

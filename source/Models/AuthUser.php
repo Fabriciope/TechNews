@@ -92,4 +92,47 @@ class AuthUser extends Model
         return $user;
     }
 
+    public function forgetPassword(string $email): bool
+    {
+        if(!is_email($email)) {
+            $this->message->info('Insira um e-mail válido');
+            return false;
+        }
+
+        $user = (new User)->findByEmail($email);
+
+        if(!$user) {
+            $this->message->warning('O e-mail informado não está cadastrado');
+            return false;
+        }
+
+        $user->password_recovery = md5(uniqid(rand(), true));
+        if(!$user->updateUser()) {
+            $this->message = $user->message();
+            return false;
+        }
+
+        $views = (new ViewsEngine(__DIR__ . './../../shared/views/email'));
+        $message = $views->render('forget-password', [
+            'firstName' => $user->first_name,
+            'forgetLink' => url("/recuperar/" . base64_encode($user->email) . "-{$user->password_recovery}")
+        ]);
+
+        $email = new Email;
+        $email->bootstrap(
+            'Recupere sua senha no TechNews',
+            $message,
+            $user->email,
+            "{$user->first_name} {$user->last_name}"
+        );
+
+        if(!$email->send()) {
+            $this->message = $email->message();
+            return false;
+        }
+
+        return true;
+
+    }
+
 }

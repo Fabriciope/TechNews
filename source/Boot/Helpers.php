@@ -156,7 +156,16 @@ use Source\Core\Session;
             'numberRequests' => 1
         ]);
         return false;
+    }
 
+    function request_repeat(string $field, string $value): bool
+    {
+        $session = session();
+
+        if($session->has($field) && $session->$field == $value) return true;
+
+        $session->set($field, $value);
+        return false;
     }
 
 }
