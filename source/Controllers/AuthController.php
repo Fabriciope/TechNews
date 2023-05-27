@@ -37,7 +37,7 @@ class AuthController extends Controller
             trim($data['password'])
         );
 
-        if ($auth->register($user, trim($data['password_confirmation']))) {
+        if ($auth->register($user, trim($data['passwordConfirmation']))) {
             $json['redirect'] = url('/confirma');
         } else {
             $json['message'] = $auth->message()->before('Oops!')->after('.')->render();
@@ -61,12 +61,12 @@ class AuthController extends Controller
     public function pageConfirmedEmail(array $data): void
     {
         if (empty($data['email'])) {
+            //tratar erro de outra maneira
             redirect('/');
         }
 
         $email = base64_decode($data['email']);
         $user = (new User)->findByEmail($email);
-
         if ($user->status != 'confirmed') {
             $user->status = 'confirmed';
             if (!$user->updateUser()) {
@@ -96,8 +96,6 @@ class AuthController extends Controller
             echo json_encode($json);
             return;
         }
-
-
 
         if (empty($data['email']) || empty($data['password'])) {
             $json['message'] = $this->message->info('Preencha todos os campos')->after('!')->render();
@@ -167,7 +165,6 @@ class AuthController extends Controller
     public function pageResetPassword(array $data): void
     {
         if(empty($data)) {
-
             //tratar erro de outra maneira
             redirect('/recuperar-senha');
         }
@@ -180,6 +177,12 @@ class AuthController extends Controller
 
     public function resetPassword(array $data): void
     {
+        if(!csrf_verify($data)) {
+            $json['message'] = $this->message->error('Favor use o formulário')->render();
+            echo json_encode($json);
+            return;
+        }
+
         if(in_array('', $data)) {
             $json['message'] = $this->message->info('Preencha todos os campos')->render();
             echo json_encode($json);

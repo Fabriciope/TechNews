@@ -44,7 +44,7 @@
                     Senha:
                 </label>
                 <div class="box_password_auth">
-                    <input type="password" name="password" type="email" placeholder="Informe sua senha:">
+                    <input type="password" name="password" placeholder="Informe sua senha:">
                     <span>
                         <i class="open_eye fa-solid fa-eye"></i>
                         <i class="closed_eye fa-solid fa-eye-slash"></i>
@@ -58,7 +58,7 @@
                     Confirme a senha:
                 </label>
                 <div class="box_password_auth">
-                    <input type="password" name="password_confirmation" type="email" placeholder="Confirme sua senha:">
+                    <input type="password" name="passwordConfirmation" type="email" placeholder="Confirme sua senha:">
                     <span>
                         <i class="open_eye fa-solid fa-eye"></i>
                         <i class="closed_eye fa-solid fa-eye-slash"></i>

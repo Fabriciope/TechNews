@@ -138,7 +138,7 @@ use Source\Core\Session;
     {
         $session = session();
         $requestTime = $session->$requestName->time ?? null;
-        $numberRequests = $session->$requestName->numberRequests;
+        $numberRequests = $session->$requestName->numberRequests ?? null;
         if($session->has($requestName) && $requestTime >= time() && $numberRequests < $requestLimit) {
             $session->set($requestName, [
                 'time' => time() + $seconds,

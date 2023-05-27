@@ -62,7 +62,7 @@ class Email
     public function send(string $emailFrom = CONF_MAIL_SENDER['address'], string $fromName = CONF_MAIL_SENDER['name']): bool
     {
         if (empty($this->data)) {
-            $this->message->error('Verifique os dados passados!');
+            $this->message->error('Informe todos os dados para o envio do e-mail!');
             return false;
         }
 

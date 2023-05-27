@@ -73,7 +73,6 @@ class User extends Model
         }
 
         $findByEmail = $this->findByEmail($this->email, 'id');
-
         if($findByEmail) {
             $this->message->warning('O email informado já está cadastrado');
             return false;
@@ -100,6 +99,13 @@ class User extends Model
             $this->message->warning('Insira um email válido');
             return false;
         }
+        
+        if($passwordConfirmation) {
+            if($this->password != $passwordConfirmation) {
+                $this->message->warning('A confirmação de senhas está incorreta');
+                return false;
+            }
+        }
         if(!is_password($this->password)) {
             $min = CONF_PASSWD_MIN_LEN;
             $max = CONF_PASSWD_MAX_LEN;
@@ -107,13 +113,6 @@ class User extends Model
             return false;
         } else {
             $this->password = generatePassword($this->password);
-        }
-
-        if($passwordConfirmation) {
-            if($this->password != $passwordConfirmation) {
-                $this->message->warning('A confirmação de senhas está incorreta');
-                return false;
-            }
         }
 
 

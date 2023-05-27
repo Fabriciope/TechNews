@@ -48,7 +48,6 @@ class AuthUser extends Model
             $user->email,
             "{$user->first_name} {$user->last_name}"
         );
-
         if(!$email->send()) {
             $this->message = $email->message();
             return false;
@@ -70,12 +69,13 @@ class AuthUser extends Model
             setcookie('authEmail', '', time() - 3600, '/');
         }
 
-        if(!is_password($password)) {
-            $min = CONF_PASSWD_MIN_LEN;
-            $max = CONF_PASSWD_MAX_LEN;
-            $this->message->warning("Insira uma senha entre {$min} e {$max} caracteres");
-            return false;
-        }
+        //Código abaixo é desnecessário, pois se o usuário já tem cadastro a senha dele já está verificada
+        // if(!is_password($password)) {
+        //     $min = CONF_PASSWD_MIN_LEN;
+        //     $max = CONF_PASSWD_MAX_LEN;
+        //     $this->message->warning("Insira uma senha entre {$min} e {$max} caracteres");
+        //     return false;
+        // }
 
         $user = (new User)->findByEmail($email);
         if(!$user) {
@@ -88,7 +88,7 @@ class AuthUser extends Model
             return false;
         }
         
-        (new Session)->set('authUser', $user->id);
+        (new Session)->set('userId', $user->id);
         return $user;
     }
 
@@ -100,7 +100,6 @@ class AuthUser extends Model
         }
 
         $user = (new User)->findByEmail($email);
-
         if(!$user) {
             $this->message->warning('O e-mail informado não está cadastrado');
             return false;
@@ -125,7 +124,6 @@ class AuthUser extends Model
             $user->email,
             "{$user->first_name} {$user->last_name}"
         );
-
         if(!$email->send()) {
             $this->message = $email->message();
             return false;

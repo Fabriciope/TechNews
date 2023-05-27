@@ -145,11 +145,6 @@ class Model
     protected function create(array $data): ?int
     {
         try {
-            
-            if(isset($data['password_confirmation'])) {
-                unset($data['password_confirmation']);
-            }
-
             $columns = implode(', ', array_keys($data));
             $values = ':' . implode(', :', array_keys($data));
 
@@ -189,20 +184,20 @@ class Model
 
     protected function safe(): ?array
     {
-        $safe = (array) $this->data;
+        $data = (array) $this->data;
 
         foreach(static::$protected as  $unset) {
-            if(isset($sate[$unset])) {
-                unset($sage[$unset]);
+            if(isset($data[$unset])) {
+                unset($data[$unset]);
             }
         }
 
-        return $safe;
+        return $data;
     }
 
     public function filter(array $data): array
     {
-        $filter = [];
+        $filter = array();
 
         foreach($data as $key => $value) {
             $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS));
