@@ -115,7 +115,7 @@ class AuthUser extends Model
         $views = (new ViewsEngine(__DIR__ . './../../shared/views/email'));
         $message = $views->render('forget-password', [
             'firstName' => $user->first_name,
-            'forgetLink' => url("/recuperar/" . base64_encode($user->email) . "-{$user->password_recovery}")
+            'forgetLink' => url('/redefinir-senha/' . base64_encode($user->email) . "-{$user->password_recovery}")
         ]);
 
         $email = new Email;
@@ -132,7 +132,34 @@ class AuthUser extends Model
         }
 
         return true;
+    }
 
+    public function resetPassword(string $email, string $code, string $password, string $passwordConfirmation): bool
+    {
+        $user = (new User)->findByEmail($email);
+        if(!$user) {
+            $this->message->error('Usuário não encontrado');
+            return false;
+        }
+
+        if($user->password_recovery != $code) {
+            $this->message->error('O código de verificação está incorreto');
+            return false;
+        }
+        
+        if($password != $passwordConfirmation) {
+            $this->message->warning('A confirmação das senhas está incorreta');
+            return false;
+        }
+
+
+        $user->password = $password;
+        $user->password_recovery = null;
+        if(!$user->updateUser()) {
+            $this->message = $user->message();
+            return false;
+        }
+        return true;
     }
 
 }

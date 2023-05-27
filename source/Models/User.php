@@ -100,15 +100,6 @@ class User extends Model
             $this->message->warning('Insira um email válido');
             return false;
         }
-
-        if($passwordConfirmation) {
-            if($this->password != $passwordConfirmation) {
-                $this->message->warning('A confirmação de senhas está incorreta');
-                return false;
-            }
-        }
-
-        // revisar esta verificação
         if(!is_password($this->password)) {
             $min = CONF_PASSWD_MIN_LEN;
             $max = CONF_PASSWD_MAX_LEN;
@@ -117,6 +108,14 @@ class User extends Model
         } else {
             $this->password = generatePassword($this->password);
         }
+
+        if($passwordConfirmation) {
+            if($this->password != $passwordConfirmation) {
+                $this->message->warning('A confirmação de senhas está incorreta');
+                return false;
+            }
+        }
+
 
         return true;
     }

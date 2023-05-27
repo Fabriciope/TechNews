@@ -115,6 +115,13 @@ class IndexController extends Controller
         ]);
     }
 
+    public function pageResetPassword(): void
+    {
+        echo $this->views->render('auth-reset-password', [
+            'title' => 'Redefinir senha'
+        ]);
+    }
+
 
 
 

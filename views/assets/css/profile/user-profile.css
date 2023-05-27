@@ -88,18 +88,6 @@
 }
 
 
-.box_alter_password {
-    margin: 2.6rem 0;
-}
-.box_alter_password a{
-    padding: .8rem 1rem;
-    font-size: 1.3rem;
-    text-shadow: 1px 1px 0 var(--dark-font);
-    color: var(--title-color);
-    border-radius: .5rem;
-    background-color: var(--bg-box);
-    box-shadow: 1px 1px 9px rgba(0, 0, 0, 0.6);
-}
 .button_submit_form_profile {
     display: flex;
     justify-content: flex-end;

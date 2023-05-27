@@ -30,6 +30,8 @@ $router->post('/cadastrar', 'AuthController@register');
 
 $router->get('/recuperar-senha', 'IndexController@pageForgetPassword');
 $router->post('/recuperar-senha', 'AuthController@forgetPassword');
+$router->get('/redefinir-senha/{code}', 'AuthController@pageResetPassword');
+$router->post('/redefinir-senha', 'AuthController@resetPassword');
 
 // OPTIN
 $router->get('/confirma', 'AuthController@pageConfirmEmail');

@@ -49,9 +49,6 @@
                     </label>
                 </div>
             </div>
-            <div class="box_alter_password">
-                <a href="#">Alterar Senha</a>
-            </div>
         </div>
     </div>
     <div class="button_submit_form_profile">
