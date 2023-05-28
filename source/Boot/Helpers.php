@@ -40,6 +40,11 @@ use Source\Core\Session;
     {
         return password_needs_rehash($hash, CONF_PASSWD_ALGO, CONF_PASSWD_OPTIONS);
     }
+
+    function isLogged(): bool
+    {
+        return session()->has('userId');
+    }
 }
 
 
@@ -105,6 +110,14 @@ use Source\Core\Session;
             return CONF_URL_BASE . '/views' . '/' . ($path[0] == '/' ? mb_substr($path, 1) : $path);
         }
         return CONF_URL_BASE . '/views';
+    }
+
+    function image(string $image): string
+    {
+        // var_dump((new \Source\Support\Thumb)->make($image, $width, $height));
+        // return (new \Source\Support\Thumb)->make($image, $width, $height);
+
+        return url() . $image;
     }
 }
 

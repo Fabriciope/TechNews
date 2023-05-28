@@ -33,6 +33,9 @@ $router->post('/recuperar-senha', 'AuthController@forgetPassword');
 $router->get('/redefinir-senha/{code}', 'AuthController@pageResetPassword');
 $router->post('/redefinir-senha', 'AuthController@resetPassword');
 
+$router->get('/sair', 'AuthController@logout');
+
+
 // OPTIN
 $router->get('/confirma', 'AuthController@pageConfirmEmail');
 $router->get("/obrigado/{email}", 'AuthController@pageConfirmedEmail');
@@ -43,6 +46,8 @@ $router->get('/', 'UserController@pageProfile');
 $router->get('/artigos-publicados', 'UserController@pagePublishedArticles');
 $router->get('/artigos-salvos', 'UserController@pageSavedArticles');
 $router->get('/novo-artigo', 'UserController@pageNewArticle');
+
+$router->post('/atualizar-perfil', 'UserController@updateProfile');
 
 $router->group('error')->namespace('Source\Controllers');
 $router->get('/{errcode}', 'IndexController@error');

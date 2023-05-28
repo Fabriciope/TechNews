@@ -23,8 +23,9 @@
 
 <body>
 
-
-<?= flash() ?>
+<div class="fixedMessage">
+    <?= flash() ?>
+</div>
 
 
 
@@ -38,7 +39,7 @@
             <li><a href="<?= url("/") ?>">Home</a></li>
             <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
             <li><a href="">Sobre</a></li>
-            <?php if (true) : ?>
+            <?php if (isLogged()) : ?>
                 <li class="li_profile">
                     <span>Perfil <i class="fa-solid fa-angle-down"></i></span> 
                     <ul class="dropdown_menu_mobile_active">
@@ -75,7 +76,7 @@
                     <li><a href="<?=url("/") ?>">Home</a></li>
                     <li><a href="<?=url("/artigos")?>">Artigos</a></li>
                     <li><a href="">Sobre</a></li>
-                    <?php if (false) : ?>
+                    <?php if (isLogged()) : ?>
                         <li>
                             <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
                             <ul class="dropdown_menu">

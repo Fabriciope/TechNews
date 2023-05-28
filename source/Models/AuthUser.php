@@ -28,6 +28,11 @@ class AuthUser extends Model
         return (new User)->findById($session->userId);
     }
 
+    public static function logout(): void
+    {
+        (new Session)->unset('userId');
+    }
+
     public function register(User $user, string $passwordConfirmation): bool
     {
         if(!$user->createUser($passwordConfirmation)) {

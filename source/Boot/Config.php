@@ -32,7 +32,21 @@
     define("CONF_PASSWD_OPTIONS", ["cost" => 10]);
 }
 
+/**
+ * UPLOAD
+ */
+define("CONF_UPLOAD_DIR", "/storage/uploads");
+define("CONF_UPLOAD_IMAGE_DIR", "images");
 
+/**
+ * IMAGES
+ */
+define("CONF_IMAGE_CACHE", CONF_UPLOAD_DIR . "/" . CONF_UPLOAD_IMAGE_DIR . "/cache");
+define("CONF_IMAGE_SIZE", 'sei la');
+define("CONF_IMAGE_QUALITY", ["jpg" => 72, "png" => 5]);
+
+define("CONF_IMAGE_PHOTO_SIZE", 600);
+define("CONF_IMAGE_BANNER_SIZE", 1100);
 
 
 /**

@@ -11,6 +11,9 @@ Object.values(document.forms).forEach( form => {
             try {
                 fetch(form.action, {
                     method: form.method,
+                    // headers: {
+                    //     'Content-Type': 'multipart/form-data'
+                    // },
                     body: formData
                 }).then( data => {
                     return data.json();
@@ -22,6 +25,10 @@ Object.values(document.forms).forEach( form => {
                     if(response.message) {
                         let boxResponse = document.querySelector('.ajax_response');
                         boxResponse.innerHTML = response.message;
+                    }
+                    if(response.fixedMessage) {
+                        let boxResponse = document.querySelector('.fixedMessage');
+                        boxResponse.innerHTML = response.fixedMessage;
                     }
     
                     //terminar load

@@ -209,4 +209,11 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
+
+    public function logout(): void
+    {
+        $this->message->success('Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash();
+        AuthUser::logout();
+        redirect('entrar');
+    }
 }

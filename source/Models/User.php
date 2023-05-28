@@ -5,6 +5,7 @@ namespace Source\Models;
 use Source\Core\Model;
 
 use Source\Traits\ModelTrait;
+use Source\Support\Upload;
 
 class User extends Model
 {
@@ -115,7 +116,45 @@ class User extends Model
             $this->password = generatePassword($this->password);
         }
 
+        if(!empty($this->photo)) {
+
+        }
 
         return true;
+    }
+
+    public function updateProfile(array $files): bool
+    {
+        ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
+        $upload = new Upload;
+        
+        if(!empty($photo['tmp_name'])) { 
+            $image = $upload->image($photo, $photo['name'], 1000);
+            if(!$image) {
+                $this->message->error('Ocorreu um erro ao carregar sua foto de perfil');
+                return false;
+            }
+            var_dump($this->photo);
+            if(true) {
+                unlink(__DIR__ . "./../.." . $this->photo);
+            }
+            $this->photo = $image;
+        }
+        if(!empty($banner['tmp_name'])) { 
+            [$width, $height] = $banner['tmp_name'];
+            if($height >= $width) {
+                $this->message->warning('Insira um banner com as recomendações desejadas');
+                return false;
+            }
+
+            $image = $upload->image($banner, $banner['name'], CONF_IMAGE_BANNER_SIZE);
+            if(!$image) {
+                $this->message->error('Ocorreu um erro ao carregar seu banner');
+                return false;
+            }
+            $this->photo = $image;
+        }
+
+        return $this->updateUser();
     }
 }

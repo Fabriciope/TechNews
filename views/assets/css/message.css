@@ -12,19 +12,56 @@
 .message.fixed {
     /* display: inline-block; */
     position: fixed;
-    top: 2rem;
+    top: 2.2rem;
     left: 50%;
     z-index: 9999;
     transform: translateX(-50%);
-    padding: 1.1rem 3.5rem;
+    padding: .8rem 3.5rem;
     text-shadow: 1px 1px 0 black;
+    color: var(--title-color);
+
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.35);
+
+    animation: messageFixed .33s ease-in-out;
 }
 
 .message.fixed.success {
-    background-color: #2bff009b;
+    text-shadow: 1px 1px 0 black;
+    background-color: rgba(34, 204, 0, 0.62);
     color: var(--title-color);
-    border-color: var(--green-button-shadow);
+    border-color: #0e5400;
 }
+
+.message.fixed.error {
+    text-shadow: 1px 1px 0 black;
+    background-color: rgba(209, 0, 21, 0.62);
+    color: var(--title-color);
+    border-color: #a60011;
+}
+.message.fixed.warning {
+    text-shadow: 1px 1px 0 black;
+    background-color: rgba(212, 155, 0, 0.62);
+    color: var(--title-color);
+    border-color: #bd8b04;
+}
+.message.fixed.info {
+    text-shadow: 1px 1px 0 black;
+    background-color: rgba(15, 127, 212, 0.62);
+    color: var(--title-color);
+    border-color: #074485;
+}
+
+@keyframes messageFixed {
+    from {
+        opacity: .4;
+        top: 0;
+    }
+    to {
+        opacity: 1;
+        top: 2.2rem;
+    }
+}
+
 .message.success {
     color: var(--green-button-color);
     border-color: var(--green-button-color);
@@ -39,6 +76,6 @@
     border-color: #ffa800;
 }
 .message.error {
-    color: #ff031c;
-    border-color: #ff031c;
+    color: var(--red-button-color);
+    border-color: var(--red-button-color);
 }

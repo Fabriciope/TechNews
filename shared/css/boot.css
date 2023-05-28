@@ -18,6 +18,9 @@
 
     --green-button-color: #14cc2a;
     --green-button-shadow: #107d1d;
+
+    --red-button-color: #ff031c;
+    --red-button-shadow: #a40010;
 }
 
 *{
@@ -115,7 +118,7 @@ section {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: var(--index-modal);
+    z-index: 9999;
 }
 
 .ajax_load_box {
