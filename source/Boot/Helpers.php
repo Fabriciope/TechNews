@@ -112,13 +112,20 @@ use Source\Core\Session;
         return CONF_URL_BASE . '/views';
     }
 
-    function image(string $image): string
+    function image(?string $image): ?string
     {
         // var_dump((new \Source\Support\Thumb)->make($image, $width, $height));
         // return (new \Source\Support\Thumb)->make($image, $width, $height);
+        if(empty($image)) return null;
 
         return url() . $image;
     }
+
+    // function makeImage(?string $image, int $width, int $height = null): ?string
+    // {
+    //     var_dump( url() . (new \Source\Support\Thumb)->make($image, $width, $height));
+    //     return url() . (new \Source\Support\Thumb)->make($image, $width, $height);
+    // }
 }
 
 
@@ -140,8 +147,8 @@ use Source\Core\Session;
     {
         $session = session();
 
-        $csrfToken = $session->csrf_token;
-        $csrfRequest = $request['csrf'];
+        $csrfToken = $session->csrf_token ?? '';
+        $csrfRequest = $request['csrf'] ?? '';
 
         if(empty($csrfToken) || empty($csrfRequest) || $csrfToken != $csrfRequest) return false;
         return true;

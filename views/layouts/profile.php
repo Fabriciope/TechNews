@@ -1,7 +1,12 @@
-<?php $this->layout("layouts::default", ["title" => $title]) ?>
+<?php $this->layout("layouts::default", ['title' => $title]) ?>
 
 
-<?= $this->insert('includes::user-banner', []) ?>
+<?= $this->insert('includes::user-banner', [
+    'photo' => $userData->photo, 
+    'banner' => $userData->banner,
+    'firstName' => $userData->first_name,
+    'lastName' => $userData->last_name
+]); ?>
 
 <section class="site_width section_content_profile">
     <div class="container_profile">   

@@ -37,6 +37,8 @@
  */
 define("CONF_UPLOAD_DIR", "/storage/uploads");
 define("CONF_UPLOAD_IMAGE_DIR", "images");
+define("CONF_UPLOAD_PHOTO_DIR", CONF_UPLOAD_IMAGE_DIR . "/photos");
+define("CONF_UPLOAD_BANNER_DIR", CONF_UPLOAD_IMAGE_DIR . "/banners");
 
 /**
  * IMAGES
@@ -45,8 +47,8 @@ define("CONF_IMAGE_CACHE", CONF_UPLOAD_DIR . "/" . CONF_UPLOAD_IMAGE_DIR . "/cac
 define("CONF_IMAGE_SIZE", 'sei la');
 define("CONF_IMAGE_QUALITY", ["jpg" => 72, "png" => 5]);
 
-define("CONF_IMAGE_PHOTO_SIZE", 600);
-define("CONF_IMAGE_BANNER_SIZE", 1100);
+define("CONF_IMAGE_PHOTO_SIZE", 650);
+define("CONF_IMAGE_BANNER_SIZE", 1150);
 
 
 /**

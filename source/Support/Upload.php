@@ -18,11 +18,16 @@ class Upload
         return $this->message;
     }
 
-    public function image(array $image, string $name, int $width): ?string
+    public function image(
+        array $image,
+        string $name,
+        int $width,
+        string $dir = CONF_UPLOAD_IMAGE_DIR
+    ): ?string 
     {
-        $uploadImage = new Image(__DIR__ . "./../.." . CONF_UPLOAD_DIR, CONF_UPLOAD_IMAGE_DIR);
+        $uploadImage = new Image(__DIR__ . "./../.." . CONF_UPLOAD_DIR, $dir);
 
-        if(empty($image['type']) || !in_array($image['type'], $uploadImage::isAllowed())) {
+        if (empty($image['type']) || !in_array($image['type'], $uploadImage::isAllowed())) {
             $this->message->warning('Insira uma imagem válida');
             return null;
         }

@@ -17,7 +17,11 @@
 
 //     public function make(string $image, int $width, int $height = null): string
 //     {
-//         return $this->cropper->make(__DIR__ . "./../.." . $image, $width, $height);
+//         $pathImg = $this->cropper->make(__DIR__ . "./../.." . $image, $width, $height);
+
+
+//         $startSavePath = strpos($pathImg, CONF_IMAGE_CACHE);
+//         return mb_substr($pathImg, $startSavePath);
 //     }
 
 //     public function flush(?string $image = null): void

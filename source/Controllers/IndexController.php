@@ -103,6 +103,9 @@ class IndexController extends Controller
 
     public function pageRegister(): void
     {
+        if(\Source\Models\AuthUser::user()) {
+            redirect('/perfil');
+        }
         echo $this->views->render('auth-register', [
             'title' => 'Cadastrar',
         ]);

@@ -40,7 +40,7 @@
 }
 .message.fixed.warning {
     text-shadow: 1px 1px 0 black;
-    background-color: rgba(212, 155, 0, 0.62);
+    background-color: rgba(255, 213, 0, 0.62);
     color: var(--title-color);
     border-color: #bd8b04;
 }

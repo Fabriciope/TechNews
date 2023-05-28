@@ -24,28 +24,49 @@ class UserController extends Controller
 
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
-            'userData' => $user
+            'userData' => $user->data()
         ]);
     }
 
     public function pageNewArticle(): void
     {
+        $user = AuthUser::user();
+        if(!$user) {
+            //tratar erro de outra maneira
+            redirect('/entrar');
+        }
+
         echo $this->views->render('new-article', [
-            'title' => 'Novo Artigo'
+            'title' => 'Novo Artigo',
+            'userData' => $user->data()
         ]);
     }
 
     public function pageSavedArticles(): void
     {
+        $user = AuthUser::user();
+        if(!$user) {
+            //tratar erro de outra maneira
+            redirect('/entrar');
+        }
+
         echo $this->views->render('saved-articles', [
-            'title' => 'Artigos salvos'
+            'title' => 'Artigos salvos',
+            'userData' => $user->data()
         ]);
     }
 
     public function pagePublishedArticles(): void
     {
+        $user = AuthUser::user();
+        if(!$user) {
+            //tratar erro de outra maneira
+            redirect('/entrar');
+        }
+
         echo $this->views->render('published-articles', [
-            'title' => 'Artigos publicados'
+            'title' => 'Artigos publicados',
+            'userData' => $user->data()
         ]);
     }
 
@@ -72,10 +93,11 @@ class UserController extends Controller
         $user->last_name = trim($data['lastName']);
         $user->description = trim($data['description']);
 
-        if($user->updateProfile($_FILES)) {
-            $json['redirect'] = url('/perfil');
-        } else {
+        if(!$user->updateProfile($_FILES)) {
             $json['fixedMessage'] = $user->message()->fixed()->render();
+        } else {
+            $this->message->success('Perfil atualizado com sucesso!')->fixed()->flash();
+            $json['redirect'] = url('/perfil');
         }
         
         echo json_encode($json);

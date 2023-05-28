@@ -1,4 +1,4 @@
-<?php $this->layout("layouts::profile", ["title" => $title]) ?>
+<?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
 <form class="formAjax form_content_profile" action="<?= url('/perfil/atualizar-perfil') ?>" method="POST" enctype="multipart/form-data">
 
@@ -39,9 +39,9 @@
             <div class="box_edit_banner">
                 <h4>Alterar banner</h4>
                 <div class="box_file">
-                    <input type="file" name="userBanner" id="img_banner">
+                    <input class="input_file" type="file" name="userBanner" id="img_banner">
                     <label for="img_banner">
-                        <span>Selecione uma imagem</span>
+                        <span class="file_name">Selecione uma imagem</span>
                         <span>Procurar</span>
                     </label>
                 </div>
@@ -65,9 +65,9 @@
                     <img src="<?=image($userData->photo)?>" alt="">
                 </div>
                 <div class="box_file">
-                    <input type="file" name="userPhoto" id="photo_profile">
+                    <input class="input_file" type="file" name="userPhoto" id="photo_profile">
                     <label for="photo_profile">
-                        <span>Selecione uma imagem</span>
+                        <span class="file_name">Selecione uma imagem</span>
                         <span>Procurar</span>
                     </label>
                 </div>

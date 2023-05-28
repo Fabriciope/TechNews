@@ -126,33 +126,58 @@ class User extends Model
     public function updateProfile(array $files): bool
     {
         ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
+
+        // var_dump($photo, $banner);
+
         $upload = new Upload;
-        
-        if(!empty($photo['tmp_name'])) { 
-            $image = $upload->image($photo, $photo['name'], 1000);
-            if(!$image) {
-                $this->message->error('Ocorreu um erro ao carregar sua foto de perfil');
+
+        if(!empty($photo['name']) && (empty($photo['tmp_name']) || empty($photo['type']))) {
+            $this->message->warning('Esta foto não pode ser carregada');
+            return false;
+        }
+        if(!empty($photo['name'])) { 
+            $image = $upload->image(
+                $photo, 
+                $photo['name'], 
+                CONF_IMAGE_PHOTO_SIZE,
+                CONF_UPLOAD_PHOTO_DIR
+            );
+
+            if($image === null) {
+                $this->message = $upload->message();
                 return false;
             }
-            var_dump($this->photo);
-            if(true) {
-                unlink(__DIR__ . "./../.." . $this->photo);
+            if($this->photo != '') {
+                @unlink(__DIR__ . "./../.." . $this->photo);
             }
             $this->photo = $image;
         }
-        if(!empty($banner['tmp_name'])) { 
-            [$width, $height] = $banner['tmp_name'];
+
+        if(!empty($banner['name']) && (empty($banner['tmp_name']) || empty($banner['type']))) {
+            $this->message->warning('Este banner não pode ser carregado');
+            return false;
+        }
+        if(!empty($banner['name'])) { 
+            [$width, $height] = getimagesize($banner['tmp_name']);
             if($height >= $width) {
                 $this->message->warning('Insira um banner com as recomendações desejadas');
                 return false;
             }
 
-            $image = $upload->image($banner, $banner['name'], CONF_IMAGE_BANNER_SIZE);
-            if(!$image) {
-                $this->message->error('Ocorreu um erro ao carregar seu banner');
+            $image = $upload->image(
+                $banner, 
+                $banner['name'], 
+                CONF_IMAGE_BANNER_SIZE,
+                CONF_UPLOAD_BANNER_DIR
+            );
+            if($image === null) {
+                $this->message = $upload->message();
                 return false;
             }
-            $this->photo = $image;
+            if($this->banner != '') {
+                @unlink(__DIR__ . "./../.." . $this->banner);
+            }
+            $this->banner = $image;
         }
 
         return $this->updateUser();

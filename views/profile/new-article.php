@@ -1,4 +1,4 @@
-<?php $this->layout("layouts::profile", ["title" => $title]) ?>
+<?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
 <form action="<?= url("/teste") ?>" method="post">
 

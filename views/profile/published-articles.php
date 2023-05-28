@@ -1,4 +1,4 @@
-<?php $this->layout('layouts::profile', ['title' => $title]) ?>
+<?php $this->layout('layouts::profile', ['title' => $title, 'userData' => $userData]) ?>
 
 <div class="container_published_articles">
     <?php for ($i = 0; $i < 6; $i++) : ?>
