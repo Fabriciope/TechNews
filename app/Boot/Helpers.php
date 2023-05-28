@@ -1,5 +1,5 @@
 <?php
-use Source\Core\Session;
+use App\Core\Session;
 
 
 /**
@@ -114,8 +114,8 @@ use Source\Core\Session;
 
     function image(?string $image): ?string
     {
-        // var_dump((new \Source\Support\Thumb)->make($image, $width, $height));
-        // return (new \Source\Support\Thumb)->make($image, $width, $height);
+        // var_dump((new \App\Support\Thumb)->make($image, $width, $height));
+        // return (new \App\Support\Thumb)->make($image, $width, $height);
         if(empty($image)) return null;
 
         return url() . $image;
@@ -123,8 +123,8 @@ use Source\Core\Session;
 
     // function makeImage(?string $image, int $width, int $height = null): ?string
     // {
-    //     var_dump( url() . (new \Source\Support\Thumb)->make($image, $width, $height));
-    //     return url() . (new \Source\Support\Thumb)->make($image, $width, $height);
+    //     var_dump( url() . (new \App\Support\Thumb)->make($image, $width, $height));
+    //     return url() . (new \App\Support\Thumb)->make($image, $width, $height);
     // }
 }
 
@@ -190,7 +190,7 @@ use Source\Core\Session;
 
 }
 
-function flash(): ?\Source\Support\Message
+function flash(): ?\App\Support\Message
 {
     return session()->getFlashMessage();
 }
@@ -200,6 +200,6 @@ function flash(): ?\Source\Support\Message
 {
     function session(): Session
     {
-        return new Source\Core\Session;
+        return new App\Core\Session;
     }
 }

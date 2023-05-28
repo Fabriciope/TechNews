@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Core;
+namespace App\Core;
 
 class Session
 {
@@ -63,7 +63,7 @@ class Session
         return $this;
     }
 
-    public function getFlashMessage(): ?\Source\Support\Message
+    public function getFlashMessage(): ?\App\Support\Message
     {
         if($this->has('flashMessage')) {
             $flash = $this->flashMessage;

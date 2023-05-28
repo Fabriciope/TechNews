@@ -2,12 +2,12 @@
     "name": "fabriciope/tech-news",
     "autoload": {
         "psr-4": {
-            "Source\\": "source/"
+            "App\\": "app/"
         },
         "files": [
-            "source/Boot/Config.php",
-            "source/Boot/Helpers.php",
-            "source/Boot/Minify.php"
+            "app/Boot/Config.php",
+            "app/Boot/Helpers.php",
+            "app/Boot/Minify.php"
         ]
     },
     "authors": [

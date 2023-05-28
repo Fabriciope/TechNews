@@ -1,8 +1,8 @@
 <?php
 
-namespace Source\Traits;
+namespace App\Traits;
 
-use Source\Core\Model;
+use App\Core\Model;
 
 trait ModelTrait
 {

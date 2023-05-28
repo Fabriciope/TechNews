@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Support;
+namespace App\Support;
 
 use CoffeeCode\Uploader\Image;
 

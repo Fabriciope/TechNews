@@ -1,10 +1,10 @@
 <?php
 
-namespace Source\Controllers;
+namespace App\Controllers;
 
-use Source\Core\Controller;
+use App\Core\Controller;
 
-use Source\Models\User;
+use App\Models\User;
 
 class IndexController extends Controller
 {
@@ -92,7 +92,7 @@ class IndexController extends Controller
 
     public function pageLogin(): void
     {
-        if(\Source\Models\AuthUser::user()) {
+        if(\App\Models\AuthUser::user()) {
             redirect('/perfil');
         }
         echo $this->views->render('auth-login', [
@@ -103,7 +103,7 @@ class IndexController extends Controller
 
     public function pageRegister(): void
     {
-        if(\Source\Models\AuthUser::user()) {
+        if(\App\Models\AuthUser::user()) {
             redirect('/perfil');
         }
         echo $this->views->render('auth-register', [

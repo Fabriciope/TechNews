@@ -1,10 +1,10 @@
 <?php
 
-namespace Source\Controllers;
+namespace App\Controllers;
 
-use Source\Models\AuthUser;
-use Source\Core\Controller;
-use Source\Models\User;
+use App\Models\AuthUser;
+use App\Core\Controller;
+use App\Models\User;
 
 class AuthController extends Controller
 {

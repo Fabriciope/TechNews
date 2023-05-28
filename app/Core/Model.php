@@ -1,9 +1,9 @@
 <?php
 
-namespace Source\Core;
+namespace App\Core;
 
-use Source\Core\Connection;
-use Source\Support\Message;
+use App\Core\Connection;
+use App\Support\Message;
 
 
 class Model

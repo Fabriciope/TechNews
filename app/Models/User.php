@@ -1,11 +1,11 @@
 <?php
 
-namespace Source\Models;
+namespace App\Models;
 
-use Source\Core\Model;
+use App\Core\Model;
 
-use Source\Traits\ModelTrait;
-use Source\Support\Upload;
+use App\Traits\ModelTrait;
+use App\Support\Upload;
 
 class User extends Model
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Source\Support;
+namespace App\Support;
 
-use Source\Core\Session;
+use App\Core\Session;
 
 class Message
 {

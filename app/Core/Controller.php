@@ -1,9 +1,9 @@
 <?php
 
-namespace Source\Core;
+namespace App\Core;
 
-use Source\Core\ViewsEngine;
-use Source\Support\Message;
+use App\Core\ViewsEngine;
+use App\Support\Message;
 
 class Controller
 {

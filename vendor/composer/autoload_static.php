@@ -7,19 +7,15 @@ namespace Composer\Autoload;
 class ComposerStaticInitc0d262cecba01cc416451ebe5a0998e7
 {
     public static $files = array (
-        '2911065d1b129a3a8f65d8173a1c2094' => __DIR__ . '/../..' . '/source/Boot/Config.php',
-        'b5ae7a55f2e4321de5dc74697a2b3568' => __DIR__ . '/../..' . '/source/Boot/Helpers.php',
-        '0ed5c9a012379e1b7fc74af2d348cb1c' => __DIR__ . '/../..' . '/source/Boot/Minify.php',
+        'bc3d290279bb222c0262b8af4ab8477b' => __DIR__ . '/../..' . '/app/Boot/Config.php',
+        'd1765288e19754dd93b58127636d394d' => __DIR__ . '/../..' . '/app/Boot/Helpers.php',
+        '34d1f49214dcacce4d75c9f306bfd581' => __DIR__ . '/../..' . '/app/Boot/Minify.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
             'WebPConvert\\' => 12,
-        ),
-        'S' => 
-        array (
-            'Source\\' => 7,
         ),
         'P' => 
         array (
@@ -44,16 +40,16 @@ class ComposerStaticInitc0d262cecba01cc416451ebe5a0998e7
             'CoffeeCode\\Router\\' => 18,
             'CoffeeCode\\Cropper\\' => 19,
         ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'WebPConvert\\' => 
         array (
             0 => __DIR__ . '/..' . '/rosell-dk/webp-convert/src',
-        ),
-        'Source\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/source',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (
@@ -86,6 +82,10 @@ class ComposerStaticInitc0d262cecba01cc416451ebe5a0998e7
         'CoffeeCode\\Cropper\\' => 
         array (
             0 => __DIR__ . '/..' . '/coffeecode/cropper/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 

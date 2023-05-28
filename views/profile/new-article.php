@@ -1,7 +1,8 @@
 <?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
-<form action="<?= url("/teste") ?>" method="post">
+<form  action="<?= url("/perfil/salvar-artigo") ?>" method="POST" enctype="multipart/form-data">
 
+    <?= csrf_input() ?>
 
     <div class="box_input">
         <label for="first_name">Titulo do artigo:</label>

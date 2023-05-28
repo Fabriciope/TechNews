@@ -1,10 +1,10 @@
 <?php
 
-namespace Source\Controllers;
+namespace App\Controllers;
 
-use Source\Core\Controller;
+use App\Core\Controller;
 
-use Source\Models\AuthUser;
+use App\Models\AuthUser;
 
 class UserController extends Controller
 {
@@ -102,5 +102,16 @@ class UserController extends Controller
         
         echo json_encode($json);
         return;
+    }
+
+    public function saveArticle(array $data): void
+    {
+        if(!csrf_verify($data)) {
+            $json['fixedMessage'] = $this->message->error('Favor use o formulário')->fixed()->render();
+            echo json_encode($json);
+            return;
+        }
+
+        var_dump($data);
     }
 }

@@ -7,7 +7,7 @@ use CoffeeCode\Router\Router;
 $router = new Router(url(), '@');
 
 // WEB ROUTES
-$router->namespace('Source\Controllers');
+$router->namespace('App\Controllers');
 $router->get('/', 'IndexController@pageHome');
 
 $router->get('/teste', 'IndexController@teste2');
@@ -47,9 +47,13 @@ $router->get('/artigos-publicados', 'UserController@pagePublishedArticles');
 $router->get('/artigos-salvos', 'UserController@pageSavedArticles');
 $router->get('/novo-artigo', 'UserController@pageNewArticle');
 
-$router->post('/atualizar-perfil', 'UserController@updateProfile');
 
-$router->group('error')->namespace('Source\Controllers');
+// PROFILE ACTIONS
+$router->post('/atualizar-perfil', 'UserController@updateProfile');
+$router->post('/salvar-artigo', 'UserController@saveArticle');
+
+
+$router->group('error')->namespace('App\Controllers');
 $router->get('/{errcode}', 'IndexController@error');
 
 

@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WebPConvert\\' => array($vendorDir . '/rosell-dk/webp-convert/src'),
-    'Source\\' => array($baseDir . '/source'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'MatthiasMullie\\PathConverter\\' => array($vendorDir . '/matthiasmullie/path-converter/src'),
     'MatthiasMullie\\Minify\\' => array($vendorDir . '/matthiasmullie/minify/src'),
@@ -16,4 +15,5 @@ return array(
     'CoffeeCode\\Uploader\\' => array($vendorDir . '/coffeecode/uploader/src'),
     'CoffeeCode\\Router\\' => array($vendorDir . '/coffeecode/router/src'),
     'CoffeeCode\\Cropper\\' => array($vendorDir . '/coffeecode/cropper/src'),
+    'App\\' => array($baseDir . '/app'),
 );

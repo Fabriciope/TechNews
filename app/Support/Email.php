@@ -1,10 +1,10 @@
 <?php
 
-namespace Source\Support;
+namespace App\Support;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as MailException;
-use Source\Support\Message;
+use App\Support\Message;
 use stdClass;
 
 class Email

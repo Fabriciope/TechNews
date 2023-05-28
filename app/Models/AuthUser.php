@@ -1,11 +1,11 @@
 <?php
 
-namespace Source\Models;
+namespace App\Models;
 
-use Source\Core\Model;
-use Source\Core\ViewsEngine;
-use Source\Support\Email;
-use Source\Core\Session;
+use App\Core\Model;
+use App\Core\ViewsEngine;
+use App\Support\Email;
+use App\Core\Session;
 
 class AuthUser extends Model
 {
