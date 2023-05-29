@@ -43,7 +43,7 @@ class User extends Model
 
     public function updateUser(): bool
     {
-        if(!$this->checkFields()) {
+        if(!$this->validateFields()) {
             return false;
         }
 
@@ -69,7 +69,7 @@ class User extends Model
 
     public function createUser(?string $passwordConfirmation = null): bool
     {   
-        if(!$this->checkFields($passwordConfirmation)) {
+        if(!$this->validateFields($passwordConfirmation)) {
             return false;
         }
 
@@ -90,47 +90,15 @@ class User extends Model
 
     }
 
-    public function checkFields(?string $passwordConfirmation = null): bool 
-    {
-        if(!$this->required()) {
-            $this->message->info('Preencha todos os campos requeridos');
-            return false;
-        }
-        if(!is_email($this->email)) {
-            $this->message->warning('Insira um email válido');
-            return false;
-        }
-        
-        if($passwordConfirmation) {
-            if($this->password != $passwordConfirmation) {
-                $this->message->warning('A confirmação de senhas está incorreta');
-                return false;
-            }
-        }
-        if(!is_password($this->password)) {
-            $min = CONF_PASSWD_MIN_LEN;
-            $max = CONF_PASSWD_MAX_LEN;
-            $this->message->warning("Insira uma senha entre {$min} e {$max} caracteres");
-            return false;
-        } else {
-            $this->password = generatePassword($this->password);
-        }
-
-        if(!empty($this->photo)) {
-
-        }
-
-        return true;
-    }
-
+    
     public function updateProfile(array $files): bool
     {
         ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
-
+        
         // var_dump($photo, $banner);
-
+        
         $upload = new Upload;
-
+        
         if(!empty($photo['name']) && (empty($photo['tmp_name']) || empty($photo['type']))) {
             $this->message->warning('Esta foto não pode ser carregada');
             return false;
@@ -142,7 +110,7 @@ class User extends Model
                 CONF_IMAGE_PHOTO_SIZE,
                 CONF_UPLOAD_PHOTO_DIR
             );
-
+            
             if($image === null) {
                 $this->message = $upload->message();
                 return false;
@@ -152,7 +120,7 @@ class User extends Model
             }
             $this->photo = $image;
         }
-
+        
         if(!empty($banner['name']) && (empty($banner['tmp_name']) || empty($banner['type']))) {
             $this->message->warning('Este banner não pode ser carregado');
             return false;
@@ -179,7 +147,40 @@ class User extends Model
             }
             $this->banner = $image;
         }
-
+        
         return $this->updateUser();
+    }
+
+    public function validateFields(?string $passwordConfirmation = null): bool 
+    {
+        if(!$this->required()) {
+            $this->message->info('Preencha todos os campos requeridos');
+            return false;
+        }
+        if(!is_email($this->email)) {
+            $this->message->warning('Insira um email válido');
+            return false;
+        }
+        
+        if($passwordConfirmation) {
+            if($this->password != $passwordConfirmation) {
+                $this->message->warning('A confirmação de senhas está incorreta');
+                return false;
+            }
+        }
+        if(!is_password($this->password)) {
+            $min = CONF_PASSWD_MIN_LEN;
+            $max = CONF_PASSWD_MAX_LEN;
+            $this->message->warning("Insira uma senha entre {$min} e {$max} caracteres");
+            return false;
+        } else {
+            $this->password = generatePassword($this->password);
+        }
+    
+        if(!empty($this->photo)) {
+    
+        }
+    
+        return true;
     }
 }

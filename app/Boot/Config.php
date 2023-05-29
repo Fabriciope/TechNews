@@ -39,6 +39,7 @@ define("CONF_UPLOAD_DIR", "/storage/uploads");
 define("CONF_UPLOAD_IMAGE_DIR", "images");
 define("CONF_UPLOAD_PHOTO_DIR", CONF_UPLOAD_IMAGE_DIR . "/photos");
 define("CONF_UPLOAD_BANNER_DIR", CONF_UPLOAD_IMAGE_DIR . "/banners");
+define("CONF_UPLOAD_COVER_DIR", CONF_UPLOAD_IMAGE_DIR . "/covers");
 
 /**
  * IMAGES
@@ -49,6 +50,7 @@ define("CONF_IMAGE_QUALITY", ["jpg" => 72, "png" => 5]);
 
 define("CONF_IMAGE_PHOTO_SIZE", 650);
 define("CONF_IMAGE_BANNER_SIZE", 1150);
+define("CONF_IMAGE_COVER_SIZE", 800);
 
 
 /**

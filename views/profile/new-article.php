@@ -1,6 +1,6 @@
 <?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
-<form  action="<?= url("/perfil/salvar-artigo") ?>" method="POST" enctype="multipart/form-data">
+<form class="formAjax"  action="<?= url("/perfil/salvar-artigo") ?>" method="POST" enctype="multipart/form-data">
 
     <?= csrf_input() ?>
 
@@ -13,24 +13,24 @@
         <textarea name="subtitle" class="input" id="" rows="3" placeholder="Digite o subtitulo deste artigo..."></textarea>
     </div>
     <div class="box_select">
-        <label for="">Selecione uma categoria:</label>
-        <select class="input" name="" id="">
+        <label for="category">Selecione uma categoria:</label>
+        <select class="input" name="category" id="category">
             <option selected value="">Selecione</option>
-            <option value="">Programação</option>
-            <option value="">Inteligência artificial</option>
-            <option value="">Internet das coisas</option>
-            <option value="">Hardware</option>
-            <option value="">Robótica</option>
-            <option value="">Cibersegurança</option>
-            <option value="">Aparelhos eletrônicos</option>
+            <option value="1">Programação</option>
+            <option value="2">Inteligência artificial</option>
+            <option value="3">Internet das coisas</option>
+            <option value="4">Hardware</option>
+            <option value="5">Robótica</option>
+            <option value="6">Cibersegurança</option>
+            <option value="7">Aparelhos eletrônicos</option>
         </select>
     </div>
     <div class="box_input_img_article">
         <label for="photo_profile" class="label_input_file">Escolha uma imagem de capa para o artigo:</label>
         <div class="box_file box_input_file_article">
-            <input type="file" id="photo_profile">
+            <input class="input_file" type="file" name="cover" id="photo_profile">
             <label for="photo_profile">
-                <span>Selecione uma capa</span>
+                <span class="file_name">Selecione uma capa</span>
                 <span>Procurar</span>
             </label>
         </div>
@@ -62,6 +62,6 @@
         </div>
     </div>
 
-    <button type="submit" class="btn_green btn_new_article">Salvar</button>
+    <button type="submit" class="btn_green btn_new_article">Criar artigo</button>
 
 </form>

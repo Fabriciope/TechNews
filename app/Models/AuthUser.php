@@ -19,13 +19,13 @@ class AuthUser extends Model
         );
     }
 
-    public static function user(): ?User
+    public static function user(string $columns = '*'): ?User
     {
         $session = new Session;
         if(!$session->has('userId')) {
             return null;
         }
-        return (new User)->findById($session->userId);
+        return (new User)->findById($session->userId, $columns);
     }
 
     public static function logout(): void

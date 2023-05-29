@@ -8,6 +8,23 @@ use App\Core\Session;
  * ####################
  */
 {
+    function is_url(string $url): bool
+    {
+        return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
+    }
+
+    function is_urlYouTube(string $url): bool
+    {
+
+        if(!is_url($url)) return false;
+
+        //https://www.youtube.com/watch?v=LPgTz6tRldo
+        $urlBase = substr($url, 0, 31);
+        if($urlBase != "https://www.youtube.com/watch?v") return false;
+
+        return true;
+    }
+
     function is_email(string $email): bool
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -126,6 +143,59 @@ use App\Core\Session;
     //     var_dump( url() . (new \App\Support\Thumb)->make($image, $width, $height));
     //     return url() . (new \App\Support\Thumb)->make($image, $width, $height);
     // }
+}
+
+/**
+ * ##################
+ * ###   STRING   ###
+ * ##################
+ */ 
+{
+    function str_slug(string $string): string
+    {
+        $string = filter_var(mb_strtolower($string), FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $formats = [
+            "/(á|à|ã|â|ä)/",
+            "/(Á|À|Ã|Â|Ä)/",
+            "/(é|è|ê|ë)/",
+            "/(É|È|Ê|Ë)/",
+            "/(í|ì|î|ï)/",
+            "/(Í|Ì|Î|Ï)/",
+            "/(ó|ò|õ|ô|ö)/",
+            "/(Ó|Ò|Õ|Ô|Ö)/",
+            "/(ú|ù|û|ü)/",
+            "/(Ú|Ù|Û|Ü)/",
+            "/(ñ)/", "/(Ñ)/"
+        ];
+        $replace = explode("-", "a-A-e-E-i-I-o-O-u-U-n-N- ");
+
+        $slug = str_replace(
+            ['--', '---', '----', '-----'],
+            '-',
+            str_replace(
+                ' ',
+                '-',
+                trim(strtr(preg_replace($formats, $replace, $string), '"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª', '                                 '))
+            )
+        );
+        return $slug;
+    }
+
+    function str_title(string $string): string
+    {
+        return ucwords(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+    }
+
+    function convertYouTubeUrl(string $url): string
+    {
+        $url = filter_var($url, FILTER_SANITIZE_SPECIAL_CHARS);
+        //https://www.youtube.com/watch?v=LPgTz6tRldo
+        $videoCode = substr($url, 31);
+        $urlEmbed = "https://www.youtube.com/embed/"; 
+
+        return $urlEmbed . $videoCode; 
+    }
 }
 
 

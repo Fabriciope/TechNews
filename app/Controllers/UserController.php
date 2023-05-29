@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-
 use App\Models\AuthUser;
+use App\Models\Article;
 
 class UserController extends Controller
 {
@@ -112,6 +112,48 @@ class UserController extends Controller
             return;
         }
 
-        var_dump($data);
+        $userId = AuthUser::user('id')->id;
+
+        $article = new Article;
+        $article->bootstrap(
+            $userId,
+            intval($data['category']),
+            str_title(trim($data['title'])),
+            ucfirst(trim($data['subtitle'])),
+            str_slug(trim($data['title'])),
+            trim($data['linkVideo']),
+        );
+
+        if($article->findByUri($article->uri)) {
+            $json['fixedMessage'] = $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
+            echo json_encode($json);
+            return;
+        }
+
+
+        $titles =  [];
+        foreach ($data as $field => $content) {
+            if (strpos($field, 'titleParagraph') !== false) {
+                $explode = explode('-', $field);
+                $titles[$explode[1]] = $content;
+            }
+        }
+
+        $paragraphs =  [];
+        foreach ($data as $field => $content) {
+            if (strpos($field, 'contentParagraph') !== false) {
+                $explode = explode('-', $field);
+                $paragraphs[$explode[1]] = $content;
+            }
+        }
+
+        if($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
+            $json['redirect'] = url('/perfil/artigos-salvos');
+        } else {
+            $json['fixedMessage'] = $article->message();
+        }
+
+        echo json_encode($json);
+        return;
     }
 }
