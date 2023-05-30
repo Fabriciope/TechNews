@@ -191,7 +191,7 @@ use App\Core\Session;
     {
         $url = filter_var($url, FILTER_SANITIZE_SPECIAL_CHARS);
         //https://www.youtube.com/watch?v=LPgTz6tRldo
-        $videoCode = substr($url, 31);
+        $videoCode = substr($url, 32);
         $urlEmbed = "https://www.youtube.com/embed/"; 
 
         return $urlEmbed . $videoCode; 

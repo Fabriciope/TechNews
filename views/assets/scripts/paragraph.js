@@ -121,7 +121,6 @@ function addActionButtons() {
     }
     
     let buttonsAddParagraph = document.querySelectorAll(".btn_add_paragraph");
-
     if(buttonsAddParagraph) {
         buttonsAddParagraph.forEach(button=> {
             button.addEventListener("click", addNewParagraph);

@@ -99,10 +99,6 @@ class User extends Model
         
         $upload = new Upload;
         
-        if(!empty($photo['name']) && (empty($photo['tmp_name']) || empty($photo['type']))) {
-            $this->message->warning('Esta foto não pode ser carregada');
-            return false;
-        }
         if(!empty($photo['name'])) { 
             $image = $upload->image(
                 $photo, 
@@ -121,10 +117,6 @@ class User extends Model
             $this->photo = $image;
         }
         
-        if(!empty($banner['name']) && (empty($banner['tmp_name']) || empty($banner['type']))) {
-            $this->message->warning('Este banner não pode ser carregado');
-            return false;
-        }
         if(!empty($banner['name'])) { 
             [$width, $height] = getimagesize($banner['tmp_name']);
             if($height >= $width) {

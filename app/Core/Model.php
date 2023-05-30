@@ -197,7 +197,7 @@ class Model
 
     public function filter(array $data): array
     {
-        $filter = array();
+        $filter = [];
 
         foreach($data as $key => $value) {
             $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS));
@@ -206,10 +206,13 @@ class Model
         return $filter;
     }
 
-    public function required():bool
+    public function required(?string $ignore = null):bool
     {
         $data = (array) $this->data;
         foreach(static::$required as $field) {
+            if($ignore && $field == $ignore) {
+                continue;
+            }
             if(!isset($data[$field]) || empty($data[$field])) {
                 return false;
                 break;

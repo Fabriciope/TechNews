@@ -27,6 +27,11 @@ class Upload
     {
         $uploadImage = new Image(__DIR__ . "./../.." . CONF_UPLOAD_DIR, $dir);
 
+        if (!empty($image['name']) && (empty($image['tmp_name']) || empty($image['type']))) {
+            $this->message->warning('Esta foto não pode ser carregada');
+            return null;
+        }
+
         if (empty($image['type']) || !in_array($image['type'], $uploadImage::isAllowed())) {
             $this->message->warning('Insira uma imagem válida');
             return null;

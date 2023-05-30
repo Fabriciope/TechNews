@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\AuthUser;
 use App\Models\Article;
+use App\Models\Paragraph;
 
 class UserController extends Controller
 {
@@ -107,7 +108,7 @@ class UserController extends Controller
     public function saveArticle(array $data): void
     {
         if(!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message->error('Favor use o formulário')->fixed()->render();
+            $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
             echo json_encode($json);
             return;
         }
@@ -121,7 +122,7 @@ class UserController extends Controller
             str_title(trim($data['title'])),
             ucfirst(trim($data['subtitle'])),
             str_slug(trim($data['title'])),
-            trim($data['linkVideo']),
+            empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
         );
 
         if($article->findByUri($article->uri)) {
@@ -130,27 +131,34 @@ class UserController extends Controller
             return;
         }
 
-
-        $titles =  [];
+        $titles =  array();
+        $paragraphs =  array();
         foreach ($data as $field => $content) {
-            if (strpos($field, 'titleParagraph') !== false) {
-                $explode = explode('-', $field);
-                $titles[$explode[1]] = $content;
-            }
-        }
-
-        $paragraphs =  [];
-        foreach ($data as $field => $content) {
-            if (strpos($field, 'contentParagraph') !== false) {
-                $explode = explode('-', $field);
-                $paragraphs[$explode[1]] = $content;
+            if(strpos($field, 'Paragraph') !== false) {
+                list($type, $position) = explode('-', $field);
+                switch($type) {
+                    case 'titleParagraph':
+                        $titles[$position] = $content;
+                        break;
+                    case 'contentParagraph':
+                        if(empty($content)) {
+                            $json['fixedMessage'] = $this->message
+                            ->error("Insira um conteúdo ao {$position}° parágrafo")
+                            ->fixed()->render();
+                            echo json_encode($json);
+                            return;
+                        }
+                        $paragraphs[$position] = $content;
+                        break;
+                }
             }
         }
 
         if($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
+            $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
             $json['redirect'] = url('/perfil/artigos-salvos');
         } else {
-            $json['fixedMessage'] = $article->message();
+            $json['fixedMessage'] = $article->message()->fixed()->render();
         }
 
         echo json_encode($json);

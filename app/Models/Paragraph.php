@@ -18,18 +18,25 @@ class Paragraph extends Model
 
     public function addParagraph(
         int $id_article,
-        string $title = null,
         string $paragraph,
-        int $position
+        int $position,
+        ?string $title = null
     ): bool
     {
+
+        // verificação desnecessária
+        // if(empty($paragraph)) {
+        //     $this->message->error("Insira um conteúdo ao parágrafo {$position}");
+        //     return false;
+        // }
         $this->id_article = $id_article;
-        $this->title = $title;
         $this->paragraph = $paragraph;
         $this->position = $position;
+        $this->title = $title;
+
 
         $this->create($this->safe());
-        if(!$this->fail()) {
+        if($this->fail()) {
             $this->message->error('Erro ao adicionar um novo parágrafo');
             return false;
         }
