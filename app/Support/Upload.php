@@ -25,18 +25,18 @@ class Upload
         string $dir = CONF_UPLOAD_IMAGE_DIR
     ): ?string 
     {
-        $uploadImage = new Image(__DIR__ . "./../.." . CONF_UPLOAD_DIR, $dir);
-
+        
         if (!empty($image['name']) && (empty($image['tmp_name']) || empty($image['type']))) {
             $this->message->warning('Esta foto não pode ser carregada');
             return null;
         }
-
-        if (empty($image['type']) || !in_array($image['type'], $uploadImage::isAllowed())) {
+        
+        $uploadImage = new Image(__DIR__ . "./../.." . CONF_UPLOAD_DIR, $dir);
+        if (!in_array($image['type'], $uploadImage::isAllowed())) {
             $this->message->warning('Insira uma imagem válida');
             return null;
         }
-
+        
         $pathOr = $uploadImage->upload($image, $name, $width, CONF_IMAGE_QUALITY);
         $startSavePath = strpos($pathOr, CONF_UPLOAD_DIR);
         return mb_substr($pathOr, $startSavePath);

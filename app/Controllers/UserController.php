@@ -81,6 +81,8 @@ class UserController extends Controller
             return;
         }
 
+        var_dump(imagecreatefromjpeg($_FILES['userPhoto']['tmp_name']));
+
         if(empty($data['firstName']) || empty($data['lastName'])) {
             $json['fixedMessage'] = $this->message
             ->info('Preencha no mínimo o nome e sobrenome')

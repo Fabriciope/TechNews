@@ -95,8 +95,6 @@ class User extends Model
     {
         ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
         
-        // var_dump($photo, $banner);
-        
         $upload = new Upload;
         
         if(!empty($photo['name'])) { 
