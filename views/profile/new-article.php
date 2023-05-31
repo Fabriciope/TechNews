@@ -1,6 +1,6 @@
 <?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
-<form class="formAjax" action="<?= url("/perfil/salvar-artigo") ?>" method="POST" enctype="multipart/form-data">
+<form class="formAjax" action="<?= url("/perfil/artigo/novo") ?>" method="POST" enctype="multipart/form-data">
 
     <?= csrf_input() ?>
 

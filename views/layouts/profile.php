@@ -13,9 +13,9 @@
         <aside class="aside_profile">
             <ul>
                 <li><a href="<?=url("/perfil")?>">Perfil</a></li>
-                <li><a href="<?=url("/perfil/artigos-publicados")?>">Artigos publicados</a></li>
-                <li><a href="<?=url("/perfil/artigos-salvos")?>">Salvo para publicação</a></li>
-                <li><a href="<?=url("/perfil/novo-artigo")?>">Novo Artigo</a></li>
+                <li><a href="<?=url("/perfil/artigo/publicados")?>">Artigos publicados</a></li>
+                <li><a href="<?=url("/perfil/artigo/salvos")?>">Salvo para publicação</a></li>
+                <li><a href="<?=url("/perfil/artigo/novo")?>">Novo Artigo</a></li>
             </ul>
         </aside>
 

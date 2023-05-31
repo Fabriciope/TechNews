@@ -9,12 +9,12 @@
             </div>
         </div>
         <div class="box_actions_saved">
-            <form action="/TechNews/teste" method="post">
-                <button class="btn_action_saved publish" name="article" value="id=2">Publicar</button>
+            <form action="<?=url('/perfil/artigo/publicar')?>" method="POST">
+                <button class="btn_action_saved publish" name="articleUri" value="<?=$article->uri?>">Publicar</button>
             </form>
-            <a class="btn_action_saved edit" href="">Editar</a>
-            <form action="">
-                <button class="btn_action_saved delete" name="article" value="id=2">Deletar</button>
+            <a class="btn_action_saved edit" href="<?=url("/perfil/artigo/editar/{$article->uri}")?>">Editar</a>
+            <form action="<?=url("perfil/artigo/deletar")?>" method="POST">
+                <button class="btn_action_saved delete" name="articleUri" value="<?=$article->uri?>">Deletar</button>
             </form>
         </div>
     </div>

@@ -143,7 +143,7 @@ class User extends Model
         return $this->updateUser();
     }
 
-    public function validateFields(?string $passwordConfirmation = null): bool 
+    private function validateFields(?string $passwordConfirmation = null): bool 
     {
         if(!$this->required()) {
             $this->message->info('Preencha todos os campos requeridos');

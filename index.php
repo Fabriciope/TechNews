@@ -43,14 +43,22 @@ $router->get("/obrigado/{email}", 'AuthController@pageConfirmedEmail');
 // PROFILE ROUTES
 $router->group('/perfil');
 $router->get('/', 'UserController@pageProfile');
-$router->get('/artigos-publicados', 'UserController@pagePublishedArticles');
-$router->get('/artigos-salvos', 'UserController@pageSavedArticles');
-$router->get('/novo-artigo', 'UserController@pageNewArticle');
-
 
 // PROFILE ACTIONS
-$router->post('/atualizar-perfil', 'UserController@updateProfile');
-$router->post('/salvar-artigo', 'UserController@saveArticle');
+$router->post('/atualizar', 'UserController@updateProfile');
+
+// ARTICLES
+$router->group('perfil/artigo');
+
+$router->get('/salvos', 'UserController@pageSavedArticles');
+$router->post('/publicar', 'UserController@publishArticle');
+$router->get('/editar/{articleUri}', 'UserController@editArticle');
+$router->post('/deletar', 'UserController@deleteArticle');
+
+$router->get('/publicados', 'UserController@pagePublishedArticles');
+
+$router->get('/novo', 'UserController@pageNewArticle');
+$router->post('/novo', 'UserController@saveArticle');
 
 
 $router->group('error')->namespace('App\Controllers');

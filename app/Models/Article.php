@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Core\Model;
 use App\Support\Upload;
+use App\Traits\ModelTrait;
 
 class Article extends Model
 {
+    use ModelTrait;
+
     protected static string $entity = 'articles';
 
     public function __construct()
@@ -37,7 +40,7 @@ class Article extends Model
         return $this;
     }
 
-    public function findByUri(string $uri, string $columns = '*')
+    public function findByUri(string $uri, string $columns = '*'): Article
     {
         $find = $this->find('uri = :uri', "uri={$uri}", $columns);
         return $find->fetch();
@@ -47,6 +50,39 @@ class Article extends Model
     {
         $find = $this->find("id_user = :userId", "userId={$userId}");
         return $find->fetch(true);
+    }
+
+    public function findUserSavedArticles(int $userId): array
+    {
+       return $this->find(
+            'id_user = :userId AND status = :status', 
+            "userId={$userId}&status=created"
+        )->fetch(true);
+    }
+
+    public function updateArticle(): bool
+    {
+        if (!$this->validateFields()) {
+            return false;
+        }
+
+        $findArticle = $this->find('uri = :uri AND id_user <> :userId', "uri={$this->uri}&id={$this->id}")->fetch();
+        if($findArticle) {
+            $this->message->warning('O artigo informado já existe');
+            return false;
+        }
+        $this->update(
+            $this->safe(),  
+            'id = :id AND uri = :uri',
+            "id={$this->id}&uri{$this->uri}"
+        );
+        if($this->fail()) {
+            $this->message->error('Erro ao atualizar artigo');
+            return false;
+        }
+
+        $this->data = ($this->findById($this->id))->data();
+        return true;
     }
 
     public function createArticle(array $cover, array $titles, array $paragraphs): bool
@@ -101,17 +137,18 @@ class Article extends Model
             }
         }
 
+        $this->data = ($this->findById($this->id))->data();
         return true;
     }
 
-    public function validateFields(?array $cover = null): bool
+    private function validateFields(?array $cover = null): bool
     {
         if (!$this->required('cover')) {
             $this->message->info('Preencha todos os campos requeridos');
             return false;
         }
         
-        if (!isset($this->id) && !is_null($this->video)) {
+        if (is_null($this->id) && is_null($this->created_at)) {
             if (!is_urlYouTube($this->video)) {
                 $this->message->warning('Insira um link de compartilhamento do YouTube');
                 return false;

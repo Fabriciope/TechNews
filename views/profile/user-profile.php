@@ -1,6 +1,6 @@
 <?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
-<form class="formAjax form_content_profile" action="<?= url('/perfil/atualizar-perfil') ?>" method="POST" enctype="multipart/form-data">
+<form class="formAjax form_content_profile" action="<?= url('/perfil/atualizar') ?>" method="POST" enctype="multipart/form-data">
 
     <?= csrf_input() ?>
 

@@ -162,7 +162,7 @@ class Model
         }
     }
 
-    protected function update(array $data, string $terms, string $params)
+    protected function update(array $data, string $terms, string $params): ?int
     {
         try {
             $dataSet = [];
@@ -177,7 +177,7 @@ class Model
 
             $dataBind = $this->filter(array_merge($data, $this->params));
             $stmt->execute($dataBind);
-            // return ($stmt->rowCount() ?? 1);
+            return ($stmt->rowCount() ?? null);
         } catch (PDOException $exception) {
             $this->fail = $exception;
             var_dump($exception);

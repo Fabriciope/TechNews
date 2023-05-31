@@ -55,8 +55,49 @@ class UserController extends Controller
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
-            'savedArticles' => (new Article)->findArticlesByUser($user->id)
+            'savedArticles' => (new Article)->findUserSavedArticles($user->id)
         ]);
+    }
+
+    public function publishArticle(array $data): void
+    {
+        $user = AuthUser::user();
+        if(!$user) {
+            //tratar de outra maneira
+            redirect('/entrar');
+            return;
+        }
+
+        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if(!$articleUri|| empty($articleUri)) {
+            $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
+            redirect('/perfil');
+            return;
+        }
+
+
+        $article = (new Article)->findByUri($articleUri);
+        $article->status = 'published';
+        $article->published_at = 'NOW()';
+        if(!$article->updateArticle()) {
+            $article->message()->fixed()->flash();
+            //redirect('/perfil/artigo/salvos');
+            //return;
+        }
+
+        var_dump($article);
+        $this->message->success('Artigo publicado com sucesso!')->fixed()->flash();
+        //redirect('/perfil/artigo/salvos');
+    }
+
+    public function editArticle(array $data): void
+    {
+        var_dump($data);
+    }
+
+    public function deleteArticle(array $data): void
+    {
+        var_dump($data);
     }
 
     public function pagePublishedArticles(): void
@@ -164,5 +205,10 @@ class UserController extends Controller
 
         echo json_encode($json);
         return;
+    }
+
+    private function authenticateUser()
+    {
+
     }
 }
