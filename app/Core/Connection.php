@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use PDO;
+use PDOException;
 
 class Connection
 {
@@ -25,14 +26,14 @@ class Connection
                     CONF_DB_PASSWORD,
                     self::OPTIONS
                 );
-            } catch (\PDOException) {
+            } catch (PDOException) {
                 redirect("/oops/problemas");
             }
         }
         return self::$instance;
     }
 
-    private function __construct(){}
+    final private function __construct(){}
     private function __clone(){}
     // private function __wakeup(){}
 }

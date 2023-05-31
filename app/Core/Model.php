@@ -5,6 +5,8 @@ namespace App\Core;
 use App\Core\Connection;
 use App\Support\Message;
 
+use PDO;
+use PDOException;
 
 class Model
 {  
@@ -81,7 +83,7 @@ class Model
     {
         if($terms !== null) {
             $this->query = "SELECT {$columns} FROM " . static::$entity . " WHERE {$terms}";
-            parse_str($params, $this->params);
+            parse_str($params ?? '', $this->params);
             return $this;
         }
         $this->query = "SELECT {$columns} FROM " . static::$entity;
@@ -115,14 +117,14 @@ class Model
 
             if($stmt->rowCount()) {
                 if($all) {
-                    return $stmt->fetchAll(\PDO::FETCH_CLASS, static::class);
+                    return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
                 }
                 return $stmt->fetchObject(static::class);
             } else {
                 return null;
             }
 
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->fail = $exception;
             return null;
         }
@@ -135,7 +137,7 @@ class Model
                 $stmt = Connection::getInstance()
                         ->prepare($this->query);
                 $stmt->execute($this->params);
-            } catch (\PDOException $exception) {
+            } catch (PDOException $exception) {
                 $this->fail = $exception;
                 return null;
             }
@@ -154,7 +156,7 @@ class Model
             $data = $this->filter($data);
             $stmt->execute($data);
             return Connection::getInstance()->lastInsertId();
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->fail = $exception;
             return null;
         }
@@ -176,7 +178,7 @@ class Model
             $dataBind = $this->filter(array_merge($data, $this->params));
             $stmt->execute($dataBind);
             // return ($stmt->rowCount() ?? 1);
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->fail = $exception;
             var_dump($exception);
         }
@@ -200,7 +202,7 @@ class Model
         $filter = [];
 
         foreach($data as $key => $value) {
-            $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS));
+            $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
         }
 
         return $filter;

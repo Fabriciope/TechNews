@@ -21,7 +21,8 @@ class ViewsEngine
 
     public function render(string $templateName, array $data): string
     {
-        return $this->platesEngine->render($templateName, $data);
+        $this->platesEngine->addData($data);
+        return $this->platesEngine->render($templateName);
     }
 
     public function engine(): Engine

@@ -47,6 +47,8 @@ class User extends Model
             return false;
         }
 
+        $this->data = (object) filter_var_array((array)$this->data, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         $findEmail = $this->find('email = :email AND id <> :id', "email={$this->email}&id={$this->id}")->fetch();
         if($findEmail) {
             $this->message->warning('O e-mail informado já existe');

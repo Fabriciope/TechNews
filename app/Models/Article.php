@@ -43,6 +43,12 @@ class Article extends Model
         return $find->fetch();
     }
 
+    public function findArticlesByUser(int $userId): array
+    {
+        $find = $this->find("id_user = :userId", "userId={$userId}");
+        return $find->fetch(true);
+    }
+
     public function createArticle(array $cover, array $titles, array $paragraphs): bool
     {
         if (!$this->validateFields($cover)) {

@@ -19,9 +19,10 @@ class UserController extends Controller
         //carregar o user data como um objeto para carregar a página de perfil do usuário
         $user = AuthUser::user();
         if(!$user) {
-            //tratar erro de outra maneira
+            //tratar de outra maneira
             redirect('/entrar');
         }
+
 
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
@@ -33,7 +34,7 @@ class UserController extends Controller
     {
         $user = AuthUser::user();
         if(!$user) {
-            //tratar erro de outra maneira
+            //tratar de outra maneira
             redirect('/entrar');
         }
 
@@ -47,13 +48,14 @@ class UserController extends Controller
     {
         $user = AuthUser::user();
         if(!$user) {
-            //tratar erro de outra maneira
+            //tratar de outra maneira
             redirect('/entrar');
         }
 
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
-            'userData' => $user->data()
+            'userData' => $user->data(),
+            'savedArticles' => (new Article)->findArticlesByUser($user->id)
         ]);
     }
 
@@ -61,7 +63,7 @@ class UserController extends Controller
     {
         $user = AuthUser::user();
         if(!$user) {
-            //tratar erro de outra maneira
+            //tratar de outra maneira
             redirect('/entrar');
         }
 
@@ -80,8 +82,6 @@ class UserController extends Controller
             echo json_encode($json);
             return;
         }
-
-        var_dump(imagecreatefromjpeg($_FILES['userPhoto']['tmp_name']));
 
         if(empty($data['firstName']) || empty($data['lastName'])) {
             $json['fixedMessage'] = $this->message
@@ -102,7 +102,6 @@ class UserController extends Controller
             $this->message->success('Perfil atualizado com sucesso!')->fixed()->flash();
             $json['redirect'] = url('/perfil');
         }
-        
         echo json_encode($json);
         return;
     }
@@ -136,7 +135,7 @@ class UserController extends Controller
         $titles =  array();
         $paragraphs =  array();
         foreach ($data as $field => $content) {
-            if(strpos($field, 'Paragraph') !== false) {
+            if(str_contains($field, 'Paragraph')) {
                 list($type, $position) = explode('-', $field);
                 switch($type) {
                     case 'titleParagraph':

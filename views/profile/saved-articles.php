@@ -1,7 +1,7 @@
 <?php $this->layout('layouts::profile', ['title' => $title, 'userData' => $userData]) ?>
 
 <div>
-    <?php for ($i = 0; $i < 4; $i++) : ?>
-        <?= $this->insert('includes::saved-article-list', []) ?>
-    <?php endfor; ?>
+    <?php foreach ($savedArticles as $article) : ?>
+        <?= $this->insert('includes::saved-article-list', ['article' => $article]) ?>
+    <?php endforeach; ?>
 </div>

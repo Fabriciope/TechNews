@@ -97,18 +97,17 @@ class AuthController extends Controller
             return;
         }
 
+
         if (empty($data['email']) || empty($data['password'])) {
+            $minutes = 0;
+            if (request_limit('login', 7, 60 * $minutes)) {
+                $json['message'] = $this->message
+                    ->error("Você atingiu o limite de tentativas, espere {$minutes} minutos para tentar novamente")
+                    ->after('!')->render();
+                echo json_encode($json);
+                return;
+            }
             $json['message'] = $this->message->info('Preencha todos os campos')->after('!')->render();
-            echo json_encode($json);
-            return;
-        }
-
-        $minutes = 0;
-        if (request_limit('login', 7, 60 * $minutes)) {
-            $json['message'] = $this->message
-                ->error("Você atingiu o limite de tentativas, espere {$minutes} minutos para tentar novamente")
-                ->after('!')->render();
-
             echo json_encode($json);
             return;
         }
@@ -119,6 +118,7 @@ class AuthController extends Controller
         $login = $authUser->login($data['email'], $data['password'], $save);
 
         if ($login instanceof User) {
+            request_limit('login', reset: true);
             $this->message->success("Seja bem vindo(a) {$login->first_name}")->fixed()->flash();
             $json['redirect'] = url('/perfil');
         } else {
@@ -164,9 +164,18 @@ class AuthController extends Controller
 
     public function pageResetPassword(array $data): void
     {
-        if(empty($data)) {
+        if (empty($data)) {
             //tratar erro de outra maneira
             redirect('/recuperar-senha');
+        }
+
+        list($email, $code) = explode('-', $data['code']);
+        $email = is_email($email) ? $email : null;
+        $code = $code ?? null;
+        if (!$email || $code) {
+            $this->message->error('Link inválido, Informe seu e-mail para recuperar a senha')->flash();
+            redirect('/recuperar-senha');
+            return;
         }
 
         echo $this->views->render('auth-reset-password', [
@@ -177,20 +186,28 @@ class AuthController extends Controller
 
     public function resetPassword(array $data): void
     {
-        if(!csrf_verify($data)) {
+        if (!csrf_verify($data)) {
             $json['message'] = $this->message->error('Favor use o formulário')->render();
             echo json_encode($json);
             return;
         }
 
-        if(in_array('', $data)) {
+        list($email, $code) = explode('-', $data['code']);
+        $email = is_email($email) ? $email : null;
+        $code = $code ?? null;
+        if (!$email || $code) {
+            $this->message->error('Link inválido, Informe seu e-mail para recuperar a senha')->flash();
+            redirect('/recuperar-senha');
+            return;
+        }
+
+        if (in_array('', $data)) {
             $json['message'] = $this->message->info('Preencha todos os campos')->render();
             echo json_encode($json);
             return;
         }
 
-        // [$email, $code] = explode('-', $data['code']); ou ↓
-        list($email, $code) = explode('-', $data['code']);
+
 
         $authUser = new AuthUser;
         $checkPasswordRecovery = $authUser->resetPassword(
@@ -200,7 +217,7 @@ class AuthController extends Controller
             trim($data['passwordConfirmation'])
         );
 
-        if($checkPasswordRecovery) {
+        if ($checkPasswordRecovery) {
             $this->message->success('Senha alterada com sucesso.')->flash();
             $json['redirect'] = url('/entrar');
         } else {

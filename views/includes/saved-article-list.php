@@ -1,11 +1,11 @@
 <div class="box_saved_article">
         <div class="box_info_saved_article">
             <div class="box_img_saved_article">
-                <img src="<?=theme("assets/images/articles/img-article.jpg")?>" alt="">
+                <img src="<?=image($article->cover)?>" alt="">
             </div>
             <div class="info_article_saved">
-                <h4>titulo do artigo salvo pelo usuário nhe este é o titulo dado dos dados dos cubos queasdasdadasssss ssssssssssssssssss sssssssssssssssnove lados</h4>
-                <p>Criado em: 23/01/2023</p>
+                <h4><?=$this->e($article->title)?></h4>
+                <p><?=date_fmt($article->created_at)?></p>
             </div>
         </div>
         <div class="box_actions_saved">

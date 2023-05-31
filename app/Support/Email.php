@@ -92,6 +92,8 @@ class Email
             }
 
             $this->phpMailer->send();
+            $this->phpMailer->clearAddresses();
+            $this->phpMailer->clearAttachments();
 
             return true;
             

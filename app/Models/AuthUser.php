@@ -74,14 +74,6 @@ class AuthUser extends Model
             setcookie('authEmail', '', time() - 3600, '/');
         }
 
-        //Código abaixo é desnecessário, pois se o usuário já tem cadastro a senha dele já está verificada
-        // if(!is_password($password)) {
-        //     $min = CONF_PASSWD_MIN_LEN;
-        //     $max = CONF_PASSWD_MAX_LEN;
-        //     $this->message->warning("Insira uma senha entre {$min} e {$max} caracteres");
-        //     return false;
-        // }
-
         $user = (new User)->findByEmail($email);
         if(!$user) {
             $this->message->warning('O e-mail informado não está cadastrado');
@@ -145,7 +137,7 @@ class AuthUser extends Model
             return false;
         }
 
-        if($user->password_recovery != $code) {
+        if(empty($user->password_recovery) && $user->password_recovery != $code) {
             $this->message->error('O código de verificação está incorreto');
             return false;
         }
@@ -154,7 +146,6 @@ class AuthUser extends Model
             $this->message->warning('A confirmação das senhas está incorreta');
             return false;
         }
-
 
         $user->password = $password;
         $user->password_recovery = null;

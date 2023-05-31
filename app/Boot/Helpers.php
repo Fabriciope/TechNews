@@ -1,4 +1,5 @@
 <?php
+
 use App\Core\Session;
 
 
@@ -6,8 +7,7 @@ use App\Core\Session;
  * ####################
  * ###   VALIDATE   ###
  * ####################
- */
-{
+ */ {
     function is_url(string $url): bool
     {
         return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
@@ -16,11 +16,11 @@ use App\Core\Session;
     function is_urlYouTube(string $url): bool
     {
 
-        if(!is_url($url)) return false;
+        if (!is_url($url)) return false;
 
         //https://www.youtube.com/watch?v=LPgTz6tRldo
         $urlBase = substr($url, 0, 31);
-        if($urlBase != "https://www.youtube.com/watch?v") return false;
+        if ($urlBase != "https://www.youtube.com/watch?v") return false;
 
         return true;
     }
@@ -42,7 +42,7 @@ use App\Core\Session;
 
     function generatePassword(string $password): string
     {
-        if(empty(password_get_info($password)['algo'])) {
+        if (empty(password_get_info($password)['algo'])) {
             return password_hash($password, CONF_PASSWD_ALGO, CONF_PASSWD_OPTIONS);
         }
         return $password;
@@ -70,17 +70,16 @@ use App\Core\Session;
  * ################
  * ###   URLs   ###
  * ################
- */
-{
+ */ {
     function url(?string $path = null): string
     {
-        if(false) {
+        if (false) {
             if ($path) {
                 return CONF_URL_SENAC . '/views' . '/' . ($path[0] == '/' ? mb_substr($path, 1) : $path);
             }
             return CONF_URL_SENAC . '/views';
         }
-        if (gettype(strpos($_SERVER['HTTP_HOST'], 'localhost')) == 'integer') {
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
             if ($path) {
                 return CONF_URL_TEST . '/' . ($path[0] == '/' ? mb_substr($path, 1) : $path);
             }
@@ -90,6 +89,14 @@ use App\Core\Session;
             return CONF_URL_BASE . ($path[0] == '/' ? mb_substr($path, 1) : $path);
         }
         return CONF_URL_BASE;
+    }
+
+    function url_back(): string
+    {
+        if ($_SERVER['HTTP_REFERER'] && str_contains($_SERVER['HTTP_REFERER'], CONF_SITE_DOMAIN_TEST)) {
+            return $_SERVER['HTTP_REFERER'];
+        }
+        return url();
     }
 
     function redirect(string $url): void
@@ -104,20 +111,30 @@ use App\Core\Session;
 }
 
 /**
+ * ################
+ * ###   DATE   ###
+ * ################
+ */ {
+    function date_fmt(string $date = 'now', string $format = 'd/m/Y H\hi'): string
+    {
+        return (new DateTime($date))->format($format);
+    }
+ }
+
+/**
  * ##################
  * ###   ASSETS   ###
  * ##################
- */ 
-{
+ */ {
     function theme(string $path = null): string
     {
-        if(false) {
+        if (false) {
             if ($path) {
                 return CONF_URL_SENAC . '/views' . '/' . ($path[0] == '/' ? mb_substr($path, 1) : $path);
             }
             return CONF_URL_SENAC . '/views';
         }
-        if (gettype(strpos($_SERVER['HTTP_HOST'], 'localhost')) == 'integer') {
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
             if ($path) {
                 return CONF_URL_TEST . '/views' . '/' . ($path[0] == '/' ? mb_substr($path, 1) : $path);
             }
@@ -133,7 +150,7 @@ use App\Core\Session;
     {
         // var_dump((new \App\Support\Thumb)->make($image, $width, $height));
         // return (new \App\Support\Thumb)->make($image, $width, $height);
-        if(empty($image)) return null;
+        if (empty($image)) return null;
 
         return url() . $image;
     }
@@ -149,8 +166,7 @@ use App\Core\Session;
  * ##################
  * ###   STRING   ###
  * ##################
- */ 
-{
+ */ {
     function str_slug(string $string): string
     {
         $string = filter_var(mb_strtolower($string), FILTER_SANITIZE_SPECIAL_CHARS);
@@ -192,9 +208,9 @@ use App\Core\Session;
         $url = filter_var($url, FILTER_SANITIZE_SPECIAL_CHARS);
         //https://www.youtube.com/watch?v=LPgTz6tRldo
         $videoCode = substr($url, 32);
-        $urlEmbed = "https://www.youtube.com/embed/"; 
+        $urlEmbed = "https://www.youtube.com/embed/";
 
-        return $urlEmbed . $videoCode; 
+        return $urlEmbed . $videoCode;
     }
 }
 
@@ -203,14 +219,13 @@ use App\Core\Session;
  * ###################
  * ###   REQUEST   ###
  * ###################
- */ 
-{
+ */ {
     function csrf_input(): string
     {
         $session = session();
         $session->csrf();
 
-        return "<input type='hidden' name='csrf' value='". ($session->csrf_token ?? "") . "'/>";
+        return "<input type='hidden' name='csrf' value='" . ($session->csrf_token ?? "") . "'/>";
     }
 
     function csrf_verify(array $request): bool
@@ -220,29 +235,39 @@ use App\Core\Session;
         $csrfToken = $session->csrf_token ?? '';
         $csrfRequest = $request['csrf'] ?? '';
 
-        if(empty($csrfToken) || empty($csrfRequest) || $csrfToken != $csrfRequest) return false;
+        if (empty($csrfToken) || empty($csrfRequest) || $csrfToken != $csrfRequest) return false;
         return true;
     }
 
-    function request_limit(string $requestName, int $requestLimit, int $seconds): bool
-    {
+    function request_limit(
+        string $requestName,
+        int $requestLimit = 3,
+        int $minutes = 3,
+        bool $reset = false
+    ): bool {
         $session = session();
+
+        if ($reset && $session->has($requestName)) {
+            $session->unset($requestName);
+            return false;
+        }
+
         $requestTime = $session->$requestName->time ?? null;
         $numberRequests = $session->$requestName->numberRequests ?? null;
-        if($session->has($requestName) && $requestTime >= time() && $numberRequests < $requestLimit) {
+        if ($session->has($requestName) && $requestTime >= time() && $numberRequests < $requestLimit) {
             $session->set($requestName, [
-                'time' => time() + $seconds,
+                'time' => time() + $minutes,
                 'numberRequests' => ++$numberRequests
             ]);
             return false;
         }
 
-        if($session->has($requestName) && $requestTime >= time() && $numberRequests >= $requestLimit) {
+        if ($session->has($requestName) && $requestTime >= time() && $numberRequests >= $requestLimit) {
             return true;
         }
 
         $session->set($requestName, [
-            'time' => time() + $seconds,
+            'time' => time() + $minutes,
             'numberRequests' => 1
         ]);
         return false;
@@ -252,22 +277,17 @@ use App\Core\Session;
     {
         $session = session();
 
-        if($session->has($field) && $session->$field == $value) return true;
+        if ($session->has($field) && $session->$field == $value) return true;
 
         $session->set($field, $value);
         return false;
     }
-
 }
 
 function flash(): ?\App\Support\Message
 {
     return session()->getFlashMessage();
-}
-
-
-
-{
+} {
     function session(): Session
     {
         return new App\Core\Session;
