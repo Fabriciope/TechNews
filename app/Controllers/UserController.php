@@ -5,7 +5,8 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\AuthUser;
 use App\Models\Article\Article;
-use App\Models\Paragraph;
+use App\Models\Article\Paragraph;
+use App\Models\Article\Category;
 
 class UserController extends Controller
 {
@@ -65,13 +66,9 @@ class UserController extends Controller
     }
 
 
-    public function pageNewArticle(array $data): void
+    public function pageNewArticle(): void
     {
         $user = self::authenticateUser(true);
-
-        if(isset($data['articleUri']) && !empty($data['articleUri'])) {
-            $article = (new Article)->findByUri($data['articleUri']);
-        }
 
         echo $this->views->render('new-article', [
             'title' => 'Novo Artigo',
@@ -176,7 +173,29 @@ class UserController extends Controller
 
     public function editArticle(array $data): void
     {
-        var_dump($data);
+        $user = self::authenticateUser(true);
+
+        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $article = (new Article)->findByUri($articleUri);
+        if(empty($data['articleUri']) || !$article) {
+            $this->message->error('Artigo não encontrado para edição')->fixed()->flash();
+            redirect('/perfil/artigo/salvos');
+            return;
+        }
+
+        $category = new Category;
+        $articleCategory = $category->findById($article->id_category)->category;
+        $categoryOptionsWithSelection =  $category->selected($articleCategory)->getCategories();
+
+        $paragraph = new Paragraph;
+        var_dump($paragraph->findParagraphsByArticle($article->id));
+
+        echo $this->views->render('new-article', [
+            'title' => 'Editar ' . $article->title,
+            'userData' => $user->data(),
+            'articleData' => $article,
+            'categoryOptions' => $categoryOptionsWithSelection
+        ]);
     }
 
     public function deleteArticle(array $data): void

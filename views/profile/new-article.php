@@ -5,24 +5,32 @@
     <?= csrf_input() ?>
 
     <div class="box_input">
-        <label for="first_name">Titulo do artigo:</label>
-        <input type="text" name="title" class="input" placeholder="Digite o titulo deste artigo...">
+        <label for="title">Titulo do artigo:</label>
+        <input 
+            type="text" 
+            name="title" 
+            class="input" 
+            id="title"
+            placeholder="Digite o titulo deste artigo..."
+            value="<?=$articleData->title ?? ''?>">
     </div>
     <div class="box_input">
-        <label for="first_name">Subtitulo do artigo:</label>
-        <textarea name="subtitle" class="input" id="" rows="3" placeholder="Digite o subtitulo deste artigo..."></textarea>
+        <label for="subtitle">Subtitulo do artigo:</label>
+        <textarea 
+            name="subtitle" 
+            class="input" 
+            id="subtitle" 
+            rows="3" 
+            placeholder="Digite o subtitulo deste artigo..."
+        ><?=$articleData->subtitle ?? ''?></textarea>
     </div>
     <div class="box_select">
         <label for="category">Selecione uma categoria:</label>
         <select class="input" name="category" id="category">
             <option selected value="">Selecione</option>
-            <option value="1">Programação</option>
-            <option value="2">Inteligência artificial</option>
-            <option value="3">Internet das coisas</option>
-            <option value="4">Hardware</option>
-            <option value="5">Robótica</option>
-            <option value="6">Cibersegurança</option>
-            <option value="7">Aparelhos eletrônicos</option>
+            <?php foreach($categoryOptions as $category): ?>
+                <option value="<?=$category->id?>" <?=$category->selected ?? ''?> ><?=$category->category?></option>
+            <?php endforeach; ?>
         </select>
     </div>
     <div class="box_input_img_article">
@@ -37,7 +45,12 @@
     </div>
     <div class="box_input">
         <label for="first_name">Adicionar link de vídeo:</label>
-        <input type="text" name="linkVideo" class="input" placeholder="Copie e cole o link embed do youtube de algum video...">
+        <input 
+            type="text" 
+            name="linkVideo" 
+            class="input" 
+            placeholder="Copie e cole o link embed do youtube de algum video..."
+            value="<?=$articleData->video ?? ''?>">
     </div>
 
     <div class="container_paragraphs">

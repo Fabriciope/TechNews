@@ -47,7 +47,7 @@ $router->get('/', 'UserController@pageProfile');
 // PROFILE ACTIONS
 $router->post('/atualizar', 'UserController@updateProfile');
 
-// ARTICLES
+// ARTICLES ACTIONS
 $router->group('perfil/artigo');
 
 $router->get('/salvos', 'UserController@pageSavedArticles');

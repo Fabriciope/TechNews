@@ -124,6 +124,7 @@ class Model
             //     }
             // }
             $stmt->execute($this->params);
+            $this->params = null;
             
             if($stmt->rowCount()) {
                 if($all) {

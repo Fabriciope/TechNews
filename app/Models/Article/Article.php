@@ -66,7 +66,7 @@ class Article extends Model
             return false;
         }
 
-        $findArticle = $this->find('uri = :uri AND id_user <> :userId', ":uri={$this->uri}&:userId={$this->id}")->fetch();
+        $findArticle = $this->find('uri = :uri AND id_user <> :userId', "uri={$this->uri}&userId={$this->id}")->fetch();
         if(!$findArticle || $this->fail()) {
             $this->message->warning($this->fail());
             return false;

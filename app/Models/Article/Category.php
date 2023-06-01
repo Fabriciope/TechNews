@@ -3,10 +3,15 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
+use App\Traits\ModelTrait;
 
-class category  extends Model
+class Category  extends Model
 {
-    private static string $entity = 'categories';
+    use ModelTrait;
+
+    protected static string $entity = 'categories';
+
+    public ?string $selected = null;
 
     public function __construct()
     {
@@ -15,8 +20,26 @@ class category  extends Model
             ['category', 'uri']
         );
     }
-    public function selected(string $category)
+
+    public function getCategories(): array
     {
-        
+        $fetchCategories = $this->find()->fetch(true);
+        if($this->selected) {
+            //array_search()
+            foreach($fetchCategories as $category) {
+                if($category->category == $this->selected) {
+                    $category->selected = 'selected';
+                }
+            }
+        }
+
+        return $fetchCategories;
     }
+
+    public function selected(string $category): Category
+    {
+        $this->selected = $category;
+        return $this;
+    }
+
 }
