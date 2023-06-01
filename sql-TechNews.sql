@@ -20,8 +20,8 @@ CREATE TABLE users (
 
 CREATE TABLE categories (
 	id INT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    category VARCHAR(100) NOT NULL,
-    uri VARCHAR(150) NOT NULL
+    category VARCHAR(100) NOT NULL UNIQUE,
+    uri VARCHAR(150) NOT NULL UNIQUE
 );
 
 CREATE TABLE articles (
