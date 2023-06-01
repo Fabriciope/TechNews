@@ -22,98 +22,14 @@ class UserController extends Controller
             //tratar de outra maneira
             redirect('/entrar');
         }
-
-
+        
+        
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
             'userData' => $user->data()
         ]);
     }
-
-    public function pageNewArticle(): void
-    {
-        $user = AuthUser::user();
-        if(!$user) {
-            //tratar de outra maneira
-            redirect('/entrar');
-        }
-
-        echo $this->views->render('new-article', [
-            'title' => 'Novo Artigo',
-            'userData' => $user->data()
-        ]);
-    }
-
-    public function pageSavedArticles(): void
-    {
-        $user = AuthUser::user();
-        if(!$user) {
-            //tratar de outra maneira
-            redirect('/entrar');
-        }
-
-        echo $this->views->render('saved-articles', [
-            'title' => 'Artigos salvos',
-            'userData' => $user->data(),
-            'savedArticles' => (new Article)->findUserSavedArticles($user->id)
-        ]);
-    }
-
-    public function publishArticle(array $data): void
-    {
-        $user = AuthUser::user();
-        if(!$user) {
-            //tratar de outra maneira
-            redirect('/entrar');
-            return;
-        }
-
-        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if(!$articleUri|| empty($articleUri)) {
-            $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
-            redirect('/perfil');
-            return;
-        }
-
-
-        $article = (new Article)->findByUri($articleUri);
-        $article->status = 'published';
-        $article->published_at = 'NOW()';
-        if(!$article->updateArticle()) {
-            $article->message()->fixed()->flash();
-            //redirect('/perfil/artigo/salvos');
-            //return;
-        }
-
-        var_dump($article);
-        $this->message->success('Artigo publicado com sucesso!')->fixed()->flash();
-        //redirect('/perfil/artigo/salvos');
-    }
-
-    public function editArticle(array $data): void
-    {
-        var_dump($data);
-    }
-
-    public function deleteArticle(array $data): void
-    {
-        var_dump($data);
-    }
-
-    public function pagePublishedArticles(): void
-    {
-        $user = AuthUser::user();
-        if(!$user) {
-            //tratar de outra maneira
-            redirect('/entrar');
-        }
-
-        echo $this->views->render('published-articles', [
-            'title' => 'Artigos publicados',
-            'userData' => $user->data()
-        ]);
-    }
-
+    
     public function updateProfile(array $data): void
     {
         if(!csrf_verify($data)) {
@@ -147,6 +63,21 @@ class UserController extends Controller
         return;
     }
 
+
+    public function pageNewArticle(array $data): void
+    {
+        $user = self::authenticateUser(true);
+
+        if(isset($data['articleUri']) && !empty($data['articleUri'])) {
+            $article = (new Article)->findByUri($data['articleUri']);
+        }
+
+        echo $this->views->render('new-article', [
+            'title' => 'Novo Artigo',
+            'userData' => $user->data()
+        ]);
+    }
+    
     public function saveArticle(array $data): void
     {
         if(!csrf_verify($data)) {
@@ -198,7 +129,7 @@ class UserController extends Controller
 
         if($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
             $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
-            $json['redirect'] = url('/perfil/artigos-salvos');
+            $json['redirect'] = url('/perfil/artigo/salvos');
         } else {
             $json['fixedMessage'] = $article->message()->fixed()->render();
         }
@@ -207,8 +138,79 @@ class UserController extends Controller
         return;
     }
 
-    private function authenticateUser()
+    public function pageSavedArticles(): void
     {
+        $user = self::authenticateUser(true);
 
+        echo $this->views->render('saved-articles', [
+            'title' => 'Artigos salvos',
+            'userData' => $user->data(),
+            'savedArticles' => (new Article)->findUserSavedArticles($user->id)
+        ]);
+    }
+
+    public function publishArticle(array $data): void
+    {
+        $user = self::authenticateUser(true);
+
+        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if(!$articleUri|| empty($articleUri)) {
+            $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
+            redirect('/perfil');
+            return;
+        }
+
+        $article = (new Article)->findByUri($articleUri);
+        $article->status = 'published';
+        $article->published_at = date_fmt_datetime('now');
+        if(!$article->updateArticle()) {
+            $article->message()->fixed()->flash();
+            redirect('/perfil/artigo/salvos');
+            return;
+        }
+
+        $this->message->success('Artigo publicado com sucesso!')->fixed()->flash();
+        redirect('/perfil/artigo/salvos');
+    }
+
+    public function editArticle(array $data): void
+    {
+        var_dump($data);
+    }
+
+    public function deleteArticle(array $data): void
+    {
+        var_dump($data);
+    }
+
+    public function pagePublishedArticles(): void
+    {
+        $user = self::authenticateUser(true);
+
+        echo $this->views->render('published-articles', [
+            'title' => 'Artigos publicados',
+            'userData' => $user->data()
+        ]);
+    }
+
+
+
+    private static function authenticateUser(bool $checkStatus = false): ?\App\Models\User
+    {
+        $user = AuthUser::user();
+        if(!$user) {
+            //tratar de outra maneira
+            redirect('/entrar');
+        }
+
+        if($checkStatus) {
+            if($user->status != 'confirmed') {
+                $user->message()->info('Ative sua conta, para usar este serviço')->fixed()->flash();
+                redirect('/perfil');
+                return null;
+            } 
+        }
+
+        return $user;
     }
 }

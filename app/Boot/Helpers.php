@@ -115,11 +115,17 @@ use App\Core\Session;
  * ###   DATE   ###
  * ################
  */ {
+
     function date_fmt(string $date = 'now', string $format = 'd/m/Y H\hi'): string
     {
         return (new DateTime($date))->format($format);
     }
- }
+
+    function date_fmt_datetime(string $date = 'now', string $format = 'Y-m-d H:i:s'): string
+    {
+        return (new DateTime($date))->format($format);
+    }
+}
 
 /**
  * ##################
@@ -287,9 +293,11 @@ use App\Core\Session;
 function flash(): ?\App\Support\Message
 {
     return session()->getFlashMessage();
-} {
-    function session(): Session
-    {
-        return new App\Core\Session;
-    }
+}
+
+
+
+function session(): Session
+{
+    return new App\Core\Session;
 }

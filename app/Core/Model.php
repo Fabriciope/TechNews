@@ -82,7 +82,7 @@ class Model
     public function find(?string $terms = null, ?string $params = null, string $columns = '*'): Model
     {
         if($terms !== null) {
-            $this->query = "SELECT {$columns} FROM " . static::$entity . " WHERE {$terms}";
+            $this->query = "SELECT {$columns} FROM " . static::$entity . " WHERE {$terms} ";
             parse_str($params ?? '', $this->params);
             return $this;
         }
@@ -92,19 +92,19 @@ class Model
 
     public function order(string $column, string $order = 'DESC'): Model
     {
-        $this->order = " ORDER BY {$column} {$order}";
+        $this->order = "ORDER BY {$column} {$order}";
         return $this;
     }
 
     public function limit(int $limit): Model
     {
-        $this->limit = " LIMIT {$limit}";
+        $this->limit = "LIMIT {$limit}";
         return $this;
     }
 
     public function offset(int $offset): Model
     {
-        $this->offset = " OFFSET {$offset}";
+        $this->offset = "OFFSET {$offset}";
         return $this;
     }
 
@@ -113,8 +113,18 @@ class Model
         try {
             $stmt = Connection::getInstance()
                     ->prepare($this->query . $this->limit . $this->offset . $this->order);
-            $stmt->execute($this->params);
 
+            // if($this->params) {
+            //     foreach($this->params as $key => $value) {
+            //         if($key == 'limit' || $key == 'offset' || is_numeric($value)) {
+            //             $stmt->bindValue(":{$key}", $value, PDO::PARAM_INT);
+            //         } else {
+            //             $stmt->bindValue(":{$key}", $value, PDO::PARAM_STR);
+            //         }
+            //     }
+            // }
+            $stmt->execute($this->params);
+            
             if($stmt->rowCount()) {
                 if($all) {
                     return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
@@ -123,7 +133,7 @@ class Model
             } else {
                 return null;
             }
-
+            
         } catch (PDOException $exception) {
             $this->fail = $exception;
             return null;
@@ -180,7 +190,6 @@ class Model
             return ($stmt->rowCount() ?? null);
         } catch (PDOException $exception) {
             $this->fail = $exception;
-            var_dump($exception);
         }
     }
 

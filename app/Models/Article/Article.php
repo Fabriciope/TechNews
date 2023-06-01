@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Article;
 
 use App\Core\Model;
 use App\Support\Upload;
@@ -15,7 +15,7 @@ class Article extends Model
     public function __construct()
     {
         parent::__construct(
-            ['id', 'published_at'],
+            ['id', 'created_at', 'updated_at'],
             ['id_user', 'id_category', 'title', 'subtitle', 'uri', 'cover']
         );
     }
@@ -40,7 +40,7 @@ class Article extends Model
         return $this;
     }
 
-    public function findByUri(string $uri, string $columns = '*'): Article
+    public function findByUri(string $uri, string $columns = '*'): ?Article
     {
         $find = $this->find('uri = :uri', "uri={$uri}", $columns);
         return $find->fetch();
@@ -52,7 +52,7 @@ class Article extends Model
         return $find->fetch(true);
     }
 
-    public function findUserSavedArticles(int $userId): array
+    public function findUserSavedArticles(int $userId): ?array
     {
        return $this->find(
             'id_user = :userId AND status = :status', 
@@ -66,9 +66,9 @@ class Article extends Model
             return false;
         }
 
-        $findArticle = $this->find('uri = :uri AND id_user <> :userId', "uri={$this->uri}&id={$this->id}")->fetch();
-        if($findArticle) {
-            $this->message->warning('O artigo informado já existe');
+        $findArticle = $this->find('uri = :uri AND id_user <> :userId', ":uri={$this->uri}&:userId={$this->id}")->fetch();
+        if(!$findArticle || $this->fail()) {
+            $this->message->warning($this->fail());
             return false;
         }
         $this->update(
@@ -77,7 +77,7 @@ class Article extends Model
             "id={$this->id}&uri{$this->uri}"
         );
         if($this->fail()) {
-            $this->message->error('Erro ao atualizar artigo');
+            $this->message->error($this->fail());
             return false;
         }
 
@@ -87,7 +87,7 @@ class Article extends Model
 
     public function createArticle(array $cover, array $titles, array $paragraphs): bool
     {
-        if (!$this->validateFields($cover)) {
+        if (!$this->validateFields($cover, $this->video)) {
             return false;
         }
 
@@ -137,18 +137,18 @@ class Article extends Model
             }
         }
 
-        $this->data = ($this->findById($this->id))->data();
+        $this->data = ($this->findById($articleId))->data();
         return true;
     }
 
-    private function validateFields(?array $cover = null): bool
+    private function validateFields(?array $cover = null, ?string $videoLink = null): bool
     {
         if (!$this->required('cover')) {
             $this->message->info('Preencha todos os campos requeridos');
             return false;
         }
         
-        if (is_null($this->id) && is_null($this->created_at)) {
+        if ($videoLink) {
             if (!is_urlYouTube($this->video)) {
                 $this->message->warning('Insira um link de compartilhamento do YouTube');
                 return false;
@@ -169,7 +169,6 @@ class Article extends Model
                 return false;
             }
         }
-        
 
         return true;
     }
