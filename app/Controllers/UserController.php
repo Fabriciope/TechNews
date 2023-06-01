@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\AuthUser;
-use App\Models\Article;
+use App\Models\Article\Article;
 use App\Models\Paragraph;
 
 class UserController extends Controller
@@ -20,6 +20,7 @@ class UserController extends Controller
         $user = AuthUser::user();
         if(!$user) {
             //tratar de outra maneira
+            $this->message->info('Faça o login para ter acesso à esta página')->fixed()->flash();
             redirect('/entrar');
         }
         

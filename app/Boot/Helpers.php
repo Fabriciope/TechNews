@@ -60,7 +60,10 @@ use App\Core\Session;
 
     function isLogged(): bool
     {
-        return session()->has('userId');
+        if(\App\Models\AuthUser::user()) {
+            return true;
+        }
+        return false;
     }
 }
 
