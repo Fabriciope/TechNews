@@ -49,32 +49,31 @@
             type="text" 
             name="linkVideo" 
             class="input" 
-            placeholder="Copie e cole o link embed do youtube de algum video..."
+            placeholder="Copie e cole o link embed do YouTube de algum video..."
             value="<?=$articleData->video ?? ''?>">
     </div>
 
     <div class="container_paragraphs">
-        <div class="box_paragraph">
-            <div class="box_input">
-                <p class="title_paragraph">Parágrafo 1°</p>
-                <label for="paragraph1" class="small_label">Titulo deste parágrafo (opcional)</label>
-                <input type="text" name="titleParagraph-1" class="input input_title_paragraph" placeholder="Digite o titulo deste parágrafo...">
-            </div>
-            <div class="box_input box_textarea">
-                <textarea name="contentParagraph-1" class="input text_content_paragraph" id="" rows="10" placeholder="Desenvolva o primeiro parágrafo do seu artigo......"></textarea>
-            </div>
-            <div class="box_actions_paragraph">
-                <div class="box_add_paragraph">
-                    <span class="btn_add_paragraph text_add_paragraph">Adicionar parágrafo</span>
-                    <span class="btn_add_paragraph icon_add_paragraph"><i class="fa-solid fa-file-circle-plus"></i></span>
-                </div>
-            </div>
-        </div>
-        <div class="container_other_paragraphs">
-
-        </div>
+        <?php if(isset($articlesParagraphs)): ?>
+            <?php foreach($articlesParagraphs as $key => $paragraph): ?>
+                <?php if($key == 0): ?>
+                    <?php $this->insert('includes::box-paragraph', [
+                        'first' =>  true,
+                        'paragraph' => $paragraph
+                    ]); ?>
+                <?php else: ?>
+                    <div class="container_other_paragraphs">
+                        <?php $this->insert('includes::box-paragraph', [
+                            'first' => false,
+                            'paragraph' => $paragraph
+                        ]); ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <?= $this->insert('includes::box-paragraph', ['first' => true]) ?>
+            <div class="container_other_paragraphs"></div>
+        <?php endif; ?>
     </div>
-
     <button type="submit" class="btn_green btn_new_article">Criar artigo</button>
-
 </form>

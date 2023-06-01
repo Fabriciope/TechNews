@@ -65,14 +65,16 @@ class UserController extends Controller
         return;
     }
 
-
     public function pageNewArticle(): void
     {
         $user = self::authenticateUser(true);
 
+        $categoryOptions = (new Category)->getCategories();
+
         echo $this->views->render('new-article', [
             'title' => 'Novo Artigo',
-            'userData' => $user->data()
+            'userData' => $user->data(),
+            'categoryOptions' => $categoryOptions
         ]);
     }
     
@@ -182,19 +184,26 @@ class UserController extends Controller
             redirect('/perfil/artigo/salvos');
             return;
         }
+        if($article->id_user != $user->id) {
+            $this->message->error('Você pode editar somente seus artigos')->fixed()->flash();
+            redirect('/perfil/salvos');
+            return;
+        }
+
 
         $category = new Category;
         $articleCategory = $category->findById($article->id_category)->category;
         $categoryOptionsWithSelection =  $category->selected($articleCategory)->getCategories();
 
         $paragraph = new Paragraph;
-        var_dump($paragraph->findParagraphsByArticle($article->id));
+        $articlesParagraphs = $paragraph->findParagraphsByArticleId($article->id);
 
         echo $this->views->render('new-article', [
             'title' => 'Editar ' . $article->title,
             'userData' => $user->data(),
             'articleData' => $article,
-            'categoryOptions' => $categoryOptionsWithSelection
+            'categoryOptions' => $categoryOptionsWithSelection,
+            'articlesParagraphs' => $articlesParagraphs
         ]);
     }
 

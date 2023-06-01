@@ -44,9 +44,10 @@ class Paragraph extends Model
         return true;
     }
 
-    public function findParagraphsByArticle(int $articleId)
+    public function findParagraphsByArticleId(int $articleId)
     {
-        $fetchParagraphs = $this->find('id_article = :id', "id={$articleId}")->fetch(true);
-        var_dump($fetchParagraphs);
+        return $this->find('id_article = :id', "id={$articleId}")
+        ->order('position', 'ASC')
+        ->fetch(true);
     }
 }
