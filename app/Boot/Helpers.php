@@ -178,9 +178,10 @@ use App\Core\Session;
  */ {
     function str_slug(string $string): string
     {
-        $string = filter_var(mb_strtolower($string), FILTER_SANITIZE_SPECIAL_CHARS);
+        $string = filter_var(mb_strtolower($string), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $formats = [
+            "/(ç|Ç)/",
             "/(á|à|ã|â|ä)/",
             "/(Á|À|Ã|Â|Ä)/",
             "/(é|è|ê|ë)/",
@@ -193,7 +194,7 @@ use App\Core\Session;
             "/(Ú|Ù|Û|Ü)/",
             "/(ñ)/", "/(Ñ)/"
         ];
-        $replace = explode("-", "a-A-e-E-i-I-o-O-u-U-n-N- ");
+        $replace = explode("-", "c-a-A-e-E-i-I-o-O-u-U-n-N- ");
 
         $slug = str_replace(
             ['--', '---', '----', '-----'],
@@ -209,17 +210,22 @@ use App\Core\Session;
 
     function str_title(string $string): string
     {
-        return ucwords(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+        return ucwords(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     }
 
     function convertYouTubeUrl(string $url): string
     {
-        $url = filter_var($url, FILTER_SANITIZE_SPECIAL_CHARS);
+        $url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         //https://www.youtube.com/watch?v=LPgTz6tRldo
         $videoCode = substr($url, 32);
         $urlEmbed = "https://www.youtube.com/embed/";
 
         return $urlEmbed . $videoCode;
+    }
+
+    function text_html(string $string): string
+    {
+        return html_entity_decode($string);
     }
 }
 

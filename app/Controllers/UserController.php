@@ -131,12 +131,13 @@ class UserController extends Controller
     public function pageSavedArticles(): void
     {
         $user = self::authenticateUser(true);
-
+        
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
             'savedArticles' => (new Article)->findUserSavedArticles($user->id)
         ]);
+
     }
 
     public function publishArticle(array $data): void
