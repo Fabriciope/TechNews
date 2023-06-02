@@ -106,7 +106,7 @@ class UserController extends Controller
         }
 
         $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
-        if (!$paragraphsAndTitles) {
+        if (isset($paragraphsAndTitles['position'])) {
             $json['fixedMessage'] = $this->message
                 ->error("Insira um conteúdo ao {$paragraphsAndTitles['position']}° parágrafo")
                 ->fixed()->render();
@@ -131,7 +131,7 @@ class UserController extends Controller
     public function pageSavedArticles(): void
     {
         $user = self::authenticateUser(true);
-        
+
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
@@ -243,7 +243,31 @@ class UserController extends Controller
 
     public function deleteArticle(array $data): void
     {
-        var_dump($data);
+        $user = self::authenticateUser(true);
+
+        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $article = (new Article)->findByUri($articleUri);
+        if (empty($data['articleUri']) || !$article) {
+            $this->message->error('Artigo não encontrado para exclusão')->fixed()->flash();
+            redirect('/perfil/artigo/salvos');
+            return;
+        }
+        if ($article->id_user != $user->id) {
+            $this->message->error('Você pode deletar somente seus artigos')->fixed()->flash();
+            redirect('/perfil/salvos');
+            return;
+        }
+
+        
+        if(!$article->destroy()) {
+            $article->message()->fixed()->flash();
+            redirect('/perfil/artigo/salvos');
+            return;
+        }
+
+        $this->message->success('Artigo deletado com sucesso')->fixed()->flash();
+        redirect('/perfil/artigo/salvos');
+        return;
     }
 
     public function pagePublishedArticles(): void

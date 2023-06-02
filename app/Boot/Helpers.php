@@ -178,7 +178,7 @@ use App\Core\Session;
  */ {
     function str_slug(string $string): string
     {
-        $string = filter_var(mb_strtolower($string), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $string = mb_strtolower($string);
 
         $formats = [
             "/(ç|Ç)/",
@@ -223,10 +223,10 @@ use App\Core\Session;
         return $urlEmbed . $videoCode;
     }
 
-    function text_html(string $string): string
-    {
-        return html_entity_decode($string);
-    }
+    // function text_html(string $string): string
+    // {
+    //     return html_entity_decode($string);
+    // }
 }
 
 

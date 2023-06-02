@@ -60,6 +60,23 @@ class Article extends Model
         )->fetch(true);
     }
 
+    public function destroy(): bool
+    {
+        $paragraph = new Paragraph;
+        $deleteParagraphs = $paragraph->deleteParagraphsByArticle($this->id);
+        if(!$deleteParagraphs) {
+            $this->message = $paragraph->message();
+            return false;
+        }
+        if(!parent::destroy()) {
+            $this->message->error('Erro ao deletar artigo');
+            //$this->message->error($this->fail());
+            return false;
+        }
+
+        return true;
+    }
+
     public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {
         $cover = empty($coverData['name']) ? null : $coverData;
@@ -69,8 +86,8 @@ class Article extends Model
 
         $findArticle = $this->find('uri = :uri AND id <> :id', "uri={$this->uri}&id={$this->id}")->fetch();
         if($this->fail()) {
-            $this->message->error('Erro ao fazer a verificação do artigo');
-            // $this->message->error($this->fail());
+            //$this->message->error('Erro ao fazer a verificação do artigo');
+            $this->message->error($this->fail());
             return false;
         }
         if($findArticle) {

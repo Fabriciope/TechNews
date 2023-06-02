@@ -34,7 +34,7 @@
                 id="description" 
                 rows="10" 
                 placeholder="Faça uma breve descrição sobre você..."
-                ><?=$userData->description?></textarea>
+                ><?=$userData->description ?? ''?></textarea>
             </div>
             <div class="box_edit_banner">
                 <h4>Alterar banner</h4>

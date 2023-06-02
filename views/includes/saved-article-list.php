@@ -4,7 +4,7 @@
             <img src="<?= image($article->cover) ?>" alt="">
         </div>
         <div class="info_article_saved">
-            <h4><?= text_html($article->title) ?></h4>
+            <h4><?= $article->title ?? '' ?></h4>
             <p><?= date_fmt($article->created_at) ?></p>
         </div>
     </div>

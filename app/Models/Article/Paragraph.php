@@ -62,7 +62,7 @@ class Paragraph extends Model
         return true;
     }
 
-    public static function getParagraphsAndTitles(array $data): ?array
+    public static function getParagraphsAndTitles(array $data): array
     {
         $titles =  array();
         $paragraphs =  array();

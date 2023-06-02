@@ -4,7 +4,7 @@
 
     <?= csrf_input() ?>
 
-    <?= isset($articleData) ? "<input type='hidden' name='articleUri' value='". text_html($articleData->uri) ."'>" : ''?>
+    <?= isset($articleData) ? "<input type='hidden' name='articleUri' value='". $articleData->uri ."'>" : ''?>
 
     <div class="box_input">
         <label for="title">Titulo do artigo:</label>
@@ -14,7 +14,7 @@
             class="input" 
             id="title"
             placeholder="Digite o titulo deste artigo..."
-            value="<?=isset($articleData->title) ? text_html($articleData->title) : ''?>">
+            value="<?= $articleData->title ?? ''?>">
     </div>
     <div class="box_input">
         <label for="subtitle">Subtitulo do artigo:</label>
@@ -24,7 +24,7 @@
             id="subtitle" 
             rows="3" 
             placeholder="Digite o subtitulo deste artigo..."
-        ><?=isset($articleData->subtitle) ? text_html($articleData->subtitle) : ''?></textarea>
+        ><?= $articleData->subtitle ?? ''?></textarea>
     </div>
     <div class="box_select">
         <label for="category">Selecione uma categoria:</label>
