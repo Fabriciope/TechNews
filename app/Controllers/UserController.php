@@ -19,43 +19,43 @@ class UserController extends Controller
     {
         //carregar o user data como um objeto para carregar a página de perfil do usuário
         $user = AuthUser::user();
-        if(!$user) {
+        if (!$user) {
             //tratar de outra maneira
             $this->message->info('Faça o login para ter acesso à esta página')->fixed()->flash();
             redirect('/entrar');
         }
-        
-        
+
+
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
             'userData' => $user->data()
         ]);
     }
-    
+
     public function updateProfile(array $data): void
     {
-        if(!csrf_verify($data)) {
+        if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message
-            ->error('Favor use o formulário!')
-            ->fixed()->render();
+                ->error('Favor use o formulário!')
+                ->fixed()->render();
             echo json_encode($json);
             return;
         }
 
-        if(empty($data['firstName']) || empty($data['lastName'])) {
+        if (empty($data['firstName']) || empty($data['lastName'])) {
             $json['fixedMessage'] = $this->message
-            ->info('Preencha no mínimo o nome e sobrenome')
-            ->fixed()->render();
+                ->info('Preencha no mínimo o nome e sobrenome')
+                ->fixed()->render();
             echo json_encode($json);
             return;
         }
-        
+
         $user = AuthUser::user();
         $user->first_name = trim($data['firstName']);
         $user->last_name = trim($data['lastName']);
         $user->description = trim($data['description']);
 
-        if(!$user->updateProfile($_FILES)) {
+        if (!$user->updateProfile($_FILES)) {
             $json['fixedMessage'] = $user->message()->fixed()->render();
         } else {
             $this->message->success('Perfil atualizado com sucesso!')->fixed()->flash();
@@ -74,23 +74,24 @@ class UserController extends Controller
         echo $this->views->render('new-article', [
             'title' => 'Novo Artigo',
             'userData' => $user->data(),
-            'categoryOptions' => $categoryOptions
+            'categoryOptions' => $categoryOptions,
+            'formAction' => 'criar'
         ]);
     }
-    
-    public function saveArticle(array $data): void
+
+    public function createArticle(array $data): void
     {
-        if(!csrf_verify($data)) {
+        $user = self::authenticateUser(true);
+
+        if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
             echo json_encode($json);
             return;
         }
 
-        $userId = AuthUser::user('id')->id;
-
         $article = new Article;
         $article->bootstrap(
-            $userId,
+            $user->id,
             intval($data['category']),
             str_title(trim($data['title'])),
             ucfirst(trim($data['subtitle'])),
@@ -98,36 +99,24 @@ class UserController extends Controller
             empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
         );
 
-        if($article->findByUri($article->uri)) {
+        if ($article->findByUri($article->uri)) {
             $json['fixedMessage'] = $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
             echo json_encode($json);
             return;
         }
 
-        $titles =  array();
-        $paragraphs =  array();
-        foreach ($data as $field => $content) {
-            if(str_contains($field, 'Paragraph')) {
-                list($type, $position) = explode('-', $field);
-                switch($type) {
-                    case 'titleParagraph':
-                        $titles[$position] = $content;
-                        break;
-                    case 'contentParagraph':
-                        if(empty($content)) {
-                            $json['fixedMessage'] = $this->message
-                            ->error("Insira um conteúdo ao {$position}° parágrafo")
-                            ->fixed()->render();
-                            echo json_encode($json);
-                            return;
-                        }
-                        $paragraphs[$position] = $content;
-                        break;
-                }
-            }
-        }
+        $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
+        if (!$paragraphsAndTitles) {
+            $json['fixedMessage'] = $this->message
+                ->error("Insira um conteúdo ao {$paragraphsAndTitles['position']}° parágrafo")
+                ->fixed()->render();
 
-        if($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
+            echo json_encode($json);
+            return;
+        }
+        $titles = $paragraphsAndTitles['titles'];
+        $paragraphs = $paragraphsAndTitles['paragraphs'];
+        if ($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
             $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
             $json['redirect'] = url('/perfil/artigo/salvos');
         } else {
@@ -137,6 +126,7 @@ class UserController extends Controller
         echo json_encode($json);
         return;
     }
+
 
     public function pageSavedArticles(): void
     {
@@ -154,7 +144,7 @@ class UserController extends Controller
         $user = self::authenticateUser(true);
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if(!$articleUri|| empty($articleUri)) {
+        if (!$articleUri || empty($articleUri)) {
             $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
             redirect('/perfil');
             return;
@@ -163,7 +153,7 @@ class UserController extends Controller
         $article = (new Article)->findByUri($articleUri);
         $article->status = 'published';
         $article->published_at = date_fmt_datetime('now');
-        if(!$article->updateArticle()) {
+        if (!$article->updateArticle()) {
             $article->message()->fixed()->flash();
             redirect('/perfil/artigo/salvos');
             return;
@@ -173,18 +163,18 @@ class UserController extends Controller
         redirect('/perfil/artigo/salvos');
     }
 
-    public function editArticle(array $data): void
+    public function pageEditArticle(array $data): void
     {
         $user = self::authenticateUser(true);
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = (new Article)->findByUri($articleUri);
-        if(empty($data['articleUri']) || !$article) {
+        if (empty($data['articleUri']) || !$article) {
             $this->message->error('Artigo não encontrado para edição')->fixed()->flash();
             redirect('/perfil/artigo/salvos');
             return;
         }
-        if($article->id_user != $user->id) {
+        if ($article->id_user != $user->id) {
             $this->message->error('Você pode editar somente seus artigos')->fixed()->flash();
             redirect('/perfil/salvos');
             return;
@@ -203,8 +193,51 @@ class UserController extends Controller
             'userData' => $user->data(),
             'articleData' => $article,
             'categoryOptions' => $categoryOptionsWithSelection,
-            'articlesParagraphs' => $articlesParagraphs
+            'articlesParagraphs' => $articlesParagraphs,
+            'formAction' => 'alterar'
         ]);
+    }
+
+    public function updateArticle(array $data): void
+    {
+        $user = self::authenticateUser(true);
+
+        if (!csrf_verify($data)) {
+            $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $article = (new Article)->findByUri($articleUri);
+        $article->id_user = $user->id;
+        $article->id_category = intval($data['category']);
+        $article->title = str_title(trim($data['title']));
+        $article->subtitle = ucfirst(trim($data['subtitle']));
+        $article->uri = str_slug(trim($data['title']));
+        $article->video = empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo']);
+
+
+        $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
+        if (!$paragraphsAndTitles) {
+            $json['fixedMessage'] = $this->message
+                ->error("Insira um conteúdo ao {$paragraphsAndTitles['position']}° parágrafo")
+                ->fixed()->render();
+
+            echo json_encode($json);
+            return;
+        }
+        $titles = $paragraphsAndTitles['titles'];
+        $paragraphs = $paragraphsAndTitles['paragraphs'];
+        if ($article->updateArticle($_FILES['cover'], $titles, $paragraphs)) {
+            $this->message->success('Artigo alterado com sucesso!')->fixed()->flash();
+            $json['redirect'] = url('/perfil/artigo/salvos');
+        } else {
+            $json['fixedMessage'] = $article->message()->fixed()->render();
+        }
+
+        echo json_encode($json);
+        return;
     }
 
     public function deleteArticle(array $data): void
@@ -227,17 +260,17 @@ class UserController extends Controller
     private static function authenticateUser(bool $checkStatus = false): ?\App\Models\User
     {
         $user = AuthUser::user();
-        if(!$user) {
+        if (!$user) {
             //tratar de outra maneira
             redirect('/entrar');
         }
 
-        if($checkStatus) {
-            if($user->status != 'confirmed') {
+        if ($checkStatus) {
+            if ($user->status != 'confirmed') {
                 $user->message()->info('Ative sua conta, para usar este serviço')->fixed()->flash();
                 redirect('/perfil');
                 return null;
-            } 
+            }
         }
 
         return $user;

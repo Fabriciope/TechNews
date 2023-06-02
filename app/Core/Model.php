@@ -123,6 +123,7 @@ class Model
             //         }
             //     }
             // }
+
             $stmt->execute($this->params);
             $this->params = null;
             
@@ -184,13 +185,43 @@ class Model
             parse_str($params, $this->params);
 
             $stmt = Connection::getInstance()
-                    ->prepare("UPDATE " . static::$entity . " SET {$dataSet} WHERE {$terms}");
+                ->prepare("UPDATE " . static::$entity . " SET {$dataSet} WHERE {$terms}");
 
             $dataBind = $this->filter(array_merge($data, $this->params));
             $stmt->execute($dataBind);
             return ($stmt->rowCount() ?? null);
         } catch (PDOException $exception) {
             $this->fail = $exception;
+            return null;
+        }
+    }
+
+    protected function delete(string $key, string $value, string $condition = '='): bool
+    {
+        try {
+            $stmt = Connection::getInstance()
+                ->prepare("DELETE FROM " . static::$entity . " WHERE {$key} {$condition} :value");
+            $stmt->bindValue(":value", $value, PDO::PARAM_STR);
+            $stmt->execute();
+            return true;
+        } catch(PDOException $exception) {
+            $this->fail = $exception;
+            return false;
+        }
+
+    }
+
+    protected function destroy(): bool
+    {
+        try {
+            $stmt = Connection::getInstance()
+                ->prepare("DELETE FROM " . static::$entity . " WHERE id = :id");
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch(PDOException $exception) {
+            $this->fail = $exception;
+            return false;
         }
     }
 

@@ -1,8 +1,10 @@
 <?php $this->layout("layouts::profile", ['title' => $title, 'userData' => $userData]) ?>
 
-<form class="formAjax" action="<?= url("/perfil/artigo/novo") ?>" method="POST" enctype="multipart/form-data">
+<form class="formAjax" action="<?= url("/perfil/artigo/{$formAction}") ?>" method="POST" enctype="multipart/form-data">
 
     <?= csrf_input() ?>
+
+    <?= isset($articleData) ? "<input type='hidden' name='articleUri' value='{$articleData->uri}'>" : ''?>
 
     <div class="box_input">
         <label for="title">Titulo do artigo:</label>
@@ -75,5 +77,7 @@
             <div class="container_other_paragraphs"></div>
         <?php endif; ?>
     </div>
-    <button type="submit" class="btn_green btn_new_article">Criar artigo</button>
+    <button type="submit" class="btn_green btn_new_article">
+        <?=isset($articleData) ? 'Salvar alteração' : 'Criar artigo' ?>
+    </button>
 </form>

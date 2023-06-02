@@ -60,24 +60,38 @@ class Article extends Model
         )->fetch(true);
     }
 
-    public function updateArticle(): bool
+    public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {
-        if (!$this->validateFields()) {
+        $cover = empty($coverData['name']) ? null : $coverData;
+        if (!$this->validateFields($cover, $this->video)) {
             return false;
         }
 
-        $findArticle = $this->find('uri = :uri AND id_user <> :userId', "uri={$this->uri}&userId={$this->id}")->fetch();
-        if(!$findArticle || $this->fail()) {
-            $this->message->warning($this->fail());
+        $findArticle = $this->find('uri = :uri AND id <> :id', "uri={$this->uri}&id={$this->id}")->fetch();
+        if($this->fail()) {
+            $this->message->error('Erro ao fazer a verificação do artigo');
+            // $this->message->error($this->fail());
             return false;
         }
+        if($findArticle) {
+            $this->message->warning('Titulo de artigo indisponível');
+            return false;
+        }
+
+        if(!empty($cover['name'])) {
+            unlink(__DIR__ . "./../../.." . $this->cover);
+            if(!$this->uploadCover($coverData)) return false;
+        }
+
+        if(!$this->updateArticleParagraphs($titles, $paragraphs)) return false;
+
         $this->update(
             $this->safe(),  
-            'id = :id AND uri = :uri',
-            "id={$this->id}&uri{$this->uri}"
+            'id = :id',
+            "id={$this->id}"
         );
         if($this->fail()) {
-            $this->message->error($this->fail());
+            $this->message->error('Erro ao alterar artigo');
             return false;
         }
 
@@ -85,25 +99,13 @@ class Article extends Model
         return true;
     }
 
-    public function createArticle(array $cover, array $titles, array $paragraphs): bool
+    public function createArticle(array $coverData, ?array $titles, array $paragraphs): bool
     {
-        if (!$this->validateFields($cover, $this->video)) {
+        if (!$this->validateFields($coverData, $this->video)) {
             return false;
         }
 
-        $upload = new Upload;
-        $image = $upload->image(
-            $cover,
-            $cover['name'],
-            CONF_IMAGE_COVER_SIZE,
-            CONF_UPLOAD_COVER_DIR
-        );
-
-        if ($image === null) {
-            $this->message = $upload->message();
-            return false;
-        }
-        $this->cover = $image;
+        if(!$this->uploadCover($coverData)) return false;
 
         $articleId = $this->create($this->safe());
         if ($this->fail()) {
@@ -111,6 +113,14 @@ class Article extends Model
             return false;
         }
 
+        if(!$this->createArticleParagraphs($articleId, $titles, $paragraphs)) return false;
+
+        $this->data = ($this->findById($articleId))->data();
+        return true;
+    }
+
+    private function createArticleParagraphs(int $articleId, array $titles, $paragraphs): bool
+    {
         $paragraph = new Paragraph;
         foreach($paragraphs as $position => $paragraphContent) {
             if (!empty($titles[$position])) {
@@ -121,7 +131,7 @@ class Article extends Model
                     $titles[$position]
                 );
                 if (!$newParagraph) {
-                    $json['fixedMessage'] = $this->message()->$paragraph->message();
+                    $this->message = $paragraph->message();
                     return false;
                 }
             } else {
@@ -131,17 +141,46 @@ class Article extends Model
                     intval($position),
                 );
                 if (!$newParagraph) {
-                    $json['fixedMessage'] = $this->message()->$paragraph->message();
+                    $this->message = $paragraph->message();
                     return false;
                 }
             }
         }
 
-        $this->data = ($this->findById($articleId))->data();
         return true;
     }
 
-    private function validateFields(?array $cover = null, ?string $videoLink = null): bool
+    private function updateArticleParagraphs(array $titles, array $paragraphs): bool
+    {
+        $paragraph = new Paragraph;
+        $deletedParagraphs = $paragraph->deleteParagraphsByArticle($this->id);
+        if(!$deletedParagraphs) {
+            $this->message = $paragraph->message();
+            return false;
+        }
+
+        return $this->createArticleParagraphs($this->id, $titles, $paragraphs);
+    }
+
+    private function uploadCover(array $cover): bool
+    {
+        $upload = new Upload;
+        $image = $upload->image(
+            $cover,
+            $cover['name'],
+            CONF_IMAGE_COVER_SIZE,
+            CONF_UPLOAD_COVER_DIR
+        );
+        if ($image === null) {
+            $this->message = $upload->message();
+            return false;
+        }
+        $this->cover = $image;
+
+        return true;
+    }
+
+    private function validateFields(?array $coverData = null, ?string $videoLink = null): bool
     {
         if (!$this->required('cover')) {
             $this->message->info('Preencha todos os campos requeridos');
@@ -156,15 +195,15 @@ class Article extends Model
                 $this->video = convertYouTubeUrl($this->video);
             }
         }
-        if ($cover) {
-            if (!empty($cover['name'])) {
-                [$width, $height] = getimagesize($cover['tmp_name']);
+        if ($coverData !== null) {
+            if (!empty($coverData['name'])) {
+                [$width, $height] = getimagesize($coverData['tmp_name']);
                 if ($height >= $width) {
                     $this->message->warning('Selecione uma imagem com as recomendações desejadas');
                     return false;
                 }
             }
-            if(empty($cover['name'])) {
+            if(empty($coverData['name'])) {
                 $this->message->warning('Insira um imagem de capa');
                 return false;
             }

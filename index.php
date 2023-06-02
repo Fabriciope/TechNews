@@ -47,18 +47,22 @@ $router->get('/', 'UserController@pageProfile');
 // PROFILE ACTIONS
 $router->post('/atualizar', 'UserController@updateProfile');
 
+
 // ARTICLES ACTIONS
 $router->group('perfil/artigo');
 
 $router->get('/salvos', 'UserController@pageSavedArticles');
 $router->post('/publicar', 'UserController@publishArticle');
-$router->get('/editar/{articleUri}', 'UserController@editArticle');
 $router->post('/deletar', 'UserController@deleteArticle');
 
 $router->get('/publicados', 'UserController@pagePublishedArticles');
 
 $router->get('/novo', 'UserController@pageNewArticle');
-$router->post('/novo', 'UserController@saveArticle');
+$router->post('/criar', 'UserController@createArticle');
+
+$router->get('/editar/{articleUri}', 'UserController@pageEditArticle');
+$router->post('/alterar', 'UserController@updateArticle');
+
 
 
 $router->group('error')->namespace('App\Controllers');

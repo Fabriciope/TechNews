@@ -95,6 +95,9 @@ class User extends Model
     
     public function updateProfile(array $files): bool
     {
+        if(!$this->validateFields()) {
+            return false;
+        }
         ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
         
         $upload = new Upload;

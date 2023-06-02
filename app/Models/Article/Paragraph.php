@@ -50,4 +50,42 @@ class Paragraph extends Model
         ->order('position', 'ASC')
         ->fetch(true);
     }
+
+    public function deleteParagraphsByArticle(int $articleId): bool
+    {
+        $this->delete('id_article', $articleId);
+        if($this->fail()) {
+            $this->message->error("Erro ao excluir parágrafos do artigo");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function getParagraphsAndTitles(array $data): ?array
+    {
+        $titles =  array();
+        $paragraphs =  array();
+        foreach ($data as $field => $content) {
+            if (str_contains($field, 'Paragraph')) {
+                list($type, $position) = explode('-', $field);
+                switch ($type) {
+                    case 'titleParagraph':
+                        $titles[$position] = $content;
+                        break;
+                    case 'contentParagraph':
+                        if (empty($content)) {
+                            return ['position' => $position];
+                        }
+                        $paragraphs[$position] = $content;
+                        break;
+                }
+            }
+        }
+
+        return [
+            'titles' => $titles,
+            'paragraphs' => $paragraphs
+        ];
+    }
 }
