@@ -24,7 +24,7 @@ class AuthController extends Controller
             return;
         }
         if (in_array('', $data)) {
-            $json['message'] = $this->message->info('Preencha todos os campos')->after('!')->render();
+            $json['message'] = $this->message->info('Preencha todos os campos !')->render();
             echo json_encode($json);
             return;
         }
@@ -61,7 +61,7 @@ class AuthController extends Controller
     public function pageConfirmedEmail(array $data): void
     {
         if (empty($data['email'])) {
-            //tratar erro de outra maneira
+            //tratar de outra maneira
             redirect('/');
         }
 
@@ -70,8 +70,8 @@ class AuthController extends Controller
         if ($user->status != 'confirmed') {
             $user->status = 'confirmed';
             if (!$user->updateUser()) {
-                //tratar o erro de outra maneira
-                //recuperar o a message d0 update e renderizar como fixed
+                //tratar de outra maneira
+                $user->message()->before('Oops! ')->fixed()->flash();
                 redirect('/');
             }
         }
@@ -165,7 +165,7 @@ class AuthController extends Controller
     public function pageResetPassword(array $data): void
     {
         if (empty($data)) {
-            //tratar erro de outra maneira
+            //tratar de outra maneira
             redirect('/recuperar-senha');
         }
 
@@ -206,8 +206,6 @@ class AuthController extends Controller
             echo json_encode($json);
             return;
         }
-
-
 
         $authUser = new AuthUser;
         $checkPasswordRecovery = $authUser->resetPassword(

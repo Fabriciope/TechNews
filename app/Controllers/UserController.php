@@ -17,11 +17,9 @@ class UserController extends Controller
 
     public function pageProfile(): void
     {
-        //carregar o user data como um objeto para carregar a página de perfil do usuário
-        $user = AuthUser::user();
-        if (!$user) {
-            //tratar de outra maneira
-            $this->message->info('Faça o login para ter acesso à esta página')->fixed()->flash();
+        $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
             redirect('/entrar');
         }
 
@@ -34,6 +32,12 @@ class UserController extends Controller
 
     public function updateProfile(array $data): void
     {
+        $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
+
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message
                 ->error('Favor use o formulário!')
@@ -50,7 +54,6 @@ class UserController extends Controller
             return;
         }
 
-        $user = AuthUser::user();
         $user->first_name = trim($data['firstName']);
         $user->last_name = trim($data['lastName']);
         $user->description = trim($data['description']);
@@ -68,6 +71,10 @@ class UserController extends Controller
     public function pageNewArticle(): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         $categoryOptions = (new Category)->getCategories();
 
@@ -82,6 +89,10 @@ class UserController extends Controller
     public function createArticle(array $data): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
@@ -143,6 +154,10 @@ class UserController extends Controller
     public function publishArticle(array $data): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (!$articleUri || empty($articleUri)) {
@@ -167,6 +182,10 @@ class UserController extends Controller
     public function pageEditArticle(array $data): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = (new Article)->findByUri($articleUri);
@@ -202,6 +221,10 @@ class UserController extends Controller
     public function updateArticle(array $data): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
@@ -220,7 +243,7 @@ class UserController extends Controller
 
 
         $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
-        if (!$paragraphsAndTitles) {
+        if (isset($paragraphsAndTitles['position'])) {
             $json['fixedMessage'] = $this->message
                 ->error("Insira um conteúdo ao {$paragraphsAndTitles['position']}° parágrafo")
                 ->fixed()->render();
@@ -244,6 +267,10 @@ class UserController extends Controller
     public function deleteArticle(array $data): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = (new Article)->findByUri($articleUri);
@@ -273,6 +300,10 @@ class UserController extends Controller
     public function pagePublishedArticles(): void
     {
         $user = self::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
 
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
@@ -286,8 +317,7 @@ class UserController extends Controller
     {
         $user = AuthUser::user();
         if (!$user) {
-            //tratar de outra maneira
-            redirect('/entrar');
+            return null;
         }
 
         if ($checkStatus) {

@@ -22,7 +22,7 @@ class AuthUser extends Model
     public static function user(string $columns = '*'): ?User
     {
         $session = new Session;
-        if(!$session->has('userId')) {
+        if (!$session->has('userId')) {
             return null;
         }
         return (new User)->findById($session->userId, $columns);
@@ -35,7 +35,7 @@ class AuthUser extends Model
 
     public function register(User $user, string $passwordConfirmation): bool
     {
-        if(!$user->createUser($passwordConfirmation)) {
+        if (!$user->createUser($passwordConfirmation)) {
             $this->message = $user->message;
             return false;
         }
@@ -53,7 +53,7 @@ class AuthUser extends Model
             $user->email,
             "{$user->first_name} {$user->last_name}"
         );
-        if(!$email->send()) {
+        if (!$email->send()) {
             $this->message = $email->message();
             return false;
         }
@@ -63,47 +63,47 @@ class AuthUser extends Model
 
     public function login(string $email, string $password, bool $save): bool|User
     {
-        if(!is_email($email)) {
+        if (!is_email($email)) {
             $this->message->warning('Insira um email válido');
             return false;
         }
 
-        if($save) {
+        if ($save) {
             setcookie('authEmail', $email, time() + 3600, '/');
         } else {
             setcookie('authEmail', '', time() - 3600, '/');
         }
 
         $user = (new User)->findByEmail($email);
-        if(!$user) {
+        if (!$user) {
             $this->message->warning('O e-mail informado não está cadastrado');
             return false;
         }
-        
-        if(!passwordVerify($password, $user->password)) {
+
+        if (!passwordVerify($password, $user->password)) {
             $this->message->warning('A senha informada está incorreta');
             return false;
         }
-        
+
         (new Session)->set('userId', $user->id);
         return $user;
     }
 
     public function forgetPassword(string $email): bool
     {
-        if(!is_email($email)) {
+        if (!is_email($email)) {
             $this->message->info('Insira um e-mail válido');
             return false;
         }
 
         $user = (new User)->findByEmail($email);
-        if(!$user) {
+        if (!$user) {
             $this->message->warning('O e-mail informado não está cadastrado');
             return false;
         }
 
         $user->password_recovery = md5(uniqid(rand(), true));
-        if(!$user->updateUser()) {
+        if (!$user->updateUser()) {
             $this->message = $user->message();
             return false;
         }
@@ -121,7 +121,7 @@ class AuthUser extends Model
             $user->email,
             "{$user->first_name} {$user->last_name}"
         );
-        if(!$email->send()) {
+        if (!$email->send()) {
             $this->message = $email->message();
             return false;
         }
@@ -132,28 +132,27 @@ class AuthUser extends Model
     public function resetPassword(string $email, string $code, string $password, string $passwordConfirmation): bool
     {
         $user = (new User)->findByEmail($email);
-        if(!$user) {
+        if (!$user) {
             $this->message->error('Usuário não encontrado');
             return false;
         }
 
-        if(empty($user->password_recovery) && $user->password_recovery != $code) {
+        if ($user->password_recovery != $code) {
             $this->message->error('O código de verificação está incorreto');
             return false;
         }
-        
-        if($password != $passwordConfirmation) {
+
+        if ($password != $passwordConfirmation) {
             $this->message->warning('A confirmação das senhas está incorreta');
             return false;
         }
 
         $user->password = $password;
         $user->password_recovery = null;
-        if(!$user->updateUser()) {
+        if (!$user->updateUser()) {
             $this->message = $user->message();
             return false;
         }
         return true;
     }
-
 }
