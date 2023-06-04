@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     grid-template-rows: auto;
-    gap: 2rem 1.2rem;
+    gap: 2.3rem 3.4rem;
 }
 
 
@@ -23,6 +23,7 @@
     border-radius: 1rem;
 }
 
+.box_info_post_published .info_post a,
 .box_info_post_published .info_post {
     display: flex;
     justify-content: space-between;
@@ -34,8 +35,9 @@
 
 .box_info_post_published .title_post a {
     display: inline-block;
+    width: 100%;
     margin-bottom: .5rem;
-    font-size: 1.5rem;
+    font-size: 1.38rem;
     font-weight: 400;
     text-align: center;
     color: var(--title-color);

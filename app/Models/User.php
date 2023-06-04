@@ -37,10 +37,11 @@ class User extends Model
 
     public function findByEmail(string $email, string $columns = '*'): ?User
     {
-        $find = $this->find('email = :email', "email={$email}", $columns);
+        $user = $this->find('email = :email', "email={$email}", $columns)->fetch();
+        
         if ($this->failed("Erro ao encontrar email {$email}")) return null;
 
-        return $find->fetch();
+        return $user;
     }
 
     public function updateUser(?array $files = null): bool

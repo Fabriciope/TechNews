@@ -123,7 +123,6 @@ class Paragraph extends Model
         $this->delete('id_article', $articleId);
         if($this->failed('Erro ao excluir parágrafos do artigo')) return false;
 
-
         return true;
     }
 

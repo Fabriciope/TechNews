@@ -7,8 +7,9 @@ use App\Support\Upload;
 use App\Traits\ModelTrait;
 
 use App\Models\Article\Paragraph;
+use App\Models\User;
 
-use App\Interfaces\ModelInterface;
+//use App\Interfaces\ModelInterface;
 
 class Article extends Model
 {
@@ -46,21 +47,23 @@ class Article extends Model
 
     public function findByUri(string $uri, string $columns = '*'): ?Article
     {
-        $find = $this->find('uri = :uri', "uri={$uri}", $columns);
+        $article = $this->find('uri = :uri', "uri={$uri}", $columns)->fetch();
+
         if($this->failed('Erro ao encontrar uri')) return null;
 
-        return $find->fetch();
+        return $article;
     }
 
     public function findArticlesByUser(int $userId): ?array
     {
-        $find = $this->find("id_user = :userId", "userId={$userId}");
+        $articles = $this->find("id_user = :userId", "userId={$userId}")->fetch(true);
+
         if($this->failed('Erro ao encontrar artigos do usuário')) return null;
 
-        return $find->fetch(true);
+        return $articles;
     }
 
-    public function findUserSavedArticles(int $userId): ?array
+    public function findSavedArticlesByUser(int $userId): ?array
     {
         //TODO: Adaptar lógica para possíveis erros
        return $this->find(
@@ -68,6 +71,35 @@ class Article extends Model
             "userId={$userId}&status=created"
         )->fetch(true);
     }
+
+    public function findPublishedArticlesByUser(int $userId): ?array
+    {
+        $articles = $this->find(
+            'status = :status AND id_user = :userId',
+            "userId={$userId}&status=published"
+        )->fetch(true);
+
+        if($this->failed('Erro ao buscar os artigos publicados')) return null;
+
+        return $articles;
+    }
+
+    public function author(): ?\App\Models\User
+    {
+        if($userId = $this->id_user) {
+            return (new User)->findById($userId);
+        }
+        return null;
+    }
+
+    public function category(): ?\App\Models\Article\Category
+    {
+        if($categoryId = $this->id_category) {
+            return (new Category)->findById($categoryId);
+        }
+        return null;
+    }
+
 
     public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {

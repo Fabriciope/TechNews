@@ -27,9 +27,11 @@ class ArticleController extends Controller
 
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
-            'userData' => $user->data()
+            'userData' => $user->data(),
+            'publishedArticles' => (new Article)->findPublishedArticlesByUser($user->id)
         ]);
     }
+
 
     public function pageSavedArticles(): void
     {
@@ -42,12 +44,12 @@ class ArticleController extends Controller
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
-            'savedArticles' => (new Article)->findUserSavedArticles($user->id)
+            'savedArticles' => (new Article)->findSavedArticlesByUser($user->id)
         ]);
 
     }
 
-    public function pageNewArticle(): void
+    public function publishArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
         if(!$user) {
@@ -55,14 +57,24 @@ class ArticleController extends Controller
             redirect('/entrar');
         }
 
-        $categoryOptions = (new Category)->getCategories();
+        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (!$articleUri || empty($articleUri)) {
+            $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
+            redirect('/perfil');
+            return;
+        }
 
-        echo $this->views->render('new-article', [
-            'title' => 'Novo Artigo',
-            'userData' => $user->data(),
-            'categoryOptions' => $categoryOptions,
-            'formAction' => 'criar'
-        ]);
+        $article = (new Article)->findByUri($articleUri);
+        $article->status = 'published';
+        $article->published_at = date_fmt_datetime('now');
+        if (!$article->updateArticle()) {
+            $article->message()->fixed()->flash();
+            redirect('/perfil/artigo/salvos');
+            return;
+        }
+
+        $this->message->success('Artigo publicado com sucesso!')->fixed()->flash();
+        redirect('/perfil/artigo/salvos');
     }
 
     public function pageEditArticle(array $data): void
@@ -103,92 +115,7 @@ class ArticleController extends Controller
             'formAction' => 'alterar'
         ]);
     }
-
-
-    // ARTICLE ACTIONS
-
-
-    public function createArticle(array $data): void
-    {
-        $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
-
-        if (!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
-            echo json_encode($json);
-            return;
-        }
-
-        $article = new Article;
-        $article->bootstrap(
-            $user->id,
-            intval($data['category']),
-            str_title(trim($data['title'])),
-            ucfirst(trim($data['subtitle'])),
-            str_slug(trim($data['title'])),
-            empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
-        );
-
-        if ($article->findByUri($article->uri)) {
-            $json['fixedMessage'] = $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
-            echo json_encode($json);
-            return;
-        }
-
-        $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
-        if (isset($paragraphsAndTitles['position'])) {
-            $position = $paragraphsAndTitles['position'];
-            $json['fixedMessage'] = $this->message
-                    ->error("Insira um conteúdo ao {$position}° parágrafo")
-                    ->fixed()->render();
-
-            echo json_encode($json);
-            return;
-        }
-
-        extract($paragraphsAndTitles);
-        if ($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
-            $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
-            $json['redirect'] = url('/perfil/artigo/salvos');
-        } else {
-            $json['fixedMessage'] = $article->message()->fixed()->render();
-        }
-
-        echo json_encode($json);
-        return;
-    }
-
-    public function publishArticle(array $data): void
-    {
-        $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
-
-        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if (!$articleUri || empty($articleUri)) {
-            $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
-            redirect('/perfil');
-            return;
-        }
-
-        $article = (new Article)->findByUri($articleUri);
-        $article->status = 'published';
-        $article->published_at = date_fmt_datetime('now');
-        if (!$article->updateArticle()) {
-            $article->message()->fixed()->flash();
-            redirect('/perfil/artigo/salvos');
-            return;
-        }
-
-        $this->message->success('Artigo publicado com sucesso!')->fixed()->flash();
-        redirect('/perfil/artigo/salvos');
-    }
-
+    
     public function updateArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -267,4 +194,84 @@ class ArticleController extends Controller
         redirect('/perfil/artigo/salvos');
         return;
     }
+
+
+    public function pageNewArticle(): void
+    {
+        $user = AuthUser::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
+
+        $categoryOptions = (new Category)->getCategories();
+
+        echo $this->views->render('new-article', [
+            'title' => 'Novo Artigo',
+            'userData' => $user->data(),
+            'categoryOptions' => $categoryOptions,
+            'formAction' => 'criar'
+        ]);
+    }
+
+    public function createArticle(array $data): void
+    {
+        $user = AuthUser::authenticateUser(true);
+        if(!$user) {
+            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+        }
+
+        if (!csrf_verify($data)) {
+            $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $article = new Article;
+        $article->bootstrap(
+            $user->id,
+            intval($data['category']),
+            str_title(trim($data['title'])),
+            ucfirst(trim($data['subtitle'])),
+            str_slug(trim($data['title'])),
+            empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
+        );
+
+        if ($article->findByUri($article->uri)) {
+            $json['fixedMessage'] = $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
+        if (isset($paragraphsAndTitles['position'])) {
+            $position = $paragraphsAndTitles['position'];
+            $json['fixedMessage'] = $this->message
+                    ->error("Insira um conteúdo ao {$position}° parágrafo")
+                    ->fixed()->render();
+
+            echo json_encode($json);
+            return;
+        }
+
+        extract($paragraphsAndTitles);
+        if ($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
+            $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
+            $json['redirect'] = url('/perfil/artigo/salvos');
+        } else {
+            $json['fixedMessage'] = $article->message()->fixed()->render();
+        }
+
+        echo json_encode($json);
+        return;
+    }
+
+
+
+    // ARTICLE ACTIONS
+
+
+
+
 }

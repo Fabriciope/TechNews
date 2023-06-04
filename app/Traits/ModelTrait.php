@@ -8,10 +8,11 @@ trait ModelTrait
 {
     public function findById(?int $id, string $columns = '*'): ?Model
     {
-        $find = $this->find('id = :id', "id={$id}", $columns);
+        $fetch = $this->find('id = :id', "id={$id}", $columns)->fetch();
+        
         if ($this->failed('Erro ao encontrar ' . static::$entity)) return null;
 
-        return $find->fetch();
+        return $fetch;
     }
 
     abstract private function validateFields();
