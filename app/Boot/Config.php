@@ -56,9 +56,9 @@ const CONF_IMAGE_CACHE = CONF_UPLOAD_DIR . '/' . CONF_UPLOAD_IMAGE_DIR . '/cache
 const CONF_IMAGE_SIZE = 'sei la';
 const CONF_IMAGE_QUALITY = ['jpg' => 72, 'png' => 5];
 
-const CONF_IMAGE_PHOTO_SIZE = 650;
+const CONF_IMAGE_PHOTO_SIZE = 700;
 const CONF_IMAGE_BANNER_SIZE = 1150;
-const CONF_IMAGE_COVER_SIZE = 800;
+const CONF_IMAGE_COVER_SIZE = 850;
 
 
 /**

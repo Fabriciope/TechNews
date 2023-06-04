@@ -16,7 +16,7 @@ class ArticleController extends Controller
         parent::__construct(__DIR__ . './../../views/profile');
     }
 
-    
+
     public function pagePublishedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -142,14 +142,14 @@ class ArticleController extends Controller
         if (isset($paragraphsAndTitles['position'])) {
             $position = $paragraphsAndTitles['position'];
             $json['fixedMessage'] = $this->message
-                ->error("Insira um conteúdo ao {$position}° parágrafo")
-                ->fixed()->render();
+                    ->error("Insira um conteúdo ao {$position}° parágrafo")
+                    ->fixed()->render();
 
             echo json_encode($json);
             return;
         }
 
-        ['titles' => $titles, 'paragraphs' => $paragraphs] = $paragraphsAndTitles;
+        extract($paragraphsAndTitles);
         if ($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
             $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
             $json['redirect'] = url('/perfil/artigo/salvos');
@@ -224,7 +224,7 @@ class ArticleController extends Controller
             return;
         }
 
-        ['titles' => $titles, 'paragraphs' => $paragraphs] = $paragraphsAndTitles;
+        extract($paragraphsAndTitles);
         if ($article->updateArticle($_FILES['cover'], $titles, $paragraphs)) {
             $this->message->success('Artigo alterado com sucesso!')->fixed()->flash();
             $json['redirect'] = url('/perfil/artigo/salvos');

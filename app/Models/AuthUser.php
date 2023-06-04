@@ -31,7 +31,7 @@ class AuthUser extends Model
 
     public static function authenticateUser(bool $checkStatus = false): ?\App\Models\User
     {
-        $user = AuthUser::user();
+        $user = self::user();
         if (!$user) {
             return null;
         }

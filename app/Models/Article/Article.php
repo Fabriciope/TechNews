@@ -85,8 +85,14 @@ class Article extends Model
             return false;
         }
 
-        if(!empty($cover['name'])) {
-            if(!$this->uploadImage('cover', $coverData, __DIR__ . "./../../..")) return false;
+        if($cover) {
+            if (!$this->uploadImage(
+                'cover',
+                $cover,
+                CONF_IMAGE_COVER_SIZE,
+                CONF_UPLOAD_COVER_DIR,
+                './../..'
+            )) return false;
         }
 
         if($paragraphs) {
@@ -112,7 +118,14 @@ class Article extends Model
             return false;
         }
 
-        if(!$this->uploadImage('cover', $coverData)) return false;
+        //TODO: refazer calculo para verificar o tamanho de forma mais precisa
+        if (!$this->uploadImage(
+            'cover',
+            $coverData,
+            CONF_IMAGE_COVER_SIZE,
+            CONF_UPLOAD_COVER_DIR,
+            __DIR__ . "./../.."
+        )) return false;
 
         $articleId = $this->create($this->safe());
         if($this->failed('Erro ao criar um novo artigo')) return false;
@@ -126,7 +139,6 @@ class Article extends Model
         $this->data = ($this->findById($articleId))->data();
         return true;
     }
-
 
     public function destroy(): bool
     {
@@ -145,25 +157,8 @@ class Article extends Model
         return true;
     }
 
-    // private function uploadCover(array $cover): bool
-    // {
-    //     $upload = new Upload;
-    //     $image = $upload->image(
-    //         $cover,
-    //         $cover['name'],
-    //         CONF_IMAGE_COVER_SIZE,
-    //         CONF_UPLOAD_COVER_DIR
-    //     );
-    //     if ($image === null) {
-    //         $this->message = $upload->message();
-    //         return false;
-    //     }
-    //     $this->cover = $image;
 
-    //     return true;
-    // }
-
-    protected function validateFields(?array $coverData = null, ?string $videoLink = null): bool
+    protected function validateFields(?array $coverData = null): bool
     {
         if (!$this->required('cover')) {
             $this->message->info('Preencha todos os campos requeridos');
@@ -181,10 +176,12 @@ class Article extends Model
 
         if ($coverData !== null) {
             if (!empty($coverData['name'])) {
-                [$width, $height] = getimagesize($coverData['tmp_name']);
-                if ($height >= $width) {
-                    $this->message->warning('Selecione uma imagem com as recomendações desejadas');
-                    return false;
+                if($cover = $coverData['tmp_name']) {
+                    [$width, $height] = getimagesize($cover);
+                    if ($height >= $width) {
+                        $this->message->warning('Selecione uma imagem com as recomendações desejadas');
+                        return false;
+                    }
                 }
             }
             if(empty($coverData['name'])) {
