@@ -4,7 +4,7 @@
 
     <?= csrf_input() ?>
 
-    <?= isset($articleData) ? "<input type='hidden' name='articleUri' value='". $articleData->uri ."'>" : ''?>
+    <?= isset($articleData) ? "<input type='hidden' name='articleUri' value='{$articleData->uri}'>" : ''?>
 
     <div class="box_input">
         <label for="title">Titulo do artigo:</label>
@@ -52,7 +52,7 @@
             name="linkVideo" 
             class="input" 
             placeholder="Copie e cole o link embed do YouTube de algum video..."
-            value="<?=$articleData->video ?? ''?>">
+            value="<?= $formAction == 'alterar' ? convertToYouTubeUrl($articleData->video) : ''?>">
     </div>
 
     <div class="container_paragraphs">

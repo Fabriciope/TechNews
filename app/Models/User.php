@@ -38,10 +38,12 @@ class User extends Model
     public function findByEmail(string $email, string $columns = '*'): ?User
     {
         $find = $this->find('email = :email', "email={$email}", $columns);
+        if($this->failed("Erro ao encontrar email {$email}")) return null;
+
         return $find->fetch();
     }
 
-    public function updateUser(): bool
+    public function updateUser(?array $files = null): bool
     {
         if(!$this->validateFields()) {
             return false;
@@ -55,15 +57,32 @@ class User extends Model
             return false;
         }
 
+        if($files) {
+
+            ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
+    
+            if(!empty($photo['name'])) { 
+                if(!$this->uploadImage('photo', $photo, __DIR__ . "./../..")) return false;
+            }
+            
+            if(!empty($banner['name'])) { 
+                //TODO: refazer calculo para verificar o tamanho de forma mais precisa
+                [$width, $height] = getimagesize($banner['tmp_name']);
+                if($height >= $width) {
+                    $this->message->warning('Insira um banner com as recomendações desejadas');
+                    return false;
+                }
+                
+                if(!$this->uploadImage('banner', $banner, __DIR__ . "./../..")) return false;
+            }
+        }
+
         $this->update(
             $this->safe(),
             'id = :id',
             "id={$this->id}"
         );
-        if($this->fail()) {
-            $this->message->error('Erro ao atualizar, verifique os dados passados');
-            return false;
-        }
+        if($this->failed('Erro ao atualizar, verifique os dados passados')) return false;
 
         $this->data = ($this->findById($this->id))->data();
         return true;
@@ -82,10 +101,7 @@ class User extends Model
         }
 
         $userId = $this->create($this->safe());
-        if($this->fail()) {
-            $this->message->error('Erro ao cadastrar');
-            return false;
-        }
+        if($this->failed('Erro ao cadastrar')) return false;
 
         $this->data = ($this->findById($userId))->data();
         return true;
@@ -93,58 +109,31 @@ class User extends Model
     }
 
     
-    public function updateProfile(array $files): bool
-    {
-        if(!$this->validateFields()) {
-            return false;
-        }
-        ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
-        
-        $upload = new Upload;
-        
-        if(!empty($photo['name'])) { 
-            $image = $upload->image(
-                $photo, 
-                $photo['name'], 
-                CONF_IMAGE_PHOTO_SIZE,
-                CONF_UPLOAD_PHOTO_DIR
-            );
-            
-            if($image === null) {
-                $this->message = $upload->message();
-                return false;
-            }
-            if($this->photo != '') {
-                @unlink(__DIR__ . "./../.." . $this->photo);
-            }
-            $this->photo = $image;
-        }
-        
-        if(!empty($banner['name'])) { 
-            [$width, $height] = getimagesize($banner['tmp_name']);
-            if($height >= $width) {
-                $this->message->warning('Insira um banner com as recomendações desejadas');
-                return false;
-            }
+    // public function updateProfile(array $files): bool
+    // {
+    //     if(!$this->validateFields()) {
+    //         return false;
+    //     }
 
-            $image = $upload->image(
-                $banner, 
-                $banner['name'], 
-                CONF_IMAGE_BANNER_SIZE,
-                CONF_UPLOAD_BANNER_DIR
-            );
-            if($image === null) {
-                $this->message = $upload->message();
-                return false;
-            }
-            if($this->banner != '') {
-                @unlink(__DIR__ . "./../.." . $this->banner);
-            }
-            $this->banner = $image;
-        }
+    //     ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
+
+    //     if(!empty($photo['name'])) { 
+    //         if(!$this->uploadImage('photo', $photo, __DIR__ . './../..')) return false;
+    //     }
         
-        return $this->updateUser();
-    }
+    //     if(!empty($banner['name'])) { 
+    //         //TODO: refazer calculo para verificar o tamanho de forma mais precisa
+    //         [$width, $height] = getimagesize($banner['tmp_name']);
+    //         if($height >= $width) {
+    //             $this->message->warning('Insira um banner com as recomendações desejadas');
+    //             return false;
+    //         }
+            
+    //         if(!$this->uploadImage('banner', $banner, __DIR__ . './../..')) return false;
+    //     }
+        
+    //     return $this->updateUser();
+    // }
 
     private function validateFields(?string $passwordConfirmation = null): bool 
     {
@@ -172,9 +161,10 @@ class User extends Model
             $this->password = generatePassword($this->password);
         }
     
-        if(!empty($this->photo)) {
+        //TODO: lembrar oque eu ia fazer aqui
+        // if(!empty($this->photo)) {
     
-        }
+        // }
     
         return true;
     }

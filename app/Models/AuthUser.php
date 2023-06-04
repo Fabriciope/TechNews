@@ -25,7 +25,26 @@ class AuthUser extends Model
         if (!$session->has('userId')) {
             return null;
         }
+        //TODO: aplicar verificação
         return (new User)->findById($session->userId, $columns);
+    }
+
+    public static function authenticateUser(bool $checkStatus = false): ?\App\Models\User
+    {
+        $user = AuthUser::user();
+        if (!$user) {
+            return null;
+        }
+
+        if ($checkStatus) {
+            if ($user->status != 'confirmed') {
+                $user->message()->info('Ative sua conta, para usar este serviço')->fixed()->flash();
+                redirect('/perfil');
+                return null;
+            }
+        }
+
+        return $user;
     }
 
     public static function logout(): void

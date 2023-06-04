@@ -21,9 +21,11 @@ class Category  extends Model
         );
     }
 
-    public function getCategories(): array
+    public function getCategories(): ?array
     {
         $fetchCategories = $this->find()->fetch(true);
+        if($this->failed('Erro ao recuperar as categorias')) return null;
+        
         if($this->selected) {
             //array_search()
             foreach($fetchCategories as $category) {
@@ -40,6 +42,16 @@ class Category  extends Model
     {
         $this->selected = $category;
         return $this;
+    }
+
+    private function validateFields(): bool
+    {
+        if(!$this->required()) {
+            $this->message->info('Preencha todos os campos');
+            return false;
+        }
+        
+        return true;
     }
 
 }

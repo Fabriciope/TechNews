@@ -166,7 +166,7 @@ class Model
                     ->prepare("INSERT INTO " . static::$entity . "({$columns}) VALUES ({$values})");
 
             $data = $this->filter($data);
-            $stmt->execute($data);
+            $stmt->execute($this->filter($data));
             return Connection::getInstance()->lastInsertId();
         } catch (PDOException $exception) {
             $this->fail = $exception;
@@ -249,7 +249,7 @@ class Model
         return $filter;
     }
 
-    public function required(?string $ignore = null):bool
+    public function required(?string $ignore = null): bool
     {
         $data = (array) $this->data;
         foreach(static::$required as $field) {

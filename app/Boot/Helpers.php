@@ -13,16 +13,29 @@ use App\Core\Session;
         return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
     }
 
-    function is_urlYouTube(string $url): bool
+    function is_urlEmbedYouTube(?string $url): bool
     {
+        if(is_null($url)) return true;
 
         if (!is_url($url)) return false;
 
-        //https://www.youtube.com/watch?v=LPgTz6tRldo
-        $urlBase = substr($url, 0, 31);
-        if ($urlBase != "https://www.youtube.com/watch?v") return false;
+        $urlBase = substr($url, 0, 30);
+        if ($urlBase == "https://www.youtube.com/embed/") return true;
 
-        return true;
+        return false;
+    }
+
+    function is_urlYouTube(?string $url): bool
+    {
+        if(is_null($url)) return true;
+
+        
+        if (!is_url($url)) return false;
+
+        $urlBase = substr($url, 0, 32);
+        if ($urlBase == "https://www.youtube.com/watch?v=") return true;
+
+        return false;
     }
 
     function is_email(string $email): bool
@@ -66,7 +79,6 @@ use App\Core\Session;
         return false;
     }
 }
-
 
 
 /**
@@ -113,6 +125,7 @@ use App\Core\Session;
     }
 }
 
+
 /**
  * ################
  * ###   DATE   ###
@@ -129,6 +142,7 @@ use App\Core\Session;
         return (new DateTime($date))->format($format);
     }
 }
+
 
 /**
  * ##################
@@ -170,6 +184,7 @@ use App\Core\Session;
     //     return url() . (new \App\Support\Thumb)->make($image, $width, $height);
     // }
 }
+
 
 /**
  * ##################
@@ -213,20 +228,31 @@ use App\Core\Session;
         return ucwords(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     }
 
-    function convertYouTubeUrl(string $url): string
+    function convertToYouTubeEmbedUrl(string $url): string
     {
         $url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         //https://www.youtube.com/watch?v=LPgTz6tRldo
         $videoCode = substr($url, 32);
-        $urlEmbed = "https://www.youtube.com/embed/";
+        $embedUrl = "https://www.youtube.com/embed/";
 
-        return $urlEmbed . $videoCode;
+        return $embedUrl . $videoCode;
+    }
+    
+    function convertToYouTubeUrl(?string $embedUrl): string
+    {
+        if(is_null($embedUrl)) return '';
+
+        $videoCode = substr($embedUrl, 30);
+        $youTubeUrl = "https://www.youtube.com/watch?v=";
+
+        return $youTubeUrl . $videoCode;
     }
 
     // function text_html(string $string): string
     // {
     //     return html_entity_decode($string);
     // }
+
 }
 
 

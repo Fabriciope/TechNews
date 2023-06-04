@@ -3,9 +3,12 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
+use App\Traits\ModelTrait;
 
 class Paragraph extends Model
 {
+    use ModelTrait;
+
     protected static string $entity = 'paragraphs';
 
     public function __construct()
@@ -14,6 +17,17 @@ class Paragraph extends Model
             ['id'],
             ['id_article', 'paragraph', 'position']
         );
+    }
+    
+    public function findParagraphsByArticleId(int $articleId): ?array
+    {
+        $paragraphs = $this->find('id_article = :id', "id={$articleId}")
+        ->order('position', 'ASC')
+        ->fetch(true);
+
+        if($this->failed('Erro ao buscar parágrafos do artigo')) return null;
+
+        return $paragraphs;
     }
 
     public function addParagraph(
@@ -24,40 +38,18 @@ class Paragraph extends Model
     ): bool
     {
 
-        // verificação desnecessária
-        // if(empty($paragraph)) {
-        //     $this->message->error("Insira um conteúdo ao parágrafo {$position}");
-        //     return false;
-        // }
+        //TODO: refatorar lógica das funções de adição de um parágrafo
         $this->id_article = $id_article;
         $this->paragraph = $paragraph;
         $this->position = $position;
         $this->title = $title;
 
+        if(!$this->validateFields()) return false;
+
+
 
         $this->create($this->safe());
-        if($this->fail()) {
-            $this->message->error('Erro ao adicionar um novo parágrafo');
-            return false;
-        }
-
-        return true;
-    }
-
-    public function findParagraphsByArticleId(int $articleId)
-    {
-        return $this->find('id_article = :id', "id={$articleId}")
-        ->order('position', 'ASC')
-        ->fetch(true);
-    }
-
-    public function deleteParagraphsByArticle(int $articleId): bool
-    {
-        $this->delete('id_article', $articleId);
-        if($this->fail()) {
-            $this->message->error("Erro ao excluir parágrafos do artigo");
-            return false;
-        }
+        if($this->failed('Erro ao adicionar um novo parágrafo')) return false;
 
         return true;
     }
@@ -71,13 +63,13 @@ class Paragraph extends Model
                 list($type, $position) = explode('-', $field);
                 switch ($type) {
                     case 'titleParagraph':
-                        $titles[$position] = $content;
+                        $titles[$position] = filter_var($content, FILTER_SANITIZE_SPECIAL_CHARS);
                         break;
                     case 'contentParagraph':
                         if (empty($content)) {
                             return ['position' => $position];
                         }
-                        $paragraphs[$position] = $content;
+                        $paragraphs[$position] = filter_var($content, FILTER_SANITIZE_SPECIAL_CHARS);
                         break;
                 }
             }
@@ -87,5 +79,61 @@ class Paragraph extends Model
             'titles' => $titles,
             'paragraphs' => $paragraphs
         ];
+    }
+
+    public function createArticleParagraphs(int $articleId, array $titles, $paragraphs): bool
+    {
+        foreach($paragraphs as $position => $paragraphContent) {
+            if (isset($titles[$position]) && !empty($titles[$position])) {
+                $newParagraph = $this->addParagraph(
+                    $articleId,
+                    trim($paragraphContent),
+                    intval($position),
+                    trim($titles[$position])
+                );
+                if (!$newParagraph) {
+                    return false;
+                }
+            } else {
+                $newParagraph = $this->addParagraph(
+                    $articleId,
+                    trim($paragraphContent),
+                    intval($position),
+                );
+                if (!$newParagraph) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function updateArticleParagraphs(int $articleId, array $titles, array $paragraphs): bool
+    {
+        if(!$this->deleteParagraphsByArticle($articleId)) {
+            return false;
+        }
+
+        return $this->createArticleParagraphs($articleId, $titles, $paragraphs);
+    }
+
+    public function deleteParagraphsByArticle(int $articleId): bool
+    {
+        $this->delete('id_article', $articleId);
+        if($this->failed('Erro ao excluir parágrafos do artigo')) return false;
+
+
+        return true;
+    }
+
+    public function validateFields(): bool
+    {
+        if(!$this->required()) {
+            var_dump($this);
+            $this->message->info('Preencha todos os campos do parágrafo');
+            return false;
+        }
+        return true;
     }
 }

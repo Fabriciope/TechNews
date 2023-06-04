@@ -4,7 +4,7 @@ if(response.fixedMessage){let boxResponse=document.querySelector('.fixedMessage'
 document.querySelector(".ajax_load").style.display="none"})}catch(error){console.log(error)}})}});const inputFile=document.querySelectorAll(".input_file");inputFile.forEach(input=>{input.addEventListener('change',(event)=>{let input=event.target
 let spanFileName=input.parentElement.querySelector(".file_name");spanFileName.innerText=input.files[0].name})});const btnMenu=document.querySelector(".btn_menu");const btnCloseMenu=document.querySelector(".btn_menu_mobile_active");function toggleMenu(){document.body.classList.toggle("menu_active")}
 btnMenu.onclick=toggleMenu;btnCloseMenu.onclick=toggleMenu;const liDropDown=document.querySelector(".li_profile");function toggleActionsProfile(){this.classList.toggle("active_dropdown")}
-if(liDropDown){liDropDown.onclick=toggleActionsProfile};const containerOtherParagraphs=document.querySelector(".container_paragraphs");let paragraphs=document.querySelectorAll(".container_paragraphs .box_paragraph");let currentParagraph=1;start();function start(){addActionButtons()}
+if(liDropDown){liDropDown.onclick=toggleActionsProfile};const containerOtherParagraphs=document.querySelector(".container_paragraphs");let paragraphs=document.querySelectorAll(".container_paragraphs .box_paragraph");let currentParagraph=paragraphs.length;start();function start(){addActionButtons()}
 function addNewParagraph(){currentParagraph++;removeActionButtons();createBoxNewParagraph()}
 function removeActionButtons(){let boxAdd=document.querySelector(".box_add_paragraph");if(boxAdd){boxAdd.remove()}}
 function createBoxNewParagraph(){let boxParagraph=document.createElement("div");boxParagraph.classList.add("box_paragraph");boxParagraph.innerHTML=`

@@ -5,7 +5,7 @@
         </div>
         <div class="info_article_saved">
             <h4><?= $article->title ?? '' ?></h4>
-            <p><?= date_fmt($article->created_at) ?></p>
+            <p>Criado dia: <?= date_fmt($article->created_at) ?></p>
         </div>
     </div>
     <div class="box_actions_saved">

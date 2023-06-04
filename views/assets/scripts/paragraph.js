@@ -2,7 +2,7 @@ const containerOtherParagraphs = document.querySelector(".container_paragraphs")
 
 let paragraphs = document.querySelectorAll(".container_paragraphs .box_paragraph");
 
-let currentParagraph = 1;
+let currentParagraph = paragraphs.length;
 
 start();
 
