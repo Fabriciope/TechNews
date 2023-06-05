@@ -1,7 +1,7 @@
 /* BOX ARTIGO */
 .article_post .link_img_post {
     display: inline-block;
-    margin-bottom: .8rem;
+    margin-bottom: .6rem;
     transition: .2s;
 }
 .article_post .link_img_post:hover img {
@@ -15,32 +15,37 @@
     border-radius: 1rem;
 }
 .article_post .box_info_post {
-    padding: .5rem;
+    padding: .25rem;
 }
 .article_post .info_post {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: .1rem 0 1.88rem 0;
-    font-size: 1.5rem;
+    margin: .1rem 0 1.5rem 0;
     color: var(--subtitle-color);
 }
 .article_post .info_post a {
+    font-size: 1.45rem;
     color: var(--subtitle-color);
 }
 .article_post .info_post a:hover {
     text-decoration: underline;
 }
+.article_post .info_post span {
+    font-size: 1.36rem;
+}
 
 .article_post .title_post a {
     display: inline-block;
+    width: 100%;
     margin-bottom: .5rem;
-    font-size: 2rem;
+    font-size: 1.8rem;
     text-align: center;
     color: var(--title-color);
 }
 .article_post .subtitle_post a { 
     display: inline-block;
+    width: 100%;
     font-size: 1.5rem;
     text-align: center;
     color: var(--subtitle-color);

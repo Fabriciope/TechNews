@@ -16,18 +16,7 @@
     text-shadow: 3px 3px 0 black;
     color: var(--title-color);
 }
-.container_article_post h1::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    left: 10px;
-    right: 10px;
-    bottom: 0px;
-    top: 18px;
-    background: rgb(255,62,0);
-    background: linear-gradient(82deg, rgba(255,62,0,1) 14%, rgba(255,157,0,1) 100%);
-    box-shadow: 3px 3px 0 black;
-}
+
 .header_article_post {
 
 }
@@ -56,9 +45,10 @@
     font-weight: 100;
     color: var(--subtitle-color);
 }
-.box_info_article_post .box_info_left  .name_author_article span {
+.box_info_article_post .box_info_left  .name_author_article a {
     margin-left: .5rem;
-    font-size: 1.5rem;
+    font-size: 1.65rem;
+    color: var(--subtitle-color);
 }
 
 .box_info_article_post .date_article {
@@ -123,7 +113,7 @@
     grid-template-columns: repeat(auto-fit, minmax(220px, .3fr));
     grid-template-rows: auto;
     place-content: center;
-    gap: 3.5rem;
+    gap: 2.5rem;
     margin: .7rem auto;
 }
 

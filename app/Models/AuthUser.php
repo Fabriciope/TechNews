@@ -29,18 +29,20 @@ class AuthUser extends Model
         return (new User)->findById($session->userId, $columns);
     }
 
-    public static function authenticateUser(bool $checkStatus = false): ?\App\Models\User
+    public static function authenticateUser(bool $checkStatus = false)
     {
         $user = self::user();
         if (!$user) {
-            return null;
+            (new \App\Support\Message)->error('Faça o login para ter acesso à esta página')->fixed()->flash();
+            redirect('/entrar');
+            return;
         }
 
         if ($checkStatus) {
-            if ($user->status != 'confirmed') {
-                $user->message()->info('Ative sua conta, para usar este serviço')->fixed()->flash();
+            if (!$user->checkStatus()) {
+                $user->message()->fixed()->flash();
                 redirect('/perfil');
-                return null;
+                return;  
             }
         }
 

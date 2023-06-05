@@ -35,6 +35,15 @@ class User extends Model
         return $this;
     }
 
+    public function checkStatus(): bool
+    {
+        if($this->status != 'confirmed') {
+            $this->message->info('Ative sua conta, para usar este serviço');
+            return false;
+        }
+        return true;
+    }
+
     public function findByEmail(string $email, string $columns = '*'): ?User
     {
         $user = $this->find('email = :email', "email={$email}", $columns)->fetch();

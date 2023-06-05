@@ -16,7 +16,9 @@ class AuthController extends Controller
     public function register(array $data): void
     {
         if (AuthUser::user()) {
-            redirect('/perfil');
+            $json['redirect'] = url('/perfil');
+            echo json_encode($json);
+            return;
         }
         if (!csrf_verify($data)) {
             $json['message'] = $this->message->error('Erro ao enviar, use o formulário')->render();

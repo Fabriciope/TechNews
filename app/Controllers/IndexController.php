@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Models\Article\Article;
+use App\Models\Article\Paragraph;
 
 use App\Models\User;
 
@@ -16,14 +18,32 @@ class IndexController extends Controller
     public function pageHome()
     {
         echo $this->views->render('home', [
-            'title' => 'TechNews'
+            'title' => 'TechNews',
+            'articles' => (new Article)
+                ->find('status = :s', 's=published')
+                ->order('published_at', 'DESC')
+                ->limit(6)
+                ->fetch(true)
         ]);
     }
 
     public function pageArticlePost(array $data): void
     {
+
+        $article = (new Article)->findByUri($data['articleUri'] ?? '');
+        if(!$article) {
+            redirect('/404');
+            return;
+        }
+
+        $article->views += 1;
+        $article->updateArticle();
+
         echo $this->views->render('article-post', [
-            'title' => $data['uri']
+            'title' => $article->title,
+            'article' => $article,
+            'paragraphs' => (new Paragraph)->findParagraphsByArticleId($article->id),
+            'relatedArticles' => $article->findRelatedArticlesByCategory($article->id_category, $article->id) ?? []
         ]);
     }
 
@@ -34,59 +54,21 @@ class IndexController extends Controller
         ]);
     }
 
-    public function teste2()
-    {
-        $user = new User([],[]);
-
-        $teste = $user->find()->fetch();
-
-        var_dump($teste);
-    }
-
-    public function teste(array $data): void
-    {
-
-        var_dump($data);
-
-        // $paragraphs =  [];
-        // foreach ($data as $field => $content) {
-        //     if (strpos($field, 'contentParagraph') !== false) {
-        //         $explode = explode('-', $field);
-        //         $paragraphs[$explode[1]] = $content;
-            
-        //     }
-        // }
-        // var_dump($paragraphs);
-
-        // $titles =  [];
-        // foreach ($data as $field => $content) {
-        //     if (strpos($field, 'titleParagraph') !== false) {
-        //         $explode = explode('-', $field);
-        //         $titles[$explode[1]] = $content;
-            
-        //     }
-        // }
-        // var_dump($titles);
-        
-        
-        // $separation = [];
-
-        // foreach($paragraphs as $position => $content) {
-        //     if(!empty($titles[$position])) {
-        //         var_dump($content, $titles[$position]);
-        //     } else {
-        //         var_dump($content, $titles[$position]); 
-        //     }
-        // }
-        
-
-        // var_dump($data);
-    }
-
     public function pageArticles()
     {
+        $article = new Article;
         echo $this->views->render('articles', [
-            'title' => 'Artigos'
+            'title' => 'Artigos',
+            'relevanteArticles' => $article
+                ->find('status = :s', 's=published')
+                ->order('views', 'DESC')
+                ->limit(3)
+                ->fetch(true),
+            'articles' => $article
+                ->find('status = :s', 's=published')
+                ->order('published_at', 'DESC')
+                ->limit(9)
+                ->fetch(true)
         ]);
     }
 

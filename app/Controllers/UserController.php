@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function pageProfile(): void
     {
-        $user = AuthUser::authenticateUser(true);
+        $user = AuthUser::authenticateUser();
         if(!$user) {
             $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
             redirect('/entrar');

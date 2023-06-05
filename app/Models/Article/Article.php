@@ -49,7 +49,7 @@ class Article extends Model
     {
         $article = $this->find('uri = :uri', "uri={$uri}", $columns)->fetch();
 
-        if($this->failed('Erro ao encontrar uri')) return null;
+        if ($this->failed('Erro ao encontrar uri')) return null;
 
         return $article;
     }
@@ -58,7 +58,7 @@ class Article extends Model
     {
         $articles = $this->find("id_user = :userId", "userId={$userId}")->fetch(true);
 
-        if($this->failed('Erro ao encontrar artigos do usuário')) return null;
+        if ($this->failed('Erro ao encontrar artigos do usuário')) return null;
 
         return $articles;
     }
@@ -66,8 +66,8 @@ class Article extends Model
     public function findSavedArticlesByUser(int $userId): ?array
     {
         //TODO: Adaptar lógica para possíveis erros
-       return $this->find(
-            'id_user = :userId AND status = :status', 
+        return $this->find(
+            'id_user = :userId AND status = :status',
             "userId={$userId}&status=created"
         )->fetch(true);
     }
@@ -79,23 +79,44 @@ class Article extends Model
             "userId={$userId}&status=published"
         )->fetch(true);
 
-        if($this->failed('Erro ao buscar os artigos publicados')) return null;
+        if ($this->failed('Erro ao buscar os artigos publicados')) return null;
 
         return $articles;
     }
 
-    public function author(): ?\App\Models\User
+    public function findRelatedArticlesByCategory(int $categoryId, int $articleId): ?array
     {
-        if($userId = $this->id_user) {
-            return (new User)->findById($userId);
+        $articles = $this->find('id_category = :c AND id <> :id', "c={$categoryId}&id={$articleId}")
+            ->order('rand()')
+            ->limit(3)
+            ->fetch(true);
+
+        if ($this->failed('Erro ao encontrar artigos relacionados')) return null;
+
+        return $articles;
+    }
+
+
+    public function author(?string $field = null)
+    {
+        if ($userId = $this->id_user) {
+            $user = (new User)->findById($userId);
+
+            if($field) return $user->$field;
+
+            return $user;
         }
         return null;
     }
 
-    public function category(): ?\App\Models\Article\Category
+    public function category(?string $field = null)
     {
-        if($categoryId = $this->id_category) {
-            return (new Category)->findById($categoryId);
+        if ($categoryId = $this->id_category) {
+            $category = (new Category)->findById($categoryId);
+
+            if($field) return $category->$field;
+
+            return $category;
         }
         return null;
     }
@@ -110,14 +131,14 @@ class Article extends Model
         }
 
         $findArticle = $this->find('uri = :uri AND id <> :id', "uri={$this->uri}&id={$this->id}")->fetch();
-        if($this->failed('Erro ao fazer a verificação do artigo')) return false;
+        if ($this->failed('Erro ao fazer a verificação do artigo')) return false;
 
-        if($findArticle) {
+        if ($findArticle) {
             $this->message->warning('Titulo de artigo indisponível');
             return false;
         }
 
-        if($cover) {
+        if ($cover) {
             if (!$this->uploadImage(
                 'cover',
                 $cover,
@@ -127,18 +148,18 @@ class Article extends Model
             )) return false;
         }
 
-        if($paragraphs) {
+        if ($paragraphs) {
             $paragraph = new Paragraph;
             //$paragraph->article_id = $this->id;
-            if(!$paragraph->updateArticleParagraphs($this->id, $titles, $paragraphs)) return false;
+            if (!$paragraph->updateArticleParagraphs($this->id, $titles, $paragraphs)) return false;
         }
 
         $this->update(
-            $this->safe(),  
+            $this->safe(),
             'id = :id',
             "id={$this->id}"
         );
-        if($this->failed('Erro ao alterar artigo')) return false;
+        if ($this->failed('Erro ao alterar artigo')) return false;
 
         $this->data = ($this->findById($this->id))->data();
         return true;
@@ -160,10 +181,10 @@ class Article extends Model
         )) return false;
 
         $articleId = $this->create($this->safe());
-        if($this->failed('Erro ao criar um novo artigo')) return false;
+        if ($this->failed('Erro ao criar um novo artigo')) return false;
 
         $paragraph = new Paragraph;
-        if(!$paragraph->createArticleParagraphs($articleId, $titles, $paragraphs)) {
+        if (!$paragraph->createArticleParagraphs($articleId, $titles, $paragraphs)) {
             $this->message = $paragraph->message();
             return false;
         }
@@ -176,11 +197,11 @@ class Article extends Model
     {
         $paragraph = new Paragraph;
         $deleteParagraphs = $paragraph->deleteParagraphsByArticle($this->id);
-        if(!$deleteParagraphs) {
+        if (!$deleteParagraphs) {
             $this->message = $paragraph->message();
             return false;
         }
-        if(!parent::destroy()) {
+        if (!parent::destroy()) {
             $this->message->error('Erro ao deletar artigo');
             //if($this->failed('Erro ao deletar artigo')) return false;
             return false;
@@ -196,8 +217,8 @@ class Article extends Model
             $this->message->info('Preencha todos os campos requeridos');
             return false;
         }
-        
-        if(!is_urlEmbedYouTube($this->video)) {
+
+        if (!is_urlEmbedYouTube($this->video)) {
             if (is_urlYouTube($this->video)) {
                 $this->video = convertToYouTubeEmbedUrl($this->video);
             } else {
@@ -208,7 +229,8 @@ class Article extends Model
 
         if ($coverData !== null) {
             if (!empty($coverData['name'])) {
-                if($cover = $coverData['tmp_name']) {
+                if ($cover = $coverData['tmp_name']) {
+                    //TODO: fazer o calculo de tamanho de outra maneira
                     [$width, $height] = getimagesize($cover);
                     if ($height >= $width) {
                         $this->message->warning('Selecione uma imagem com as recomendações desejadas');
@@ -216,7 +238,7 @@ class Article extends Model
                     }
                 }
             }
-            if(empty($coverData['name'])) {
+            if (empty($coverData['name'])) {
                 $this->message->warning('Insira um imagem de capa');
                 return false;
             }

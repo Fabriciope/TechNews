@@ -1,11 +1,15 @@
 <article class="article_post">
-    <a class="link_img_post" href="<?=url('artigos/teste')?>">
-        <img src="<?= theme("assets/images/articles/img-article.jpg") ?>" alt="">
+    <a class="link_img_post" href="<?=url("artigos/{$article->uri}")?>">
+        <img src="<?= image($article->cover) ?>" alt="capa do artigo">
     </a>
     <div class="box_info_post">
-        <p class="info_post"> <span> <a href="">Celulares</a> &bull; <a href="<?=url('/usuario/teste')?>">Fabrício</a> </span> <span>04/03/2027 12h53</span></p>
-        <h4 class="title_post"><a href="">YouTube Premium vai ganhar novos recursos no iOS</a></h4>
-        <p class="subtitle_post"><a href="">>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock,</a></p>
+        <p class="info_post"> 
+            <span> <a href="<?=url("/artigos/categoria/{$article->category('uri')}")?>"><?=$article->category('category')?></a> &bull;
+             <a href="<?=url("/usuario/{$article->author('id')}")?>"><?=$article->author('first_name')?></a> </span> 
+             <span><?=date_fmt($article->published_at, 'd/m/Y')?></span>
+        </p>
+        <h4 class="title_post"><a href="<?=url("artigos/{$article->uri}")?>"><?=$article->title?></a></h4>
+        <p class="subtitle_post"><a href="<?=url("artigos/{$article->uri}")?>"><?=str_limit_chars($article->subtitle, 100)?></a></p>
     </div>
     <div class="box_comment">
         <i class="fa-regular fa-message"></i>

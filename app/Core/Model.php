@@ -74,7 +74,7 @@ class Model
         return $this->fail;
     }
 
-    public function message(): ?Message
+    public function message(): Message
     {
         return $this->message;
     }
@@ -92,19 +92,19 @@ class Model
 
     public function order(string $column, string $order = 'DESC'): Model
     {
-        $this->order = "ORDER BY {$column} {$order}";
+        $this->order = " ORDER BY {$column} {$order}";
         return $this;
     }
 
     public function limit(int $limit): Model
     {
-        $this->limit = "LIMIT {$limit}";
+        $this->limit = " LIMIT {$limit}";
         return $this;
     }
 
     public function offset(int $offset): Model
     {
-        $this->offset = "OFFSET {$offset}";
+        $this->offset = " OFFSET {$offset}";
         return $this;
     }
 
@@ -112,7 +112,7 @@ class Model
     {
         try {
             $stmt = Connection::getInstance()
-                    ->prepare($this->query . $this->limit . $this->offset . $this->order);
+                    ->prepare($this->query . $this->order . $this->limit . $this->offset);
 
             // if($this->params) {
             //     foreach($this->params as $key => $value) {

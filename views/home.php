@@ -22,7 +22,7 @@
 
 <!-- TEXTOS DE SERVIÇOS E BENEFÍCIOS DA PLATAFORMA -->
 <section class="site_width">
-    <h2 class="title_section">Benefícios da plataforma</h2>
+    <h2 class="title_section text_effect">Benefícios da plataforma</h2>
 
     <div class="services">
         <article>
@@ -60,12 +60,20 @@
             </div>
         </div>
         <div class="box_right_register">
-            <form action="#">
+            <form class="formAjax" action="<?= url('/cadastrar') ?>" method="POST">
                 <h3>Cadastrar-se</h3>
+
+                <div class="ajax_response">
+                    <?= flash() ?>
+                </div>
+
+                <?= csrf_input() ?>
+
                 <input type="text" name="first_name" class="input" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" class="input" placeholder="Último nome:" />
                 <input type="email" name="email" class="input" placeholder="Melhor e-mail:" />
                 <input type="password" name="password" class="input" placeholder="Senha de acesso:" />
+                <input type="password" name="passwordConfirmation" class="input" placeholder="Senha de acesso:" />
                 <button class="gb_btn">Criar minha conta</button>
             </form>
         </div>
@@ -74,7 +82,7 @@
 
 <!-- CAIXA DE PESQUISA E ULTIMAS NOTÍCIAS -->
 <section class="site_width latest_news">
-    <h2 class="title_section">Veja os últimos artigos pulicados</h2>
+    <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>
     <form action="">
         <label id="serch_article" class="box_search_article">
             <input type="text" id="serch_article" placeholder="pesquise por algo ...">
@@ -82,8 +90,8 @@
         </label>
     </form>
     <div class="container_article">
-        <?php for ($i = 0; $i < 6; $i++) : ?>
-            <?= $this->insert("includes::article-list", []) ?>
-        <?php endfor; ?>
+        <?php foreach ($articles as $article) : ?>
+            <?= $this->insert("includes::article-list", ['article' => $article]) ?>
+        <?php endforeach; ?>
     </div>
 </section>

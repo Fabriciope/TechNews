@@ -15,7 +15,8 @@ $router->get('/teste', 'IndexController@teste2');
 // ARTICLES ROUTES
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
-$router->get('/{uri}', 'IndexController@pageArticlePost');
+$router->get('/{articleUri}', 'IndexController@pageArticlePost');
+$router->get('categoria/{categoryId}', 'IndexController@pageCategoryArticles');
 
 $router->group(null);
 $router->get('/usuario/{userUri}', 'IndexController@pageUser');
@@ -43,8 +44,6 @@ $router->get("/obrigado/{email}", 'AuthController@pageConfirmedEmail');
 // PROFILE ROUTES
 $router->group('/perfil');
 $router->get('/', 'UserController@pageProfile');
-
-// PROFILE ACTIONS
 $router->post('/atualizar', 'UserController@updateProfile');
 
 
@@ -54,12 +53,9 @@ $router->group('perfil/artigo');
 $router->get('/salvos', 'ArticleController@pageSavedArticles');
 $router->post('/publicar', 'ArticleController@publishArticle');
 $router->post('/deletar', 'ArticleController@deleteArticle');
-
 $router->get('/publicados', 'ArticleController@pagePublishedArticles');
-
 $router->get('/novo', 'ArticleController@pageNewArticle');
 $router->post('/criar', 'ArticleController@createArticle');
-
 $router->get('/editar/{articleUri}', 'ArticleController@pageEditArticle');
 $router->post('/alterar', 'ArticleController@updateArticle');
 

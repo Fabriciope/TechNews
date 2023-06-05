@@ -20,10 +20,7 @@ class ArticleController extends Controller
     public function pagePublishedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
+
 
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
@@ -36,10 +33,6 @@ class ArticleController extends Controller
     public function pageSavedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
@@ -52,10 +45,6 @@ class ArticleController extends Controller
     public function publishArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (!$articleUri || empty($articleUri)) {
@@ -80,10 +69,6 @@ class ArticleController extends Controller
     public function pageEditArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = (new Article)->findByUri($articleUri);
@@ -119,10 +104,6 @@ class ArticleController extends Controller
     public function updateArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
@@ -166,10 +147,6 @@ class ArticleController extends Controller
     public function deleteArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = (new Article)->findByUri($articleUri);
@@ -199,10 +176,6 @@ class ArticleController extends Controller
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         $categoryOptions = (new Category)->getCategories();
 
@@ -217,10 +190,6 @@ class ArticleController extends Controller
     public function createArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();

@@ -19,7 +19,7 @@
                     <span><i class="fa-solid fa-user"></i></span> 
                     Nome:
                 </label>
-                <input type="text" name="first_name" type="email" placeholder="Primeiro nome:">
+                <input type="text" name="first_name" placeholder="Primeiro nome:">
             </div>
 
             <div class="box_input_auth">
@@ -27,7 +27,7 @@
                     <span><i class="fa-solid fa-user-plus"></i></span> 
                     Sobrenome:
                 </label>
-                <input type="text" name="last_name" type="email" placeholder="Segundo nome:">
+                <input type="text" name="last_name"  placeholder="Segundo nome:">
             </div>
 
             <div class="box_input_auth">
@@ -35,7 +35,7 @@
                     <span><i class="fa-solid fa-envelope"></i></span> 
                     Email:
                 </label>
-                <input type="text" name="email" type="email" placeholder="Informe seu e-mail:">
+                <input type="email" name="email" placeholder="Informe seu e-mail:">
             </div>
 
             <div class="box_input_pass_auth">

@@ -15,8 +15,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
-    min-width: 390px;
+    width: 95%;
+    max-width: 450px;
     border-radius: 100rem;
     box-shadow: 0 2px 0 var(--orange);
     background-color: var(--bg-box);
