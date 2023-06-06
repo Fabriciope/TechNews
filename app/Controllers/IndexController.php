@@ -54,12 +54,17 @@ class IndexController extends Controller
         ]);
     }
 
-    public function pageArticles()
+    public function pageArticles(array $data): void
     {
+
         $article = new Article;
+
+        $page = isset($data['page']) ? intval($data['page']) : 1;
+        $paginator = new \App\Support\Paginator(3, $page, $article->count());
+
         echo $this->views->render('articles', [
             'title' => 'Artigos',
-            'relevanteArticles' => $article
+            'relevantArticles' => $article
                 ->find('status = :s', 's=published')
                 ->order('views', 'DESC')
                 ->limit(3)
@@ -67,9 +72,16 @@ class IndexController extends Controller
             'articles' => $article
                 ->find('status = :s', 's=published')
                 ->order('published_at', 'DESC')
-                ->limit(9)
-                ->fetch(true)
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->fetch(true),
+            'paginator' => $paginator
         ]);
+    }
+
+    public function searchArticle(array $data): void
+    {
+        //TODO: fazer a pesquisa de artigos com o índice full text
     }
 
     public function pageLogin(): void

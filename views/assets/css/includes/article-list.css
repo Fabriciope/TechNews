@@ -1,6 +1,7 @@
 /* BOX ARTIGO */
 .article_post .link_img_post {
-    display: inline-block;
+    display: block;
+    margin: 0 auto;
     margin-bottom: .6rem;
     transition: .2s;
 }
@@ -13,6 +14,7 @@
     width: 100%;
     box-shadow: 0 2px 0 var(--orange);
     border-radius: 1rem;
+ 
 }
 .article_post .box_info_post {
     padding: .25rem;

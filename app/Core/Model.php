@@ -9,7 +9,7 @@ use PDO;
 use PDOException;
 
 class Model
-{  
+{
     /** @var Message|null */
     protected ?Message $message;
 
@@ -20,7 +20,7 @@ class Model
     protected ?\PDOException $fail = null;
 
     /**  @var string */
-    protected ?string $query;   
+    protected ?string $query;
 
     /** @var array|null */
     protected ?array $params = null;
@@ -43,8 +43,7 @@ class Model
     public function __construct(
         array $protected,
         array $required
-    )
-    {
+    ) {
         static::$protected = array_merge($protected, ['created-at', 'updated-at']);
         static::$required = $required;
         $this->message = new Message;
@@ -52,7 +51,7 @@ class Model
 
     public function __set($name, $value)
     {
-        if(empty($this->data)) {
+        if (empty($this->data)) {
             $this->data = new \stdClass();
         }
 
@@ -81,7 +80,7 @@ class Model
 
     public function find(?string $terms = null, ?string $params = null, string $columns = '*'): Model
     {
-        if($terms !== null) {
+        if ($terms !== null) {
             $this->query = "SELECT {$columns} FROM " . static::$entity . " WHERE {$terms} ";
             parse_str($params ?? '', $this->params);
             return $this;
@@ -112,7 +111,7 @@ class Model
     {
         try {
             $stmt = Connection::getInstance()
-                    ->prepare($this->query . $this->order . $this->limit . $this->offset);
+                ->prepare($this->query . $this->order . $this->limit . $this->offset);
 
             // if($this->params) {
             //     foreach($this->params as $key => $value) {
@@ -126,33 +125,36 @@ class Model
 
             $stmt->execute($this->params);
             $this->params = null;
-            
-            if($stmt->rowCount()) {
-                if($all) {
+
+            if ($stmt->rowCount()) {
+                if ($all) {
                     return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
                 }
                 return $stmt->fetchObject(static::class);
             } else {
                 return null;
             }
-            
         } catch (PDOException $exception) {
             $this->fail = $exception;
             return null;
         }
     }
 
-    public function count(): ?int
+    public function count(?string $columns = 'id'): ?int
     {
-        if(!empty($this->query)) {
-            try {
-                $stmt = Connection::getInstance()
-                        ->prepare($this->query);
+        try {
+            $conn = Connection::getInstance();
+            if (!empty($this->query)) {
+                $stmt = $conn->prepare($this->query);
                 $stmt->execute($this->params);
-            } catch (PDOException $exception) {
-                $this->fail = $exception;
-                return null;
+                return $stmt->rowCount();
+            } else {
+                $stmt = $conn->query("SELECT {$columns} FROM " . static::$entity);
+                return $stmt->rowCount();
             }
+        } catch (PDOException $exception) {
+            $this->fail = $exception;
+            return null;
         }
     }
 
@@ -163,7 +165,7 @@ class Model
             $values = ':' . implode(', :', array_keys($data));
 
             $stmt = Connection::getInstance()
-                    ->prepare("INSERT INTO " . static::$entity . "({$columns}) VALUES ({$values})");
+                ->prepare("INSERT INTO " . static::$entity . "({$columns}) VALUES ({$values})");
 
             $data = $this->filter($data);
             $stmt->execute($this->filter($data));
@@ -178,7 +180,7 @@ class Model
     {
         try {
             $dataSet = [];
-            foreach($data as $bind => $value) {
+            foreach ($data as $bind => $value) {
                 $dataSet[] = "{$bind} = :{$bind}";
             }
             $dataSet = implode(', ', $dataSet);
@@ -204,11 +206,10 @@ class Model
             $stmt->bindValue(":value", $value, PDO::PARAM_STR);
             $stmt->execute();
             return true;
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->fail = $exception;
             return false;
         }
-
     }
 
     protected function destroy(): bool
@@ -219,7 +220,7 @@ class Model
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
             $stmt->execute();
             return true;
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->fail = $exception;
             return false;
         }
@@ -229,8 +230,8 @@ class Model
     {
         $data = (array) $this->data;
 
-        foreach(static::$protected as  $unset) {
-            if(isset($data[$unset])) {
+        foreach (static::$protected as  $unset) {
+            if (isset($data[$unset])) {
                 unset($data[$unset]);
             }
         }
@@ -242,7 +243,7 @@ class Model
     {
         $filter = [];
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
         }
 
@@ -252,11 +253,11 @@ class Model
     public function required(?string $ignore = null): bool
     {
         $data = (array) $this->data;
-        foreach(static::$required as $field) {
-            if($ignore && $field == $ignore) {
+        foreach (static::$required as $field) {
+            if ($ignore && $field == $ignore) {
                 continue;
             }
-            if(!isset($data[$field]) || empty($data[$field])) {
+            if (!isset($data[$field]) || empty($data[$field])) {
                 return false;
                 break;
             }

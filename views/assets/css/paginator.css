@@ -1,0 +1,33 @@
+.container_paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.paginator {
+    display: inline-block;
+    margin: 4rem auto;
+    border-radius: .6rem;
+    overflow: hidden;
+    border: 2px solid var(--orange);
+}
+.paginator a {
+    display: inline-block;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.9rem;
+    color: var(--title-color);
+    transition: .2s;
+}
+.paginator a i {
+    color: var(--orange);
+}
+.paginator a.page_action:hover {
+    background-color: var(--orange);
+    color: var(--dark-font);
+    transition: .2s;
+}
+.paginator span {
+    margin: 0 1rem;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--title-color);
+}

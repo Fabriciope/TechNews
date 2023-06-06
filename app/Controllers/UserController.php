@@ -32,11 +32,6 @@ class UserController extends Controller
 
     public function updateProfile(array $data): void
     {
-        $user = AuthUser::authenticateUser(true);
-        if(!$user) {
-            $this->message->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message
@@ -54,6 +49,7 @@ class UserController extends Controller
             return;
         }
 
+        $user = AuthUser::user();
         $user->first_name = trim($data['firstName']);
         $user->last_name = trim($data['lastName']);
         $user->description = trim($data['description']);

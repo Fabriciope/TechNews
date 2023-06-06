@@ -22,6 +22,7 @@
         "matthiasmullie/minify": "^1.3",
         "phpmailer/phpmailer": "^6.8",
         "coffeecode/uploader": "^2.0",
-        "coffeecode/cropper": "^2.0"
+        "coffeecode/cropper": "^2.0",
+        "nette/utils": "^4.0"
     }
 }

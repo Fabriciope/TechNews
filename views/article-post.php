@@ -20,12 +20,11 @@
 
             <?php if ($article->video !== null): ?>
                 <div class="box_video">
-                <iframe src="<?=$article->video?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+                    <iframe src="<?=$article->video?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
                 </div>
             <?php endif; ?>
-            
             <?php foreach($paragraphs as $paragraph): ?>
-                <?= $article->title === null ?  '' : "<h3>{$paragraph->title}</h3>"?>
+                <?= is_null($paragraph->title) ?  '' : "<h3>{$paragraph->title}</h3>"?>
                 <?="<p>{$paragraph->paragraph}</p>"?>
             <?php endforeach; ?>
         </div>
