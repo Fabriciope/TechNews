@@ -63,3 +63,5 @@ CREATE TABLE comments (
     FOREIGN KEY (id_user) REFERENCES users (id),
     FOREIGN KEY (id_article) REFERENCES articles (id)
 );
+
+CREATE FULLTEXT INDEX search ON articles(title, subtitle);
