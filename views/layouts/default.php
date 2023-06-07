@@ -13,7 +13,6 @@
     <title><?= $this->e($title, "ucfirst") ?></title>
 </head>
 
-
 <div class="ajax_load">
     <div class="ajax_load_box">
         <div class="ajax_load_box_circle"></div>

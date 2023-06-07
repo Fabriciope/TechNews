@@ -273,6 +273,7 @@ use App\Core\Session;
     {
         if(is_null($string) || empty($string)) return '';
 
+
         return htmlentities($string);
     }
 

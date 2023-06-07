@@ -80,12 +80,9 @@ class IndexController extends Controller
     {
         //TODO: fazer a pesquisa de artigos com o índice full text
         // $search = filter_var($data['search'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        //TODO: criar as rotas da paginação dos artigos encontrados
         $search = filter_var($data['search'] ?? '');
 
-       // $search = "<script> alert('teste') </script>";
-        var_dump($search);
-        //echo $search;
-       // echo htmlentities($search);
 
         $teste = (new Article)
         ->find(
@@ -94,14 +91,10 @@ class IndexController extends Controller
         )->order('published_at', 'DESC')
         ->fetch(true);
 
-        //var_dump($teste);
-
-        echo $search;
-        
 
         echo $this->views->render('search-articles', [
             'title' => $search,
-            'search' => 'dfd',
+            'search' => $search,
             'articlesFound' => (new Article)
                 ->find(
                     'MATCH(title, subtitle) AGAINST(:search) AND status = :status',

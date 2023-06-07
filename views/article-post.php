@@ -12,7 +12,7 @@
             </div>
         <?php endif; ?>
         <header class="header_article_post">
-            <h1 class="text_effect"><?= text($article->title) ?></h1>
+            <h1 class="text_effect"><?= $article->title ?></h1>
             <div class="box_info_article_post">
                 <div class="box_info_left">
                     <img class="photo_author_article_post" src="<?= image($article->author('photo')) ?>" alt="">

@@ -87,7 +87,7 @@ class ArticleController extends Controller
         }
         if ($article->id_user != $user->id) {
             $this->message->error('Você pode editar somente seus artigos')->fixed()->flash();
-            redirect('/perfil/salvos');
+            redirect('/perfil/artigo/salvos');
             return;
         }
 

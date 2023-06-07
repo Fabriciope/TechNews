@@ -83,7 +83,7 @@
 <!-- CAIXA DE PESQUISA E ULTIMAS NOTÍCIAS -->
 <section class="site_width latest_news">
     <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>
-    <form action="">
+    <form action="<?= url('/artigos/pesquisar') ?>" method="POST">
         <label id="serch_article" class="box_search_article">
             <input type="text" id="serch_article" placeholder="pesquise por algo ...">
             <button><i class="fa-solid fa-magnifying-glass"></i></button>

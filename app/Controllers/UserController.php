@@ -54,7 +54,7 @@ class UserController extends Controller
         $user->last_name = trim($data['lastName']);
         $user->description = trim($data['description']);
 
-
+       
         if (!$user->updateUser($_FILES)) {
             $json['fixedMessage'] = $user->message()->fixed()->render();
         } else {
