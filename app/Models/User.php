@@ -37,7 +37,7 @@ class User extends Model
 
     public function checkStatus(): bool
     {
-        if($this->status != 'confirmed') {
+        if ($this->status != 'confirmed') {
             $this->message->info('Ative sua conta, para usar este serviço');
             return false;
         }
@@ -47,7 +47,7 @@ class User extends Model
     public function findByEmail(string $email, string $columns = '*'): ?User
     {
         $user = $this->find('email = :email', "email={$email}", $columns)->fetch();
-        
+
         if ($this->failed("Erro ao encontrar email {$email}")) return null;
 
         return $user;
@@ -55,11 +55,25 @@ class User extends Model
 
     public function updateUser(?array $files = null): bool
     {
-        if (!$this->validateFields()) {
+        $photo = null;
+        $banner = null;
+        if ($files) {
+            ['userPhoto' => $userPhoto, 'userBanner' => $userBanner] = $files;
+
+            if (!empty($userPhoto['name'])) {
+                $photo = $userPhoto;
+            }
+            if (!empty($userBanner['name'])) {
+                $banner = $userBanner;
+            }
+        }
+
+        if (!$this->validateFields(photo: $photo, banner: $banner)) {
             return false;
         }
 
-        $this->data = (object) filter_var_array((array)$this->data, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        // $this->data = (object) filter_var_array((array)$this->data, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->data = (object) filter_var_array((array)$this->data);
 
         $findEmail = $this->find('email = :email AND id <> :id', "email={$this->email}&id={$this->id}")->fetch();
         if ($findEmail) {
@@ -67,43 +81,23 @@ class User extends Model
             return false;
         }
 
-        // TODO: passar essas verificações de arquivo para o validateFields()
-        if ($files) {
-            ['userPhoto' => $photo, 'userBanner' => $banner] = $files;
-
-            //var_dump($files);
-
-            if (!empty($photo['name'])) {
-                if (!$this->uploadImage(
-                    'photo',
-                    $photo,
-                    CONF_IMAGE_PHOTO_SIZE,
-                    CONF_UPLOAD_PHOTO_DIR,
-                    './../..'
-                )) return false;
-            }
-            
-            if (!empty($banner['name'])) {
-                //TODO: refazer calculo para verificar o tamanho de forma mais precisa
-                if($image = $banner['tmp_name']) {
-                    [$width, $height] = getimagesize($image);
-                    if ($height >= $width) {
-                        $this->message->warning('Insira um banner com as recomendações desejadas');
-                        return false;
-                    }
-                } else {
-                    $this->message->warning('Este banner não pode ser carregada');
-                    return false;
-                }
-                
-                if (!$this->uploadImage(
-                    'banner',
-                    $banner,
-                    CONF_IMAGE_BANNER_SIZE,
-                    CONF_UPLOAD_BANNER_DIR,
-                    './../..'
-                )) return false;
-            }
+        if ($photo) {
+            if (!$this->uploadImage(
+                'photo',
+                $photo,
+                CONF_IMAGE_PHOTO_SIZE,
+                CONF_UPLOAD_PHOTO_DIR,
+                './../..'
+            )) return false;
+        }
+        if ($banner) {
+            if (!$this->uploadImage(
+                'banner',
+                $banner,
+                CONF_IMAGE_BANNER_SIZE,
+                CONF_UPLOAD_BANNER_DIR,
+                './../..'
+            )) return false;
         }
 
         $this->update(
@@ -136,7 +130,7 @@ class User extends Model
         return true;
     }
 
-    private function validateFields(?string $passwordConfirmation = null): bool
+    private function validateFields(?string $passwordConfirmation = null, ?array $photo = null, ?array $banner = null): bool
     {
         if (!$this->required()) {
             $this->message->info('Preencha todos os campos requeridos');
@@ -162,10 +156,26 @@ class User extends Model
             $this->password = generatePassword($this->password);
         }
 
-        //TODO: lembrar oque eu ia fazer aqui
-        // if(!empty($this->photo)) {
-
-        // }
+        if ($photo) {
+            if (in_array('', $photo)) {
+                $this->message->warning('Esta foto não pode ser carregada');
+                return false;
+            }
+        }
+        if ($banner) {
+            if ($bannerImage = $banner['tmp_name']) {
+                //TODO: fazer o front para exibir as recomendações desejadas;
+                [$width, $height] = getimagesize($bannerImage);
+                $percentage = (40 * intval($width)) / 100;
+                if ($height >= $percentage) {
+                    $this->message->warning('Insira um banner com as recomendações desejadas');
+                    return false;
+                }
+            } else {
+                $this->message->warning('Este banner não pode ser carregada');
+                return false;
+            }
+        }
 
         return true;
     }

@@ -54,35 +54,15 @@ class Article extends Model
         return $article;
     }
 
-    public function findArticlesByUser(int $userId): ?array
-    {
-        $articles = $this->find("id_user = :userId", "userId={$userId}")->fetch(true);
+    // public function findArticlesByUser(int $userId): ?array
+    // {
+    //     $articles = $this->find("id_user = :userId", "userId={$userId}")->fetch(true);
 
-        if ($this->failed('Erro ao encontrar artigos do usuário')) return null;
+    //     if ($this->failed('Erro ao encontrar artigos do usuário')) return null;
 
-        return $articles;
-    }
+    //     return $articles;
+    // }
 
-    public function findSavedArticlesByUser(int $userId): ?array
-    {
-        //TODO: Adaptar lógica para possíveis erros
-        return $this->find(
-            'id_user = :userId AND status = :status',
-            "userId={$userId}&status=created"
-        )->fetch(true);
-    }
-
-    public function findPublishedArticlesByUser(int $userId): ?array
-    {
-        $articles = $this->find(
-            'status = :status AND id_user = :userId',
-            "userId={$userId}&status=published"
-        )->fetch(true);
-
-        if ($this->failed('Erro ao buscar os artigos publicados')) return null;
-
-        return $articles;
-    }
 
     public function findRelatedArticlesByCategory(int $categoryId, int $articleId): ?array
     {
@@ -171,7 +151,6 @@ class Article extends Model
             return false;
         }
 
-        //TODO: refazer calculo para verificar o tamanho de forma mais precisa
         if (!$this->uploadImage(
             'cover',
             $coverData,
@@ -230,7 +209,6 @@ class Article extends Model
         if ($coverData !== null) {
             if (!empty($coverData['name'])) {
                 if ($cover = $coverData['tmp_name']) {
-                    //TODO: fazer o calculo de tamanho de outra maneira
                     [$width, $height] = getimagesize($cover);
                     if ($height >= $width) {
                         $this->message->warning('Selecione uma imagem com as recomendações desejadas');

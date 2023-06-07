@@ -36,21 +36,18 @@ class IndexController extends Controller
             return;
         }
 
+        //TODO: antes de incrementar verificar se o artigo não é do usuário logado
         $article->views += 1;
         $article->updateArticle();
-
+        
+        $user = \App\Models\AuthUser::user();
+        
         echo $this->views->render('article-post', [
             'title' => $article->title,
             'article' => $article,
             'paragraphs' => (new Paragraph)->findParagraphsByArticleId($article->id),
-            'relatedArticles' => $article->findRelatedArticlesByCategory($article->id_category, $article->id) ?? []
-        ]);
-    }
-
-    public function pageUser(): void
-    {
-        echo $this->views->render('user', [
-            'title' => 'Nome usuário'
+            'relatedArticles' => $article->findRelatedArticlesByCategory($article->id_category, $article->id) ?? [],
+            'userArticle' => is_null($user) ? false : ($user->id == $article->id_user)
         ]);
     }
 
@@ -82,6 +79,43 @@ class IndexController extends Controller
     public function searchArticle(array $data): void
     {
         //TODO: fazer a pesquisa de artigos com o índice full text
+        // $search = filter_var($data['search'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $search = filter_var($data['search'] ?? '');
+
+       // $search = "<script> alert('teste') </script>";
+        var_dump($search);
+        //echo $search;
+       // echo htmlentities($search);
+
+        $teste = (new Article)
+        ->find(
+            'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
+            "search={$search}&status=published"
+        )->order('published_at', 'DESC')
+        ->fetch(true);
+
+        //var_dump($teste);
+
+        echo $search;
+        
+
+        echo $this->views->render('search-articles', [
+            'title' => $search,
+            'search' => 'dfd',
+            'articlesFound' => (new Article)
+                ->find(
+                    'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
+                    "search={$search}&status=published"
+                )->order('published_at', 'DESC')
+                ->fetch(true)
+        ]);
+    }
+
+    public function pageUser(): void
+    {
+        echo $this->views->render('user', [
+            'title' => 'Nome usuário'
+        ]);
     }
 
     public function pageLogin(): void

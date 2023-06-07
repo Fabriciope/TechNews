@@ -109,6 +109,24 @@ section {
 .btn_green:hover {
     box-shadow: 0 4px 0 #107d1d;
 }
+
+
+.btn_yellow {
+    background-color: #ffae21;
+    box-shadow: 0 3px 0 #cc7400;
+}
+.btn_yellow:hover {
+    box-shadow: 0 4px 0 #cc7400;
+}
+
+.btn_red {
+    background-color: #ed2121;
+    box-shadow: 0 3px 0 #b01010;
+}
+.btn_red:hover {
+    box-shadow: 0 4px 0 #b01010;
+}
+
 .text_effect {
     position: relative;
     z-index: 100;

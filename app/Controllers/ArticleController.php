@@ -25,7 +25,11 @@ class ArticleController extends Controller
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
             'userData' => $user->data(),
-            'publishedArticles' => (new Article)->findPublishedArticlesByUser($user->id)
+            'publishedArticles' => (new Article)
+                ->find( 
+                'status = :status AND id_user = :userId',  
+                "userId={$user->id}&status=published"
+                )->fetch(true)
         ]);
     }
 
@@ -37,14 +41,18 @@ class ArticleController extends Controller
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
-            'savedArticles' => (new Article)->findSavedArticlesByUser($user->id)
+            'savedArticles' => (new Article)
+                ->find(
+                'id_user = :userId AND status = :status', 
+                "userId={$user->id}&status=created"
+                )->fetch(true)
         ]);
 
     }
 
     public function publishArticle(array $data): void
     {
-        $user = AuthUser::authenticateUser(true);
+        AuthUser::authenticateUser(true);
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (!$articleUri || empty($articleUri)) {

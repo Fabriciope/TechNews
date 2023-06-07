@@ -1,13 +1,10 @@
 <?php $this->layout("layouts::default", ["title" => $title]) ?>
 
 <!-- MELHORES ARTIGOS -->
+
 <section class="site_width" style="margin-top: 2rem;">
     <h2 class="title_section text_effect">Artigos mais visualizados</h2>
     <div class="best">
-
-        <!-- <img class="orange_circle_1" src="./images/orange-circle2.png" alt="">
-    <img class="orange_circle_2" src="./images/orange-circle2.png" alt="">
-    <img class="orange_circle_3" src="./images/orange-circle2.png" alt=""> -->
 
         <!-- TODO: adicionar um link para redirecionar para o artigo -->
         <div class="container_best">
@@ -35,17 +32,17 @@
 </section>
 
 
+
 <!-- CAIXA DE PESQUISA E ULTIMAS NOTÍCIAS -->
 <section class="site_width latest_news">
     <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>
-    <form action="">
+    <form action="<?= url('/artigos/pesquisar') ?>" method="POST">
         <label id="search_article" class="box_search_article page_articles">
-            <input type="text" id="search_article" placeholder="pesquise por algo ...">
+            <input type="text" name="search" id="search_article" placeholder="pesquise por algo ...">
             <button><i class="fa-solid fa-magnifying-glass"></i></button>
         </label>
     </form>
     <div class="container_article">
-
         <div class="container_article">
             <?php foreach ($articles as $article) : ?>
                 <?= $this->insert("includes::article-list", ['article' => $article]) ?>
@@ -53,24 +50,22 @@
         </div>
     </div>
     <div class="container_paginator">
-
         <nav class="paginator">
-            <?php if (!$paginator->isFirst()): ?>
-                <a class="page_action" href="<?=url('/artigos')?>">Primeira</a>
-                <a href="<?=url('/artigos/'. $paginator->page() -1 )?>">
-                <i class="fa-solid fa-angles-left"></i>
+            <?php if (!$paginator->isFirst()) : ?>
+                <a class="page_action" href="<?= url('/artigos') ?>">Primeira</a>
+                <a href="<?= url('/artigos/' . $paginator->page() - 1) ?>">
+                    <i class="fa-solid fa-angles-left"></i>
                 </a>
             <?php endif; ?>
-        
+
             <?= "<span> Página {$paginator->page()} de {$paginator->pageCount()} </span>" ?>
-        
-            <?php if (!$paginator->isLast()): ?>
-                <a href="<?=url('/artigos/'. $paginator->page() + 1)?>">
+
+            <?php if (!$paginator->isLast()) : ?>
+                <a href="<?= url('/artigos/' . $paginator->page() + 1) ?>">
                     <i class="fa-solid fa-angles-right"></i>
                 </a>
-                <a class="page_action" href="<?=url('/artigos/'. $paginator->pageCount())?>">Última</a>
+                <a class="page_action" href="<?= url('/artigos/' . $paginator->pageCount()) ?>">Última</a>
             <?php endif; ?>
         </nav>
-
     </div>
 </section>

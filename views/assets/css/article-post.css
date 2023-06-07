@@ -4,6 +4,25 @@
 .container_article_post {
     margin-bottom: 3rem
 }
+.container_article_post .box_btn_action_user {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.7rem;
+    padding-right: 2rem;
+}
+.container_article_post .box_btn_action_user .btn_action_user {
+    padding: .7rem 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: .4rem;
+    border: none;
+    color: var(--dark-font);
+}
+
+
 .container_article_post h1 {
     position: relative;
     z-index: 100;

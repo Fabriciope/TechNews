@@ -14,7 +14,7 @@
                     class="input" 
                     id="first_name" 
                     placeholder="Digite seu primeiro nome..."
-                    value="<?=$userData->first_name?>">
+                    value="<?=text($userData->first_name)?>">
             </div>
             <div class="box_input">
                 <label for="last_name">Sobrenome:</label>
@@ -24,7 +24,7 @@
                     class="input" 
                     id="last_name"  
                     placeholder="Digite seu sobrenome..."
-                    value="<?=$userData->last_name?>">
+                    value="<?=text($userData->last_name)?>">
             </div>
             <div class="box_input">
                 <label for="description">Descrição:</label>
@@ -34,7 +34,7 @@
                 id="description" 
                 rows="10" 
                 placeholder="Faça uma breve descrição sobre você..."
-                ><?=$userData->description ?? ''?></textarea>
+                ><?=text($userData->description ?? '')?></textarea>
             </div>
             <div class="box_edit_banner">
                 <h4>Alterar banner</h4>

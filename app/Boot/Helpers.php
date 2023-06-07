@@ -227,7 +227,8 @@ use App\Core\Session;
 
     function str_limit_chars(string $string, int $limit, string $pointer = '...'): string
     {
-        $string = trim(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+       // $string = trim(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $string = trim(filter_var(text($string)));
 
         if(mb_strlen($string) <= $limit) return $string;
 
@@ -237,12 +238,15 @@ use App\Core\Session;
 
     function str_title(string $string): string
     {
-        return ucwords(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        //return ucwords(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        return ucwords(filter_var($string));
     }
 
     function convertToYouTubeEmbedUrl(string $url): string
     {
-        $url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        //$url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $url = filter_var($url);
         //https://www.youtube.com/watch?v=LPgTz6tRldo
         $videoCode = substr($url, 32);
         $embedUrl = "https://www.youtube.com/embed/";
@@ -264,6 +268,13 @@ use App\Core\Session;
     // {
     //     return html_entity_decode($string);
     // }
+
+    function text(?string $string): string
+    {
+        if(is_null($string) || empty($string)) return '';
+
+        return htmlentities($string);
+    }
 
 }
 

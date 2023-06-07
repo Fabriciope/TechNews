@@ -14,7 +14,7 @@
             class="input" 
             id="title"
             placeholder="Digite o titulo deste artigo..."
-            value="<?= $articleData->title ?? ''?>">
+            value="<?=text($articleData->title ?? '')?>">
     </div>
     <div class="box_input">
         <label for="subtitle">Subtitulo do artigo:</label>
@@ -24,7 +24,7 @@
             id="subtitle" 
             rows="3" 
             placeholder="Digite o subtitulo deste artigo..."
-        ><?= $articleData->subtitle ?? ''?></textarea>
+        ><?= text($articleData->subtitle ?? '')?></textarea>
     </div>
     <div class="box_select">
         <label for="category">Selecione uma categoria:</label>

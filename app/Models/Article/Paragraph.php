@@ -37,16 +37,12 @@ class Paragraph extends Model
         ?string $title = null
     ): bool
     {
-
-        //TODO: refatorar lógica das funções de adição de um parágrafo
         $this->id_article = $id_article;
         $this->paragraph = $paragraph;
         $this->position = $position;
         $this->title = $title;
 
         if(!$this->validateFields()) return false;
-
-
 
         $this->create($this->safe());
         if($this->failed('Erro ao adicionar um novo parágrafo')) return false;
@@ -129,7 +125,6 @@ class Paragraph extends Model
     public function validateFields(): bool
     {
         if(!$this->required()) {
-            var_dump($this);
             $this->message->info('Preencha todos os campos do parágrafo');
             return false;
         }

@@ -25,7 +25,6 @@ class AuthUser extends Model
         if (!$session->has('userId')) {
             return null;
         }
-        //TODO: aplicar verificação
         return (new User)->findById($session->userId, $columns);
     }
 

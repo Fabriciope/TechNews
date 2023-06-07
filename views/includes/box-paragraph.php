@@ -7,7 +7,7 @@
             name="titleParagraph-<?=$paragraph->position ?? '1'?>" 
             class="input input_title_paragraph" 
             placeholder="Digite o titulo deste parágrafo..."
-            value="<?=$paragraph->title ?? ''?>">
+            value="<?=text($paragraph->title ?? '')?>">
     </div>
     <div class="box_input box_textarea">
         <textarea 
@@ -16,7 +16,7 @@
             id="" 
             rows="10" 
             placeholder="Desenvolva o primeiro parágrafo do seu artigo..."
-            ><?= $paragraph->paragraph ?? ''?></textarea>
+            ><?= text($paragraph->paragraph ?? '')?></textarea>
     </div>
     <div class="box_actions_paragraph <?= !$first ? 'new_box_paragraph' : '' ?>">
         <?php if (!$first) : ?>

@@ -14,11 +14,13 @@ $router->get('/teste', 'IndexController@teste2');
 
 // ARTICLES ROUTES
 // TODO: fazer as rotas de pesquisa e paginação 
-//TODO: fazer uma lógica melhor para organização das rotas com group
 $router->get('/artigo/{articleUri}', 'IndexController@pageArticlePost');
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
 $router->get('/{page}', 'IndexController@pageArticles');
+$router->post('/pesquisar', 'IndexController@searchArticle');
+
+//TODO: fazer pesquisa por categoria
 $router->get('/categoria/{categoryId}', 'IndexController@pageCategoryArticles');
 $router->get('/categoria/{categoryId}/{page}', 'IndexController@pageCategoryArticles');
 

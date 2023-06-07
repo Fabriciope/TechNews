@@ -244,7 +244,9 @@ class Model
         $filter = [];
 
         foreach ($data as $key => $value) {
-            $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+            // $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+
+            $filter[$key] = is_null($value) ? null : trim(filter_var($value));
         }
 
         return $filter;

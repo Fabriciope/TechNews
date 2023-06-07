@@ -57,7 +57,7 @@ const CONF_IMAGE_SIZE = 'sei la';
 const CONF_IMAGE_QUALITY = ['jpg' => 72, 'png' => 5];
 
 const CONF_IMAGE_PHOTO_SIZE = 700;
-const CONF_IMAGE_BANNER_SIZE = 1150;
+const CONF_IMAGE_BANNER_SIZE = 1250;
 const CONF_IMAGE_COVER_SIZE = 850;
 
 
