@@ -29,7 +29,7 @@ class ArticleController extends Controller
                 ->find( 
                 'status = :status AND id_user = :userId',  
                 "userId={$user->id}&status=published"
-                )->fetch(true)
+                )->order('published_at', 'DESC')->fetch(true)
         ]);
     }
 
@@ -45,7 +45,7 @@ class ArticleController extends Controller
                 ->find(
                 'id_user = :userId AND status = :status', 
                 "userId={$user->id}&status=created"
-                )->fetch(true)
+                )->order('created_at', 'DESC')->fetch(true)
         ]);
 
     }

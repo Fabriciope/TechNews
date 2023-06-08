@@ -26,7 +26,9 @@
     transition: .2s;
 }
 .paginator span {
+    display: inline-block;
     margin: 0 1rem;
+    padding: 1rem .2rem;
     font-size: 2rem;
     font-weight: 500;
     color: var(--title-color);

@@ -18,7 +18,9 @@ $router->get('/artigo/{articleUri}', 'IndexController@pageArticlePost');
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
 $router->get('/{page}', 'IndexController@pageArticles');
-$router->post('/pesquisar', 'IndexController@searchArticle');
+
+$router->post('/buscar', 'IndexController@searchArticle');
+$router->get('/buscar/{terms}/{page}', 'IndexController@searchArticle');
 
 //TODO: fazer pesquisa por categoria
 $router->get('/categoria/{categoryId}', 'IndexController@pageCategoryArticles');
@@ -26,6 +28,7 @@ $router->get('/categoria/{categoryId}/{page}', 'IndexController@pageCategoryArti
 
 $router->group(null);
 $router->get('/usuario/{userUri}', 'IndexController@pageUser');
+
 
 
 // AUTH ROUTES
@@ -41,6 +44,7 @@ $router->get('/redefinir-senha/{code}', 'AuthController@pageResetPassword');
 $router->post('/redefinir-senha', 'AuthController@resetPassword');
 
 $router->get('/sair', 'AuthController@logout');
+
 
 
 // OPTIN

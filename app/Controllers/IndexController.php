@@ -7,6 +7,7 @@ use App\Models\Article\Article;
 use App\Models\Article\Paragraph;
 
 use App\Models\User;
+use App\Support\Paginator;
 
 class IndexController extends Controller
 {
@@ -53,11 +54,10 @@ class IndexController extends Controller
 
     public function pageArticles(array $data): void
     {
-
         $article = new Article;
 
         $page = isset($data['page']) ? intval($data['page']) : 1;
-        $paginator = new \App\Support\Paginator(3, $page, $article->count());
+        $paginator = new \App\Support\Paginator(6, $page, $article->count());
 
         echo $this->views->render('articles', [
             'title' => 'Artigos',
@@ -78,30 +78,37 @@ class IndexController extends Controller
 
     public function searchArticle(array $data): void
     {
-        //TODO: fazer a pesquisa de artigos com o índice full text
-        // $search = filter_var($data['search'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        //TODO: criar as rotas da paginação dos artigos encontrados
-        $search = filter_var($data['search'] ?? '');
 
+        
+        if(!empty($data['search'])) {
+            $search = filter_var($data['search'], FILTER_DEFAULT);
+            echo json_encode(['redirect' => url("/artigos/buscar/{$search}/1")]);
+            return;
+        }
 
-        $teste = (new Article)
-        ->find(
+        $search = filter_var($data['terms'] ?? '', FILTER_DEFAULT);
+        $page = filter_var($data['page'], FILTER_VALIDATE_INT) >= 1 ? $data['page'] : 1;
+
+            
+        
+        $findArticles = (new Article)->find(
             'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
             "search={$search}&status=published"
-        )->order('published_at', 'DESC')
-        ->fetch(true);
-
+        );
 
         echo $this->views->render('search-articles', [
             'title' => $search,
             'search' => $search,
-            'articlesFound' => (new Article)
-                ->find(
-                    'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
-                    "search={$search}&status=published"
-                )->order('published_at', 'DESC')
-                ->fetch(true)
+            'paginator' => new Paginator(6, $page, $findArticles->count()),
+            'articlesFound' => $findArticles->fetch(true)
+            // 'articlesFound' => $findArticles->order('published_at', 'DESC')
+            // ->fetch(true)
         ]);
+    }
+
+    public function searchCategory()
+    {
+        //TODO: fazer a busca pro categoria e fazer a paginação
     }
 
     public function pageUser(): void
