@@ -1,7 +1,7 @@
 <?php $this->layout("layouts::default", ["title" => $title]) ?>
 
 <section class="site_width latest_news">
-    <h2 class="title_section text_effect">voce pesquisou por: <?= text($search) ?></h2>
+    <h2 class="title_section text_effect"><?=$search ? 'voce pesquisou por: ' . text($search) : text($category)?></h2>
     <form class="formAjax" action="<?= url('/artigos/buscar') ?>" method="POST">
     
         <div class="ajax_response">
@@ -29,21 +29,7 @@
 
     <div class="container_paginator">
         <nav class="paginator">
-            <?php if (!$paginator->isFirst()) : ?>
-                <a class="page_action" href="<?= url("/artigos/{$search}/1") ?>">Primeira</a>
-                <a href="<?= url("/artigos/{$search}/" . $paginator->page() - 1) ?>">
-                    <i class="fa-solid fa-angles-left"></i>
-                </a>
-            <?php endif; ?>
-
-            <?= "<span> Página {$paginator->page()} de {$paginator->pageCount()} </span>" ?>
-
-            <?php if (!$paginator->isLast()) : ?>
-                <a href="<?= url("/artigos/{$search}/" . $paginator->page() + 1) ?>">
-                    <i class="fa-solid fa-angles-right"></i>
-                </a>
-                <a class="page_action" href="<?= url("/artigos/{$search}/" . $paginator->pageCount()) ?>">Última</a>
-            <?php endif; ?>
+            <?= $this->insert('includes::paginator', ['paginator' => $paginator, 'uri' => $paginationUri]) ?>
         </nav>
     </div>
 </section>

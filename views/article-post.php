@@ -2,7 +2,7 @@
 
 <section class="site_width section_article_post">
     <article class="container_article_post">
-        <?php if($userArticle): ?>  
+        <?php if ($userArticle) : ?>
             <div class="box_btn_action_user">
                 <a class="btn_action_user btn_yellow" href="<?= url("/perfil/artigo/editar/{$article->uri}") ?>">Editar</a>
                 <form action="<?= url("perfil/artigo/deletar") ?>" method="POST">
@@ -33,13 +33,14 @@
                 </div>
             <?php endif; ?>
             <?php foreach ($paragraphs as $paragraph) : ?>
-                <?= is_null($paragraph->title) ?  '' : '<h3>'. $paragraph->title . '</h3>' ?>
+                <?= is_null($paragraph->title) ?  '' : '<h3>' . $paragraph->title . '</h3>' ?>
                 <?= '<p>' . $paragraph->paragraph . '</p>' ?>
             <?php endforeach; ?>
         </div>
 
     </article>
 
+    <!-- TODO: melhorar a responsividade dos artigos relacionados -->
     <?php if (!empty($relatedArticles)) : ?>
         <section class="section_related_articles">
             <h4>Artigos relacionados</h4>
@@ -51,6 +52,7 @@
         </section>
     <?php endif; ?>
 
+    <!-- TODO: fazer a verificação se existe comentários naquele artigo -->
     <section class="section_comments">
         <h4>Comentários</h4>
         <div class="container_comments">
@@ -65,7 +67,14 @@
             <h4>Adicionar um comentário</h4>
 
             <div class="box_new_comment">
-                <form action="">
+                <form class="formAjax" action="">
+
+                    <!-- TODO: repensar se vai recarregar a página se o comentário for registrado ou se o usuário terá que recarregar página será apresentado uma mensagem de sucesso -->
+                    <div class="ajax_response">
+                        <?= flash() ?>
+                    </div>
+
+                    <?= csrf_input() ?>
                     <textarea name="" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
                     <button class="gb_btn">Comentar</button>
                 </form>

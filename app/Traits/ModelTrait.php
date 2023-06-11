@@ -15,6 +15,15 @@ trait ModelTrait
         return $fetch;
     }
 
+    public function findByUri(string $uri, string $columns = '*'): ?Model
+    {
+        $article = $this->find('uri = :uri', "uri={$uri}", $columns)->fetch();
+
+        if ($this->failed('Erro ao encontrar uri')) return null;
+
+        return $article;
+    }
+
     abstract private function validateFields();
 
     protected function failed(string $message): bool

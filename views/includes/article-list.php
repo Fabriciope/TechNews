@@ -17,4 +17,4 @@
             27
         </span>
     </div>
-</article>
+</article>  

@@ -23,8 +23,8 @@ $router->post('/buscar', 'IndexController@searchArticle');
 $router->get('/buscar/{terms}/{page}', 'IndexController@searchArticle');
 
 //TODO: fazer pesquisa por categoria
-$router->get('/categoria/{categoryId}', 'IndexController@pageCategoryArticles');
-$router->get('/categoria/{categoryId}/{page}', 'IndexController@pageCategoryArticles');
+$router->get('/categoria/{uri}', 'IndexController@pageCategoryArticles');
+$router->get('/categoria/{uri}/{page}', 'IndexController@pageCategoryArticles');
 
 $router->group(null);
 $router->get('/usuario/{userUri}', 'IndexController@pageUser');

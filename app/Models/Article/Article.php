@@ -45,36 +45,6 @@ class Article extends Model
         return $this;
     }
 
-    public function findByUri(string $uri, string $columns = '*'): ?Article
-    {
-        $article = $this->find('uri = :uri', "uri={$uri}", $columns)->fetch();
-
-        if ($this->failed('Erro ao encontrar uri')) return null;
-
-        return $article;
-    }
-
-    // public function findArticlesByUser(int $userId): ?array
-    // {
-    //     $articles = $this->find("id_user = :userId", "userId={$userId}")->fetch(true);
-
-    //     if ($this->failed('Erro ao encontrar artigos do usuário')) return null;
-
-    //     return $articles;
-    // }
-
-
-    public function findRelatedArticlesByCategory(int $categoryId, int $articleId): ?array
-    {
-        $articles = $this->find('id_category = :c AND id <> :id', "c={$categoryId}&id={$articleId}")
-            ->order('rand()')
-            ->limit(3)
-            ->fetch(true);
-
-        if ($this->failed('Erro ao encontrar artigos relacionados')) return null;
-
-        return $articles;
-    }
 
 
     public function author(?string $field = null)
@@ -101,7 +71,13 @@ class Article extends Model
         return null;
     }
 
+    public function quantityComments(): int
+    {
+        //TODO: pagar a quantidade comentários que o artigos instanciado tem
+        return 1; 
+    }
 
+    //TODO: ao invés de colocar update user colocar somente update, fazendo assim um polimorfismo, fazer também com os outros métodos dos outros modelos
     public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {
         $cover = empty($coverData['name']) ? null : $coverData;

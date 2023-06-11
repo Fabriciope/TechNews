@@ -47,7 +47,10 @@ class IndexController extends Controller
             'title' => $article->title,
             'article' => $article,
             'paragraphs' => (new Paragraph)->findParagraphsByArticleId($article->id),
-            'relatedArticles' => $article->findRelatedArticlesByCategory($article->id_category, $article->id) ?? [],
+            'relatedArticles' => $article->find('id_category = :c AND id <> :id', "c={$article->id_category}&id={$article->id}")
+                ->order('rand()')
+                ->limit(3)
+                ->fetch(true),
             'userArticle' => is_null($user) ? false : ($user->id == $article->id_user)
         ]);
     }
@@ -78,8 +81,6 @@ class IndexController extends Controller
 
     public function searchArticle(array $data): void
     {
-
-        
         if(!empty($data['search'])) {
             $search = filter_var($data['search'], FILTER_DEFAULT);
             echo json_encode(['redirect' => url("/artigos/buscar/{$search}/1")]);
@@ -96,19 +97,42 @@ class IndexController extends Controller
             "search={$search}&status=published"
         );
 
-        echo $this->views->render('search-articles', [
+        $paginator = new Paginator(6, $page, $findArticles->count());
+        echo $this->views->render('articles-found', [
             'title' => $search,
             'search' => $search,
-            'paginator' => new Paginator(6, $page, $findArticles->count()),
-            'articlesFound' => $findArticles->fetch(true)
+            'paginationUri' => "artigos/{$search}",
+            'paginator' => $paginator,
+            'articlesFound' => $findArticles
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->fetch(true)
             // 'articlesFound' => $findArticles->order('published_at', 'DESC')
             // ->fetch(true)
         ]);
     }
 
-    public function searchCategory()
+    public function pageCategoryArticles(array $data): void
     {
-        //TODO: fazer a busca pro categoria e fazer a paginação
+        $categoryUri = filter_var($data['uri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
+
+        $category = (new \App\Models\Article\Category)->findByUri($categoryUri);
+        $categoryArticles = (new Article)->find('id_category = :categoryId AND status = :status', "categoryId={$category->id}&status=published");
+
+        $paginator = new Paginator(2, $page, $categoryArticles->count());
+        echo $this->views->render('articles-found', [
+            'title' => $category->category,
+            'category' => $category->category,
+            'search' => false,
+            'paginationUri' => "/artigos/categoria/{$category->uri}",
+            'paginator' => $paginator,
+            'articlesFound' => $categoryArticles
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->order('published_at', 'DESC')
+                ->fetch(true)
+        ]);
     }
 
     public function pageUser(): void
