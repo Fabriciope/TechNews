@@ -20,7 +20,7 @@ class IndexController extends Controller
     {
         echo $this->views->render('home', [
             'title' => 'TechNews',
-            'articles' => (new Article)
+            'articles' => static::getModel('Article')
                 ->find('status = :s', 's=published')
                 ->order('published_at', 'DESC')
                 ->limit(6)
@@ -31,7 +31,7 @@ class IndexController extends Controller
     public function pageArticlePost(array $data): void
     {
 
-        $article = (new Article)->findByUri($data['articleUri'] ?? '');
+        $article = static::getModel('Article')->findByUri($data['articleUri'] ?? '');
         if(!$article) {
             redirect('/404');
             return;
@@ -46,7 +46,7 @@ class IndexController extends Controller
         echo $this->views->render('article-post', [
             'title' => $article->title,
             'article' => $article,
-            'paragraphs' => (new Paragraph)->findParagraphsByArticleId($article->id),
+            'paragraphs' => static::getModel('Paragraph')->findParagraphsByArticleId($article->id),
             'relatedArticles' => $article->find('id_category = :c AND id <> :id', "c={$article->id_category}&id={$article->id}")
                 ->order('rand()')
                 ->limit(3)
@@ -57,10 +57,10 @@ class IndexController extends Controller
 
     public function pageArticles(array $data): void
     {
-        $article = new Article;
+        $article = static::getModel('Article');
 
         $page = isset($data['page']) ? intval($data['page']) : 1;
-        $paginator = new \App\Support\Paginator(6, $page, $article->count());
+        $paginator = new Paginator(6, $page, $article->count());
 
         echo $this->views->render('articles', [
             'title' => 'Artigos',
@@ -92,7 +92,7 @@ class IndexController extends Controller
 
             
         
-        $findArticles = (new Article)->find(
+        $findArticles = static::getModel('Article')->find(
             'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
             "search={$search}&status=published"
         );
@@ -117,8 +117,8 @@ class IndexController extends Controller
         $categoryUri = filter_var($data['uri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
 
-        $category = (new \App\Models\Article\Category)->findByUri($categoryUri);
-        $categoryArticles = (new Article)->find('id_category = :categoryId AND status = :status', "categoryId={$category->id}&status=published");
+        $category = static::getModel('Category')->findByUri($categoryUri);
+        $categoryArticles = static::getModel('Article')->find('id_category = :categoryId AND status = :status', "categoryId={$category->id}&status=published");
 
         $paginator = new Paginator(2, $page, $categoryArticles->count());
         echo $this->views->render('articles-found', [

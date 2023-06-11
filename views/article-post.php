@@ -67,7 +67,7 @@
             <h4>Adicionar um comentário</h4>
 
             <div class="box_new_comment">
-                <form class="formAjax" action="">
+                <form class="formAjax" action="" method="POST">
 
                     <!-- TODO: repensar se vai recarregar a página se o comentário for registrado ou se o usuário terá que recarregar página será apresentado uma mensagem de sucesso -->
                     <div class="ajax_response">
@@ -75,7 +75,7 @@
                     </div>
 
                     <?= csrf_input() ?>
-                    <textarea name="" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
+                    <textarea name="comment" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
                     <button class="gb_btn">Comentar</button>
                 </form>
             </div>

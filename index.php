@@ -13,7 +13,7 @@ $router->get('/', 'IndexController@pageHome');
 $router->get('/teste', 'IndexController@teste2');
 
 // ARTICLES ROUTES
-// TODO: fazer as rotas de pesquisa e paginação 
+
 $router->get('/artigo/{articleUri}', 'IndexController@pageArticlePost');
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
@@ -22,7 +22,6 @@ $router->get('/{page}', 'IndexController@pageArticles');
 $router->post('/buscar', 'IndexController@searchArticle');
 $router->get('/buscar/{terms}/{page}', 'IndexController@searchArticle');
 
-//TODO: fazer pesquisa por categoria
 $router->get('/categoria/{uri}', 'IndexController@pageCategoryArticles');
 $router->get('/categoria/{uri}/{page}', 'IndexController@pageCategoryArticles');
 

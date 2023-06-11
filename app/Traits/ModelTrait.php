@@ -6,6 +6,8 @@ use App\Core\Model;
 
 trait ModelTrait
 {
+    abstract private function validateFields();
+    
     public function findById(?int $id, string $columns = '*'): ?Model
     {
         $fetch = $this->find('id = :id', "id={$id}", $columns)->fetch();
@@ -23,8 +25,6 @@ trait ModelTrait
 
         return $article;
     }
-
-    abstract private function validateFields();
 
     protected function failed(string $message): bool
     {

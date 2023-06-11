@@ -25,7 +25,7 @@ class ArticleController extends Controller
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
             'userData' => $user->data(),
-            'publishedArticles' => (new Article)
+            'publishedArticles' => static::getModel('Article')
                 ->find( 
                 'status = :status AND id_user = :userId',  
                 "userId={$user->id}&status=published"
@@ -41,7 +41,7 @@ class ArticleController extends Controller
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
-            'savedArticles' => (new Article)
+            'savedArticles' => static::getModel('Article')
                 ->find(
                 'id_user = :userId AND status = :status', 
                 "userId={$user->id}&status=created"
@@ -61,7 +61,7 @@ class ArticleController extends Controller
             return;
         }
 
-        $article = (new Article)->findByUri($articleUri);
+        $article = static::getModel('Article')->findByUri($articleUri);
         $article->status = 'published';
         $article->published_at = date_fmt_datetime('now');
         if (!$article->updateArticle()) {
@@ -79,7 +79,7 @@ class ArticleController extends Controller
         $user = AuthUser::authenticateUser(true);
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $article = (new Article)->findByUri($articleUri);
+        $article = static::getModel('Article')->findByUri($articleUri);
         if (empty($data['articleUri']) || !$article) {
             $this->message->error('Artigo não encontrado para edição')->fixed()->flash();
             redirect('/perfil/artigo/salvos');
@@ -92,11 +92,11 @@ class ArticleController extends Controller
         }
 
 
-        $category = new Category;
+        $category = static::getModel('Category');
         $articleCategory = $category->findById($article->id_category)->category;
         $categoryOptionsWithSelection =  $category->selected($articleCategory)->getCategories();
 
-        $paragraph = new Paragraph;
+        $paragraph = static::getModel('Paragraph');
         $articlesParagraphs = $paragraph->findParagraphsByArticleId($article->id);
 
         echo $this->views->render('new-article', [
@@ -120,7 +120,7 @@ class ArticleController extends Controller
         }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $article = (new Article)->findByUri($articleUri);
+        $article = static::getModel('Article')->findByUri($articleUri);
         $article->id_user = $user->id;
         $article->id_category = intval($data['category']);
         $article->title = str_title(trim($data['title']));
@@ -157,7 +157,7 @@ class ArticleController extends Controller
         $user = AuthUser::authenticateUser(true);
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $article = (new Article)->findByUri($articleUri);
+        $article = static::getModel('Article')->findByUri($articleUri);
         if (empty($data['articleUri']) || !$article) {
             $this->message->error('Artigo não encontrado para exclusão')->fixed()->flash();
             redirect('/perfil/artigo/salvos');
@@ -185,7 +185,7 @@ class ArticleController extends Controller
     {
         $user = AuthUser::authenticateUser(true);
 
-        $categoryOptions = (new Category)->getCategories();
+        $categoryOptions = static::getModel('Category')->getCategories();
 
         echo $this->views->render('new-article', [
             'title' => 'Novo Artigo',
@@ -205,7 +205,7 @@ class ArticleController extends Controller
             return;
         }
 
-        $article = new Article;
+        $article = static::getModel('Article');
         $article->bootstrap(
             $user->id,
             intval($data['category']),

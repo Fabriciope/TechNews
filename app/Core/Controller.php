@@ -18,4 +18,15 @@ class Controller
         
         $this->message = new Message;
     }
+
+    protected static function getModel(string $model): \App\Core\Model
+    {
+        if(str_contains($model, 'User')) {
+            $class = "\\App\\Models\\" . ucfirst($model);
+            return new $class;
+        } else {
+            $class = "\\App\\Models\\Article\\" . ucfirst($model);
+            return new $class;
+        }
+    }
 }

@@ -31,8 +31,8 @@ class AuthController extends Controller
             return;
         }
 
-        $auth = new AuthUser;
-        $user = (new User())->bootstrap(
+        $auth =  static::getModel('AuthUser');
+        $user = static::getModel('User')->bootstrap(
             trim($data['first_name']),
             trim($data['last_name']),
             trim($data['email']),
@@ -68,7 +68,7 @@ class AuthController extends Controller
         }
 
         $email = base64_decode($data['email']);
-        $user = (new User)->findByEmail($email);
+        $user = static::getModel('User')->findByEmail($email);
         if ($user->status != 'confirmed') {
             $user->status = 'confirmed';
             if (!$user->updateUser()) {
@@ -116,7 +116,7 @@ class AuthController extends Controller
 
 
         $save = (!empty($data['save']) && $data['save'] == 'on') ? true : false;
-        $authUser = new AuthUser;
+        $authUser = static::getModel('AuthUser');
         $login = $authUser->login($data['email'], $data['password'], $save);
 
         if ($login instanceof User) {
@@ -151,7 +151,7 @@ class AuthController extends Controller
             return;
         }
 
-        $authUser = new AuthUser;
+        $authUser = static::getModel('AuthUser');
         $email = trim($data['email']);
 
         if ($authUser->forgetPassword($email)) {
@@ -209,7 +209,7 @@ class AuthController extends Controller
             return;
         }
 
-        $authUser = new AuthUser;
+        $authUser = static::getModel('AuthUser');
         $checkPasswordRecovery = $authUser->resetPassword(
             base64_decode($email),
             $code,
