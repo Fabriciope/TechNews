@@ -51,6 +51,7 @@ class IndexController extends Controller
                 ->order('rand()')
                 ->limit(3)
                 ->fetch(true),
+            'comments' => static::getModel('Comment')->getCommentsByArticleId($article->id),
             'userArticle' => is_null($user) ? false : ($user->id == $article->id_user)
         ]);
     }

@@ -31,7 +31,7 @@ class AuthController extends Controller
             return;
         }
 
-        $auth =  static::getModel('AuthUser');
+        $auth =  new AuthUser;
         $user = static::getModel('User')->bootstrap(
             trim($data['first_name']),
             trim($data['last_name']),
@@ -116,7 +116,7 @@ class AuthController extends Controller
 
 
         $save = (!empty($data['save']) && $data['save'] == 'on') ? true : false;
-        $authUser = static::getModel('AuthUser');
+        $authUser = new AuthUser;
         $login = $authUser->login($data['email'], $data['password'], $save);
 
         if ($login instanceof User) {
@@ -151,7 +151,7 @@ class AuthController extends Controller
             return;
         }
 
-        $authUser = static::getModel('AuthUser');
+        $authUser = new AuthUser;
         $email = trim($data['email']);
 
         if ($authUser->forgetPassword($email)) {
@@ -209,7 +209,7 @@ class AuthController extends Controller
             return;
         }
 
-        $authUser = static::getModel('AuthUser');
+        $authUser = new AuthUser;
         $checkPasswordRecovery = $authUser->resetPassword(
             base64_decode($email),
             $code,

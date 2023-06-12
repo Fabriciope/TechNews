@@ -15,6 +15,12 @@ class ArticleController extends Controller
     public function pagePublishedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
 
         echo $this->views->render('published-articles', [
@@ -32,6 +38,12 @@ class ArticleController extends Controller
     public function pageSavedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
@@ -47,7 +59,13 @@ class ArticleController extends Controller
 
     public function publishArticle(array $data): void
     {
-        AuthUser::authenticateUser(true);
+        $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (!$articleUri || empty($articleUri)) {
@@ -72,6 +90,12 @@ class ArticleController extends Controller
     public function pageEditArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
@@ -107,6 +131,12 @@ class ArticleController extends Controller
     public function updateArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
@@ -150,6 +180,12 @@ class ArticleController extends Controller
     public function deleteArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
@@ -178,6 +214,12 @@ class ArticleController extends Controller
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         $categoryOptions = static::getModel('Category')->getCategories();
 
@@ -192,6 +234,12 @@ class ArticleController extends Controller
     public function createArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->fixed()->flash();
+            redirect('/perfil');
+            return;
+        }
 
         if (!csrf_verify($data)) {
             $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
@@ -234,43 +282,34 @@ class ArticleController extends Controller
 
     public function newComment(array $data): void
     {
-        $user = AuthUser::authenticateUser(true);
-
         if(!csrf_verify($data)) {
             $json['message'] = $this->message->error('Favor use o formulário')->flash();
             echo json_encode($json);
             return;
         }
 
-        if(empty($data['comment'])) {
-            $json['message'] = $this->message->info('Escreva algo antes de comentar')->render();
+        //TODO: a pessoa não confirmada está conseguindo comentar (consertar)
+        $user = AuthUser::authenticateUser(true);
+        if($user instanceof \App\Support\Message) {
+            $message = $user;
+            $json['message'] = $message->before('Oops!')->fixed()->render();
             echo json_encode($json);
             return;
         }
 
-        $article = static::getModel('Article')->findByUri($data['articleUri']);
-        if(!$article) {
-            $json['message'] = $this->message->error('Artigo não encontrado')->render();
-            echo json_encode($json);
-            return;
-        }
 
-        if($article->id_user == $user->id) {
-            $json['message'] = $this->message->info('Você não pode comentar no próprio artigo')->render();
-            echo json_encode($json);
-            return;
-        }
+        $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
 
-        $comment = static::getModel('Comment');
-        $comment->bootstrap(
-            $user->id,
-            $article->id,
-            trim($data['comment'])
-        );
+        $comment = static::getModel('Comment')->bootstrap(
+                $user->id,
+                $articleId,
+                trim($data['comment'])
+            );
 
         if($comment->createComment()) {
             $this->message->success('Comentário realizado com sucesso!')->fixed()->flash();
-            $json['redirect'] = url("/artigo/{$article->uri}");
+            $articleUri = static::getModel('Article')->findById($articleId)->uri;
+            $json['redirect'] = url("/artigo/{$articleUri}");
         } else {
             $json['message'] = $comment->message()->after('!')->render();
         }

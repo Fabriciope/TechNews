@@ -31,20 +31,17 @@ class AuthUser
         return (new User)->findById($session->userId, $columns);
     }
 
-    public static function authenticateUser(bool $checkStatus = false)
+    public static function authenticateUser(bool $checkStatus = false, bool $redirect = false)
     {
+        //TODO: nesta função a melhor opção é instanciar a classe Message dentro do if ao invés de instanciar em uma variável no scopo da função e reutiliza-la nos if's, pois irá ocupar menos espaço de memória no servidor caso não caia em nenhum dos ifs  
         $user = self::user();
         if (!$user) {
-            (new \App\Support\Message)->error('Faça o login para ter acesso à esta página')->fixed()->flash();
-            redirect('/entrar');
-            return;
+            return (new \App\Support\Message)->error('você precisa estar logado em sua conta');
         }
 
         if ($checkStatus) {
             if (!$user->checkStatus()) {
-                $user->message()->fixed()->flash();
-                redirect('/perfil');
-                return;  
+                return $user->message();
             }
         }
 

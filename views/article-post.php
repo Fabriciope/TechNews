@@ -53,21 +53,33 @@
     <?php endif; ?>
 
     <!-- TODO: fazer a verificação se existe comentários naquele artigo -->
-    <section class="section_comments">
+    <?php if($comments): ?>
+        <section class="section_comments">
         <h4>Comentários:</h4>
         <div class="container_comments">
-            <?php for ($i = 0; $i <= 3; $i++) : ?>
-                <?= $this->insert('includes::comment-list', []) ?>
-            <?php endfor; ?>
+            <?php foreach ($comments as $comment): ?>
+                <div class="box_comment_info_user">
+                    <div class="box_info_user">
+                        <img src="<?= image($comment->user('photo')) ?>" alt="">
+                        <p><?="{$comment->user('first_name')} {$comment->user('last_name')}"?></p>
+                    </div>
+                    <div class="box_comment">
+                        <h5>Comentário:</h5>
+                        <p><?=$comment->comment?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </section>
+    <?php endif; ?>
+
 
     <?php if (true) : ?>
         <section class="section_new_comment">
             <h4>Adicionar um comentário</h4>
 
             <div class="box_new_comment">
-                <form class="formAjax" action="<?=url('/artigo/novo-comentario')?>" method="POST">
+                <form class="formAjax" action="<?= url('/artigo/novo-comentario') ?>" method="POST">
 
                     <!-- TODO: repensar se vai recarregar a página se o comentário for registrado ou se o usuário terá que recarregar página será apresentado uma mensagem de sucesso -->
                     <div class="ajax_response">
@@ -76,7 +88,7 @@
 
                     <?= csrf_input() ?>
 
-                    <input type="hidden" name="articleUri" value="<?=$articleData->uri?>">
+                    <input type="hidden" name="articleId" value="<?= $articleData->id ?>">
 
                     <textarea name="comment" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
                     <button type="submit" class="gb_btn">Comentar</button>

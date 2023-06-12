@@ -34,6 +34,15 @@ class Comment extends Model
             return false;
         }
 
+        $article = (new Article)->findById($this->id_article);
+        if($article->id ==  $this->id_user) {
+            $this->message->info('Você não pode comentar no próprio artigo');
+            return false;
+        }
+
+        $this->id_article = $article->id;
+        //TODO: fazer a verificação se o artigo foi encontrado
+
         $commentId = $this->create($this->safe());
         if($this->failed('Erro ao criar novo comentário')) return false;
 
@@ -41,10 +50,35 @@ class Comment extends Model
         return true;
     }
 
+    public function user(?string $field = null): mixed
+    {
+        if($user = $this->id_user) {
+            $user = (new \App\Models\User)->findById($this->id_user);
+            if($field) return $user->$field;
+            
+            return $user;
+        }
+
+        if($field) {
+            return $user->$field;
+        }
+
+        return null;
+    }
+
+    public function getCommentsByArticleId(int $articleId): ?array
+    {
+        $articles = $this->find('id_article = :articleId', "articleId={$articleId}")->fetch(true);
+
+        if($this->failed('Erro ao buscar comentários do artigo')) return null;
+
+        return $articles;
+    }
+
     public function validateFields(): bool
     {
         if(!$this->required()) {
-            $this->message->info('Preencha todos os campos requeridos');
+            $this->message->warning('Preencha todos os campos requeridos');
             return false;   
         }
 

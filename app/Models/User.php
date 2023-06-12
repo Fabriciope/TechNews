@@ -38,7 +38,7 @@ class User extends Model
     public function checkStatus(): bool
     {
         if ($this->status != 'confirmed') {
-            $this->message->info('Ative sua conta, para usar este serviço');
+            $this->message->info('Ative sua conta, para usar este recurso');
             return false;
         }
         return true;
