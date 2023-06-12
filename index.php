@@ -13,8 +13,10 @@ $router->get('/', 'IndexController@pageHome');
 $router->get('/teste', 'IndexController@teste2');
 
 // ARTICLES ROUTES
+$router->group('artigo');
+$router->get('/{articleUri}', 'IndexController@pageArticlePost');
+$router->post('/novo-comentario', 'ArticleController@newComment');
 
-$router->get('/artigo/{articleUri}', 'IndexController@pageArticlePost');
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
 $router->get('/{page}', 'IndexController@pageArticles');

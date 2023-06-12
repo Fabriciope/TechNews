@@ -6,9 +6,11 @@ use App\Core\Model;
 
 trait ModelTrait
 {
+
+    //TODO: mudar a assinatura desta função para a classe 'Model' pois será obrigatória a todos os modelos que à estende-la
     abstract private function validateFields();
     
-    public function findById(?int $id, string $columns = '*'): ?Model
+    public function findById(int $id, string $columns = '*'): ?Model
     {
         $fetch = $this->find('id = :id', "id={$id}", $columns)->fetch();
         

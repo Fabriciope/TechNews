@@ -4,9 +4,6 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\AuthUser;
-use App\Models\Article\Article;
-use App\Models\Article\Paragraph;
-use App\Models\Article\Category;
 
 class UserController extends Controller
 {
@@ -65,26 +62,6 @@ class UserController extends Controller
         return;
     }
 
+    //TODO: fazer a página do usuário
     public function pageUser(): void {}
-
-
-
-
-    // private static function authenticateUser(bool $checkStatus = false): ?\App\Models\User
-    // {
-    //     $user = AuthUser::user();
-    //     if (!$user) {
-    //         return null;
-    //     }
-
-    //     if ($checkStatus) {
-    //         if ($user->status != 'confirmed') {
-    //             $user->message()->info('Ative sua conta, para usar este serviço')->fixed()->flash();
-    //             redirect('/perfil');
-    //             return null;
-    //         }
-    //     }
-
-    //     return $user;
-    // }
 }

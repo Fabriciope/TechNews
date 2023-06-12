@@ -44,7 +44,7 @@ class Model
         array $protected,
         array $required
     ) {
-        static::$protected = array_merge($protected, ['created-at', 'updated-at']);
+        static::$protected = array_merge($protected, ['created_at', 'updated_at']);
         static::$required = $required;
         $this->message = new Message;
     }
@@ -256,9 +256,8 @@ class Model
     {
         $data = (array) $this->data;
         foreach (static::$required as $field) {
-            if ($ignore && $field == $ignore) {
-                continue;
-            }
+            if ($ignore && $field == $ignore) continue;
+            
             if (!isset($data[$field]) || empty($data[$field])) {
                 return false;
                 break;

@@ -6,17 +6,20 @@ use App\Core\Model;
 use App\Core\ViewsEngine;
 use App\Support\Email;
 use App\Core\Session;
+use App\Support\Message;
 
-class AuthUser extends Model
+class AuthUser
 {
-    private static string $entity = 'users';
+    private Message $message;
 
     public function __construct()
     {
-        parent::__construct(
-            ['id'],
-            ['first_name', 'last_name', 'email', 'password']
-        );
+        $this->message = new Message;
+    }
+
+    public function message(): Message
+    {
+        return $this->message;
     }
 
     public static function user(string $columns = '*'): ?User

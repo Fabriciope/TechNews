@@ -45,7 +45,7 @@ class IndexController extends Controller
         
         echo $this->views->render('article-post', [
             'title' => $article->title,
-            'article' => $article,
+            'articleData' => $article,
             'paragraphs' => static::getModel('Paragraph')->findParagraphsByArticleId($article->id),
             'relatedArticles' => $article->find('id_category = :c AND id <> :id', "c={$article->id_category}&id={$article->id}")
                 ->order('rand()')

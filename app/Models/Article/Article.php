@@ -106,7 +106,6 @@ class Article extends Model
 
         if ($paragraphs) {
             $paragraph = new Paragraph;
-            //$paragraph->article_id = $this->id;
             if (!$paragraph->updateArticleParagraphs($this->id, $titles, $paragraphs)) return false;
         }
 
@@ -134,6 +133,11 @@ class Article extends Model
             CONF_UPLOAD_COVER_DIR,
             __DIR__ . "./../.."
         )) return false;
+
+        if ($this->findByUri($this->uri)) {
+            $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
+            return false;
+        }
 
         $articleId = $this->create($this->safe());
         if ($this->failed('Erro ao criar um novo artigo')) return false;

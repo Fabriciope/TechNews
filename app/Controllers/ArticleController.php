@@ -4,10 +4,6 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\AuthUser;
-use App\Models\Article\Article;
-use App\Models\Article\Category;
-use App\Models\Article\Paragraph;
-
 
 class ArticleController extends Controller
 {
@@ -15,7 +11,6 @@ class ArticleController extends Controller
     {
         parent::__construct(__DIR__ . './../../views/profile');
     }
-
 
     public function pagePublishedArticles(): void
     {
@@ -180,7 +175,6 @@ class ArticleController extends Controller
         return;
     }
 
-
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -215,13 +209,7 @@ class ArticleController extends Controller
             empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
         );
 
-        if ($article->findByUri($article->uri)) {
-            $json['fixedMessage'] = $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
-            echo json_encode($json);
-            return;
-        }
-
-        $paragraphsAndTitles = Paragraph::getParagraphsAndTitles($data);
+        $paragraphsAndTitles = \App\Models\Article\Paragraph::getParagraphsAndTitles($data);
         if (isset($paragraphsAndTitles['position'])) {
             $position = $paragraphsAndTitles['position'];
             $json['fixedMessage'] = $this->message
@@ -244,11 +232,50 @@ class ArticleController extends Controller
         return;
     }
 
+    public function newComment(array $data): void
+    {
+        $user = AuthUser::authenticateUser(true);
 
+        if(!csrf_verify($data)) {
+            $json['message'] = $this->message->error('Favor use o formulário')->flash();
+            echo json_encode($json);
+            return;
+        }
 
-    // ARTICLE ACTIONS
+        if(empty($data['comment'])) {
+            $json['message'] = $this->message->info('Escreva algo antes de comentar')->render();
+            echo json_encode($json);
+            return;
+        }
 
+        $article = static::getModel('Article')->findByUri($data['articleUri']);
+        if(!$article) {
+            $json['message'] = $this->message->error('Artigo não encontrado')->render();
+            echo json_encode($json);
+            return;
+        }
 
+        if($article->id_user == $user->id) {
+            $json['message'] = $this->message->info('Você não pode comentar no próprio artigo')->render();
+            echo json_encode($json);
+            return;
+        }
 
+        $comment = static::getModel('Comment');
+        $comment->bootstrap(
+            $user->id,
+            $article->id,
+            trim($data['comment'])
+        );
 
+        if($comment->createComment()) {
+            $this->message->success('Comentário realizado com sucesso!')->fixed()->flash();
+            $json['redirect'] = url("/artigo/{$article->uri}");
+        } else {
+            $json['message'] = $comment->message()->after('!')->render();
+        }
+        
+        echo json_encode($json);
+        return;
+    }
 }
