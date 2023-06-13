@@ -288,18 +288,16 @@ class ArticleController extends Controller
             return;
         }
 
-        //TODO: a pessoa não confirmada está conseguindo comentar (consertar)
         $user = AuthUser::authenticateUser(true);
         if($user instanceof \App\Support\Message) {
             $message = $user;
-            $json['message'] = $message->before('Oops!')->fixed()->render();
+            $json['message'] = $message->before('Oops!')->render();
             echo json_encode($json);
             return;
         }
 
 
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
-
         $comment = static::getModel('Comment')->bootstrap(
                 $user->id,
                 $articleId,

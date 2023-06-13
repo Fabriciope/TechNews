@@ -15,7 +15,9 @@ $router->get('/teste', 'IndexController@teste2');
 // ARTICLES ROUTES
 $router->group('artigo');
 $router->get('/{articleUri}', 'IndexController@pageArticlePost');
+$router->get('/{articleUri}/{page}', 'IndexController@pageArticlePost');
 $router->post('/novo-comentario', 'ArticleController@newComment');
+//TODO: criar navegação para comentários;
 
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');

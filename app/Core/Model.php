@@ -144,13 +144,14 @@ class Model
     {
         try {
             $conn = Connection::getInstance();
+            //TODO: mudar o comportamento deste if pois o comportamento do rowCount não é garantido com agrupamento de dados como o SELECT
             if (!empty($this->query)) {
                 $stmt = $conn->prepare($this->query);
                 $stmt->execute($this->params);
                 return $stmt->rowCount();
             } else {
-                $stmt = $conn->query("SELECT {$columns} FROM " . static::$entity);
-                return $stmt->rowCount();
+                $stmt = $conn->query("SELECT COUNT({$columns}) FROM " . static::$entity);
+                return $stmt->fetchColumn();
             }
         } catch (PDOException $exception) {
             $this->fail = $exception;
@@ -257,7 +258,7 @@ class Model
         $data = (array) $this->data;
         foreach (static::$required as $field) {
             if ($ignore && $field == $ignore) continue;
-            
+        
             if (!isset($data[$field]) || empty($data[$field])) {
                 return false;
                 break;

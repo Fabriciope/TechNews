@@ -62,7 +62,7 @@
             </div>
             <div class="box_photo_profile">
                 <div class="box_img_photo">
-                    <img src="<?=image($userData->photo)?>" alt="">
+                    <img src="<?=empty($userData->photo) ? theme('/assets/images/perfil.jpg') : image($userData->photo)?>" alt="">
                 </div>
                 <div class="box_file">
                     <input class="input_file" type="file" name="userPhoto" id="photo_profile">

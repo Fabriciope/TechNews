@@ -1,6 +1,9 @@
-.container_comments .box_comment_info_user {
+.container_comments {
     width: 94%;
     max-width: 900px;
+}
+.container_comments .box_comment_info_user {
+    width: 100%;
     margin-bottom: 3rem;
     padding: 1.3rem;
     border-radius: 1rem;

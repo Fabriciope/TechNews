@@ -31,7 +31,7 @@ class AuthUser
         return (new User)->findById($session->userId, $columns);
     }
 
-    public static function authenticateUser(bool $checkStatus = false, bool $redirect = false)
+    public static function authenticateUser(bool $checkStatus = false)
     {
         //TODO: nesta função a melhor opção é instanciar a classe Message dentro do if ao invés de instanciar em uma variável no scopo da função e reutiliza-la nos if's, pois irá ocupar menos espaço de memória no servidor caso não caia em nenhum dos ifs  
         $user = self::user();

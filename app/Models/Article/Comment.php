@@ -41,7 +41,6 @@ class Comment extends Model
         }
 
         $this->id_article = $article->id;
-        //TODO: fazer a verificação se o artigo foi encontrado
 
         $commentId = $this->create($this->safe());
         if($this->failed('Erro ao criar novo comentário')) return false;
@@ -66,9 +65,14 @@ class Comment extends Model
         return null;
     }
 
-    public function getCommentsByArticleId(int $articleId): ?array
+    public function getCommentsByArticleId(int $articleId, int $limit, int $offset): ?array
     {
-        $articles = $this->find('id_article = :articleId', "articleId={$articleId}")->fetch(true);
+        $articles = $this
+            ->find('id_article = :articleId', "articleId={$articleId}")
+            ->order('created_at', 'DESC')
+            ->limit($limit)
+            ->offset($offset)
+            ->fetch(true);
 
         if($this->failed('Erro ao buscar comentários do artigo')) return null;
 

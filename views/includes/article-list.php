@@ -9,12 +9,10 @@
              <span><?=date_fmt($article->published_at, 'd/m/Y')?></span>
         </p>
         <h4 class="title_post"><a href="<?=url("artigo/{$article->uri}")?>"><?=text($article->title)?></a></h4>
-        <p class="subtitle_post"><a href="<?=url("artigo/{$article->uri}")?>"><?=str_limit_chars($article->subtitle, 220)?></a></p>
+        <p class="subtitle_post"><a href="<?=url("artigo/{$article->uri}")?>"><?=str_limit_chars($article->subtitle, 190)?></a></p>
     </div>
     <div class="box_comment">
         <i class="fa-regular fa-message"></i>
-        <span>
-            27
-        </span>
+        <span><?= $article->amountOfComments() ?></span>
     </div>
 </article>  

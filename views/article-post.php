@@ -53,24 +53,29 @@
     <?php endif; ?>
 
     <!-- TODO: fazer a verificação se existe comentários naquele artigo -->
-    <?php if($comments): ?>
+    <?php if ($comments) : ?>
         <section class="section_comments">
-        <h4>Comentários:</h4>
-        <div class="container_comments">
-            <?php foreach ($comments as $comment): ?>
-                <div class="box_comment_info_user">
-                    <div class="box_info_user">
-                        <img src="<?= image($comment->user('photo')) ?>" alt="">
-                        <p><?="{$comment->user('first_name')} {$comment->user('last_name')}"?></p>
+            <h4>Comentários:</h4>
+            <div class="container_comments">
+                <?php foreach ($comments as $comment) : ?>
+                    <div class="box_comment_info_user">
+                        <div class="box_info_user">
+                            <img src="<?=empty($comment->user('photo')) ? theme('/assets/images/perfil.jpg') : image($comment->user('photo')) ?>" alt="">
+                            <p><?= "{$comment->user('first_name')} {$comment->user('last_name')}" ?></p>
+                        </div>
+                        <div class="box_comment">
+                            <h5>Comentário:</h5>
+                            <p><?= $comment->comment ?></p>
+                        </div>
                     </div>
-                    <div class="box_comment">
-                        <h5>Comentário:</h5>
-                        <p><?=$comment->comment?></p>
-                    </div>
+                <?php endforeach; ?>
+                <div class="container_paginator">
+                    <nav class="paginator comments">
+                        <?= $this->insert('includes::paginator', ['paginator' => $commentPagination, 'uri' => $paginatorUri]) ?>
+                    </nav>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
+            </div>
+        </section>
     <?php endif; ?>
 
 

@@ -3,10 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Models\Article\Article;
-use App\Models\Article\Paragraph;
-
-use App\Models\User;
 use App\Support\Paginator;
 
 class IndexController extends Controller
@@ -25,34 +21,6 @@ class IndexController extends Controller
                 ->order('published_at', 'DESC')
                 ->limit(6)
                 ->fetch(true)
-        ]);
-    }
-
-    public function pageArticlePost(array $data): void
-    {
-
-        $article = static::getModel('Article')->findByUri($data['articleUri'] ?? '');
-        if(!$article) {
-            redirect('/404');
-            return;
-        }
-
-        //TODO: antes de incrementar verificar se o artigo não é do usuário logado
-        $article->views += 1;
-        $article->updateArticle();
-        
-        $user = \App\Models\AuthUser::user();
-        
-        echo $this->views->render('article-post', [
-            'title' => $article->title,
-            'articleData' => $article,
-            'paragraphs' => static::getModel('Paragraph')->findParagraphsByArticleId($article->id),
-            'relatedArticles' => $article->find('id_category = :c AND id <> :id', "c={$article->id_category}&id={$article->id}")
-                ->order('rand()')
-                ->limit(3)
-                ->fetch(true),
-            'comments' => static::getModel('Comment')->getCommentsByArticleId($article->id),
-            'userArticle' => is_null($user) ? false : ($user->id == $article->id_user)
         ]);
     }
 
@@ -76,7 +44,50 @@ class IndexController extends Controller
                 ->limit($paginator->limit())
                 ->offset($paginator->offset())
                 ->fetch(true),
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'uri' => '/artigos'
+        ]);
+    }
+
+    public function pageArticlePost(array $data): void
+    {
+        $user = \App\Models\AuthUser::user();
+
+        $article = static::getModel('Article')->findByUri($data['articleUri'] ?? '');
+        if(!$article) {
+            redirect('/404');
+            return;
+        }
+
+        
+        if($user) {
+            if($article->id_user != $user->id) {
+                $article->views += 1;
+            }
+        } else {
+            $article->views += 1;
+        }
+        $article->updateArticle();
+        
+        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
+        
+        
+        $comment = static::getModel('Comment'); 
+        $comment->find('id_article = :articleId', "articleId={$article->id}");
+        $paginator = new Paginator(2, $page, $comment->count());
+
+        echo $this->views->render('article-post', [
+            'title' => $article->title,
+            'articleData' => $article,
+            'paragraphs' => static::getModel('Paragraph')->findParagraphsByArticleId($article->id),
+            'relatedArticles' => $article->find('id_category = :c AND id <> :id', "c={$article->id_category}&id={$article->id}")
+                ->order('rand()')
+                ->limit(3)
+                ->fetch(true),
+            'comments' => $comment->getCommentsByArticleId($article->id, $paginator->limit(), $paginator->offset()),
+            'userArticle' => is_null($user) ? false : ($user->id == $article->id_user),
+            'commentPagination' => $paginator,
+            'paginatorUri' => "artigo/{$article->uri}"
         ]);
     }
 

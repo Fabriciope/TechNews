@@ -33,3 +33,7 @@
     font-weight: 500;
     color: var(--title-color);
 }
+
+.paginator.comments {
+    margin: .8rem auto;
+}

@@ -20,7 +20,7 @@ class Article extends Model
     public function __construct()
     {
         parent::__construct(
-            ['id', 'created_at', 'updated_at'],
+            ['id'],
             ['id_user', 'id_category', 'title', 'subtitle', 'uri', 'cover']
         );
     }
@@ -44,8 +44,6 @@ class Article extends Model
 
         return $this;
     }
-
-
 
     public function author(?string $field = null)
     {
@@ -71,20 +69,21 @@ class Article extends Model
         return null;
     }
 
-    public function quantityComments(): int
+    public function amountOfComments(): int
     {
-        //TODO: pagar a quantidade comentários que o artigos instanciado tem
-        return 1; 
+        $comment = new \App\Models\Article\Comment;
+        return $comment->find('id_article = :id', "id={$this->id}")->count();
     }
 
     //TODO: ao invés de colocar update user colocar somente update, fazendo assim um polimorfismo, fazer também com os outros métodos dos outros modelos
     public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {
         $cover = empty($coverData['name']) ? null : $coverData;
-
+        
         if (!$this->validateFields($cover)) {
             return false;
         }
+
 
         $findArticle = $this->find('uri = :uri AND id <> :id', "uri={$this->uri}&id={$this->id}")->fetch();
         if ($this->failed('Erro ao fazer a verificação do artigo')) return false;
@@ -172,7 +171,8 @@ class Article extends Model
 
     protected function validateFields(?array $coverData = null): bool
     {
-        if (!$this->required('cover')) {
+        $ignore = $coverData ? 'cover' : null;
+        if (!$this->required($ignore)) {
             $this->message->info('Preencha todos os campos requeridos');
             return false;
         }

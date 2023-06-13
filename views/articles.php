@@ -58,21 +58,7 @@
     </div>
     <div class="container_paginator">
         <nav class="paginator">
-            <?php if (!$paginator->isFirst()) : ?>
-                <a class="page_action" href="<?= url('/artigos') ?>">Primeira</a>
-                <a href="<?= url('/artigos/' . $paginator->page() - 1) ?>">
-                    <i class="fa-solid fa-angles-left"></i>
-                </a>
-            <?php endif; ?>
-
-            <?= "<span> Página {$paginator->page()} de {$paginator->pageCount()} </span>" ?>
-
-            <?php if (!$paginator->isLast()) : ?>
-                <a href="<?= url('/artigos/' . $paginator->page() + 1) ?>">
-                    <i class="fa-solid fa-angles-right"></i>
-                </a>
-                <a class="page_action" href="<?= url('/artigos/' . $paginator->pageCount()) ?>">Última</a>
-            <?php endif; ?>
+            <?= $this->insert('includes::paginator', ['paginator' => $paginator, 'uri' => $uri]) ?>
         </nav>
     </div>
 </section>
