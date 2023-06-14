@@ -62,7 +62,7 @@
     </div>
     <div class="container_paginator">
         <nav class="paginator">
-            <?= $this->insert('includes::paginator', ['paginator' => $paginator, 'uri' => $uri]) ?>
+            <?= $this->insert('includes::paginator', ['paginator' => $paginator]) ?>
         </nav>
     </div>
 </section>

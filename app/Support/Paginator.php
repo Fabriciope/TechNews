@@ -7,13 +7,15 @@ use Nette\Utils\Paginator as NettePaginator;
 class Paginator
 {
     private NettePaginator $paginator;
+    private string $uri;
 
-    public function __construct(int $itemsPerPage,int $currentPage, ?int $quantityItems = null)
+    public function __construct(int $itemsPerPage,int $currentPage, string $uri, ?int $quantityItems = null)
     {
         $this->paginator = new NettePaginator;
         $this->paginator->setItemCount($quantityItems);
         $this->paginator->setItemsPerPage($itemsPerPage);
         $this->paginator->setpage($currentPage);
+        $this->uri = $uri;
     }
 
     public function limit(): int
@@ -44,6 +46,12 @@ class Paginator
     public function pageCount(): int
     {
         return $this->paginator->getPageCount();
+    }
+
+    public function getUrl(): string
+    {
+        //TODO: verificar se tem uma barra no final ou não e ajustar para uso
+        return url($this->uri);
     }
 
     public function paginator(): NettePaginator

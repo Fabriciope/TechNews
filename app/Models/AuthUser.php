@@ -35,7 +35,7 @@ class AuthUser
     {
         $user = self::user();
         if (!$user) {
-            return (new \App\Support\Message)->make(MessageType::ERROR, 'você precisa estar logado em sua conta');
+            return (new \App\Support\Message)->make(MessageType::INFO, 'você precisa estar logado em sua conta');
         }
 
         if ($checkStatus) {

@@ -8,4 +8,6 @@
     <?php else: ?>
         <h3 class="empty">Você não possui nenhum artigo publicado. <a href="<?=url('/perfil/artigo/novo')?>">Artigos salvos</a></h3>
     <?php endif; ?>
+
+    <!-- TODO: inserir a paginação -->
 </div>

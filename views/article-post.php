@@ -78,7 +78,7 @@
                 <?php endforeach; ?>
                 <div class="container_paginator">
                     <nav class="paginator comments">
-                        <?= $this->insert('includes::paginator', ['paginator' => $commentPagination, 'uri' => $paginatorUri]) ?>
+                        <?= $this->insert('includes::paginator', ['paginator' => $commentPagination]) ?>
                     </nav>
                 </div>
             </div>

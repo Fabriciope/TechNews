@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\AuthUser;
 use App\Support\MessageType;
+use App\Support\Paginator;
 
 class ArticleController extends Controller
 {
@@ -23,15 +24,28 @@ class ArticleController extends Controller
             return;
         }
 
+        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
+
+        $findArticles = static::getModel('Article')->find('status = :status AND id_user = :userId',"userId={$user->id}&status=published"
+        )->order('published_at', 'DESC')->fetch(true);
+
+        $paginator =  new Paginator(
+                6, 
+                $page, 
+                "perfil/artigo/publicados/",
+                $findArticles->count()
+            );
 
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
             'userData' => $user->data(),
-            'publishedArticles' => static::getModel('Article')
-                ->find(
-                    'status = :status AND id_user = :userId',
-                    "userId={$user->id}&status=published"
-                )->order('published_at', 'DESC')->fetch(true)
+            'publishedArticles' => $findArticles
+                    ->limit($paginator->limit())
+                    ->offset($paginator->offset())
+                    ->order('published_at', 'DESC')
+                    ->fetch(true),
+            'paginator' => $paginator
+            
         ]);
     }
 
@@ -44,6 +58,8 @@ class ArticleController extends Controller
             redirect('/perfil');
             return;
         }
+
+        //TODO: fazer a paginação
 
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
