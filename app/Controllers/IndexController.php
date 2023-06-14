@@ -30,14 +30,12 @@ class IndexController extends Controller
     {
         $article = static::getModel('Article');
 
-        $page = isset($data['page']) ? intval($data['page']) : 1;
         $paginator = new Paginator(
             6,
-            $page,
+            isset($data['page']) ? intval($data['page']) : 1,
             '/artigos/',
             $article->count()
         );
-
         echo $this->views->render('articles', [
             'title' => 'Artigos',
             'relevantArticles' => $article
@@ -65,7 +63,6 @@ class IndexController extends Controller
             return;
         }
 
-
         if ($user) {
             if ($article->id_user != $user->id) {
                 $article->views += 1;
@@ -75,14 +72,11 @@ class IndexController extends Controller
         }
         $article->updateArticle();
 
-        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
-
-
         $comment = static::getModel('Comment');
         $comment->find('id_article = :articleId', "articleId={$article->id}");
         $paginator = new Paginator(
             2,
-            $page,
+            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
             "artigo/{$article->uri}/",
             $comment->count()
         );
@@ -91,10 +85,13 @@ class IndexController extends Controller
             'title' => $article->title,
             'articleData' => $article,
             'paragraphs' => static::getModel('Paragraph')->findParagraphsByArticleId($article->id),
-            'relatedArticles' => $article->find('id_category = :c AND id <> :id', "c={$article->id_category}&id={$article->id}")
-                ->order('rand()')
-                ->limit(3)
-                ->fetch(true),
+            'relatedArticles' => $article
+                ->find(
+                    'id_category = :category AND id <> :id AND status = :status', 
+                    "category={$article->id_category}&id={$article->id}&status=published"
+                )->limit(3)
+                 ->order('rand()')
+                 ->fetch(true),
             'comments' => $comment->getCommentsByArticleId($article->id, $paginator->limit(), $paginator->offset()),
             'userArticle' => is_null($user) ? false : ($user->id == $article->id_user),
             'commentPagination' => $paginator,
@@ -111,8 +108,6 @@ class IndexController extends Controller
 
         $search = filter_var($data['terms'] ?? '', FILTER_DEFAULT);
         $page = filter_var($data['page'], FILTER_VALIDATE_INT) >= 1 ? $data['page'] : 1;
-
-
 
         $findArticles = static::getModel('Article')->find(
             'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
@@ -139,14 +134,13 @@ class IndexController extends Controller
     public function pageCategoryArticles(array $data): void
     {
         $categoryUri = filter_var($data['uri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
 
         $category = static::getModel('Category')->findByUri($categoryUri);
         $categoryArticles = static::getModel('Article')->find('id_category = :categoryId AND status = :status', "categoryId={$category->id}&status=published");
 
         $paginator = new Paginator(
                 9, 
-                $page, 
+                isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1, 
                 "/artigos/categoria/{$category->uri}",
                 $categoryArticles->count()
             );
@@ -175,10 +169,9 @@ class IndexController extends Controller
 
         $findArticles = static::getModel('Article')->find('id_user = :userId', "userId={$userId}");
 
-        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
         $paginator = new Paginator(
             6, 
-            $page, 
+            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1, 
             "/usuario/{$userId}",
             $findArticles->count()
             );

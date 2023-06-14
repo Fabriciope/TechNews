@@ -26,26 +26,29 @@ class ArticleController extends Controller
 
         $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
 
-        $findArticles = static::getModel('Article')->find('status = :status AND id_user = :userId',"userId={$user->id}&status=published"
-        )->order('published_at', 'DESC')->fetch(true);
+        $findArticles = static::getModel('Article')
+            ->find(
+                'status = :status AND id_user = :userId',
+                "userId={$user->id}&status=published"
+            );
 
         $paginator =  new Paginator(
-                6, 
-                $page, 
-                "perfil/artigo/publicados/",
-                $findArticles->count()
-            );
+            6,
+            $page,
+            "perfil/artigo/publicados/",
+            $findArticles->count()
+        );
 
         echo $this->views->render('published-articles', [
             'title' => 'Artigos publicados',
             'userData' => $user->data(),
             'publishedArticles' => $findArticles
-                    ->limit($paginator->limit())
-                    ->offset($paginator->offset())
-                    ->order('published_at', 'DESC')
-                    ->fetch(true),
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->order('published_at', 'DESC')
+                ->fetch(true),
             'paginator' => $paginator
-            
+
         ]);
     }
 
@@ -59,16 +62,28 @@ class ArticleController extends Controller
             return;
         }
 
-        //TODO: fazer a paginação
+        $findArticles = static::getModel('Article')
+            ->find(
+                'id_user = :userId AND status = :status',
+                "userId={$user->id}&status=created"
+            );
+
+        $paginator = new Paginator(
+            6,
+            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
+            "/perfil/artigos/publicados/",
+            $findArticles->count()
+        );
 
         echo $this->views->render('saved-articles', [
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
-            'savedArticles' => static::getModel('Article')
-                ->find(
-                    'id_user = :userId AND status = :status',
-                    "userId={$user->id}&status=created"
-                )->order('created_at', 'DESC')->fetch(true)
+            'savedArticles' => $findArticles
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->order('created_at', 'DESC')
+                ->fetch(true),
+            'paginator' => $paginator
         ]);
     }
 
@@ -91,7 +106,7 @@ class ArticleController extends Controller
 
         $article = static::getModel('Article')->findByUri($articleUri);
         $article->status = 'published';
-        $article->published_at = date_fmt_datetime('now');
+        $article->published_at = date_fmt('now', 'Y-m-d H:i:s');
         if (!$article->updateArticle()) {
             $article->message()->flash(true);
             redirect('/perfil/artigo/salvos');
@@ -125,20 +140,14 @@ class ArticleController extends Controller
             return;
         }
 
-
-        $category = static::getModel('Category');
-        $articleCategory = $category->findById($article->id_category)->category;
-        $categoryOptionsWithSelection =  $category->selected($articleCategory)->getCategories();
-
-        $paragraph = static::getModel('Paragraph');
-        $articlesParagraphs = $paragraph->findParagraphsByArticleId($article->id);
-
         echo $this->views->render('new-article', [
             'title' => 'Editar ' . $article->title,
             'userData' => $user->data(),
             'articleData' => $article,
-            'categoryOptions' => $categoryOptionsWithSelection,
-            'articlesParagraphs' => $articlesParagraphs,
+            'categoryOptions' => static::getModel('Category')
+                ->selected($article->id_category)
+                ->getCategories(),
+            'articlesParagraphs' => static::getModel('Paragraph')->findParagraphsByArticleId($article->id),
             'formAction' => 'alterar'
         ]);
     }

@@ -93,6 +93,14 @@ class Comment extends Model
         return $articles;
     }
 
+    public function deleteCommentsByArticle(int $articleId): bool
+    {
+        $this->delete('id_article', $articleId);
+        if($this->failed('Erro ao excluir comentários do artigo')) return false;
+
+        return true;
+    }
+
     protected function validateFields(): bool
     {
         if(!$this->required()) {

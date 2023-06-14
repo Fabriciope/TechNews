@@ -149,11 +149,6 @@ use App\Core\Session;
     {
         return (new DateTime($date))->format($format);
     }
-
-    function date_fmt_datetime(string $date = 'now', string $format = 'Y-m-d H:i:s'): string
-    {
-        return (new DateTime($date))->format($format);
-    }
 }
 
 

@@ -13,7 +13,7 @@ class Category  extends Model
 
     protected static string $entity = 'categories';
 
-    public ?string $selected = null;
+    public mixed $selected = null;
 
     public function __construct()
     {
@@ -25,23 +25,23 @@ class Category  extends Model
 
     public function getCategories(): ?array
     {
-        $fetchCategories = $this->find()->fetch(true);
+        $categories = $this->find()->fetch(true);
         if($this->failed('Erro ao recuperar as categorias')) return null;
         
         if($this->selected) {
-            foreach($fetchCategories as $category) {
-                if($category->category == $this->selected) {
+            foreach($categories as $category) {
+                if($category->id == $this->selected) {
                     $category->selected = 'selected';
                 }
             }
         }
 
-        return $fetchCategories;
+        return $categories;
     }
 
-    public function selected(string $category): Category
+    public function selected(int $categoryId): Category
     {
-        $this->selected = $category;
+        $this->selected = $categoryId;
         return $this;
     }
 

@@ -151,14 +151,20 @@ class Article extends Model
     public function destroy(): bool
     {
         $paragraph = new Paragraph;
-        $deleteParagraphs = $paragraph->deleteParagraphsByArticle($this->id);
-        if (!$deleteParagraphs) {
+        if (!$paragraph->deleteParagraphsByArticle($this->id)) {
             $this->message = $paragraph->message();
             return false;
         }
+
+        $comment = new Comment;
+        if(!$comment->deleteCommentsByArticle($this->id)) {
+            $this->message = $comment->message();
+            return false;
+        }
+        
         if (!parent::destroy()) {
             $this->message->make(MessageType::ERROR, 'Erro ao deletar artigo');
-            //if($this->failed('Erro ao deletar artigo')) return false;
+            var_dump($this->fail());
             return false;
         }
 

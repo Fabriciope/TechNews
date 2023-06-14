@@ -3,6 +3,7 @@
 namespace App\Core\Traits;
 
 use App\Core\Model;
+use App\Support\MessageType;
 
 trait ModelTrait
 {
@@ -28,7 +29,7 @@ trait ModelTrait
     protected function failed(string $message): bool
     {
         if ($this->fail()) {
-            $this->message->error($message);
+            $this->message->make(MessageType::ERROR, $message);
             return true;
         }
         return false;

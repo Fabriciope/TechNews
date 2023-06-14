@@ -34,7 +34,7 @@ class Upload
         
         $uploadImage = new Image(__DIR__ . './../..' . CONF_UPLOAD_DIR, $dir);
         if (!in_array($image['type'], $uploadImage::isAllowed())) {
-            $this->message->make(MessageType::WARNING, 'Insira uma imagem com a extensão válida');
+            $this->message->make(MessageType::INFO, 'Insira uma imagem com a extensão válida');
             return null;
         }
         
