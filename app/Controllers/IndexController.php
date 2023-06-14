@@ -232,4 +232,35 @@ class IndexController extends Controller
             'title' => 'Redefinir senha'
         ]);
     }
+
+    public function error(array $data): void 
+    {
+        $error = new \stdClass();
+
+        switch ($data["errcode"]) {
+            case "problemas":
+                $error->code = "OPS";
+                $error->message = "Parece que nosso serviço está indisponível no momento. Já estamos vendo isso mas :/";
+                $error->linkTitle = "Enviar e-mail";
+                $error->link = "mailto:" . CONF_MAIL_SENDER['address'];
+                break;
+            case "manutencao":
+                $error->code = "OPS";
+                $error->message = "Voltamos logo. Por hora estamos trabalhando para melhorar nosso conteúdo para você controlar melhor as suas contas :P";
+                $error->linkTitle = null;
+                $error->link = null;
+                break;
+            default:
+                $error->code = $data["errcode"];
+                $error->message = "Sentimos muito, mas o conteúdo que você tentou acessar não existe, está indisponível no momento ou foi removido :/";
+                $error->linkTitle = "Continue navegando";
+                $error->link = url_back();
+                break;
+        }
+
+        echo $this->views->render("error", [
+            "title" => "{$data['errcode']} | OOPS!",
+            "error" => $error
+        ]);
+    }
 }

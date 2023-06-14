@@ -106,6 +106,14 @@ use App\Core\Session;
         return CONF_URL_BASE;
     }
 
+    function url_back(): string
+    {
+        if (isset($_SERVER['HTTP_REFERER']) && str_contains($_SERVER['HTTP_REFERER'], CONF_SITE_DOMAIN_TEST)) {
+            return $_SERVER['HTTP_REFERER'] ;
+        }
+        return url();
+    }
+
     function back(): void
     {
         if ($_SERVER['HTTP_REFERER'] && str_contains($_SERVER['HTTP_REFERER'], CONF_SITE_DOMAIN_TEST)) {

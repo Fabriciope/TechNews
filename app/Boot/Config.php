@@ -64,15 +64,6 @@ const CONF_IMAGE_COVER_SIZE = 850;
 /**
  *   MAIL
  */
-// const CONF_MAIL_HOST = smtp.gmail.com;
-// const CONF_MAIL_PORT = 587;
-// const CONF_MAIL_USER = fabriciolves.dev@gmail.com;
-// const CONF_MAIL_PASS = Escooby098.;
-// const CONF_MAIL_SENDER = [
-//     name => Fabrício =
-//     address => fabricioalves.dev@gmail.com
-// ];
-
 const CONF_MAIL_HOST = 'smtp.gmail.com';
 const CONF_MAIL_PORT = 587;
 const CONF_MAIL_USER = 'fabricioalvespa@gmail.com';
