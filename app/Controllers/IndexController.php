@@ -3,13 +3,15 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Support\Message;
+use App\Support\MessageType;
 use App\Support\Paginator;
 
 class IndexController extends Controller
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . '/../../views');
+        parent::__construct(new \App\Core\ViewsEngine(__DIR__ . '/../../views') );
     }
 
     public function pageHome()
@@ -119,8 +121,6 @@ class IndexController extends Controller
                 ->limit($paginator->limit())
                 ->offset($paginator->offset())
                 ->fetch(true)
-            // 'articlesFound' => $findArticles->order('published_at', 'DESC')
-            // ->fetch(true)
         ]);
     }
 
@@ -132,7 +132,7 @@ class IndexController extends Controller
         $category = static::getModel('Category')->findByUri($categoryUri);
         $categoryArticles = static::getModel('Article')->find('id_category = :categoryId AND status = :status', "categoryId={$category->id}&status=published");
 
-        $paginator = new Paginator(2, $page, $categoryArticles->count());
+        $paginator = new Paginator(9, $page, $categoryArticles->count());
         echo $this->views->render('articles-found', [
             'title' => $category->category,
             'category' => $category->category,
@@ -147,10 +147,22 @@ class IndexController extends Controller
         ]);
     }
 
-    public function pageUser(): void
+    public function pageUser(array $data): void
     {
+        $userId = $data['userId'] ?? null;
+        $user = static::getModel('User')->findById($userId);
+        if(!$user) {
+            $this->message->make(MessageType::ERROR, 'Erro ao encontrar usuário')->flash(true);
+            back();
+            return;
+        }
+        $userArticles = static::getModel('Article')->find('id_user = :userId', "userId={$userId}");
+        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
         echo $this->views->render('user', [
-            'title' => 'Nome usuário'
+            'title' => "{$user->first_name} {$user->last_name}",
+            'user' => $user,
+            'paginator' => new Paginator(6, $page, $userArticles->count()),
+            'userArticles' => count($userArticles->fetch(true)) == 0 ? false : $userArticles->fetch(true)
         ]);
     }
 
@@ -162,7 +174,7 @@ class IndexController extends Controller
         echo $this->views->render('auth-login', [
             'title' => 'Entrar',
             'rememberEmail' => filter_input(INPUT_COOKIE, 'authEmail')
-        ]);
+        ]); 
     }
 
     public function pageRegister(): void
@@ -187,13 +199,5 @@ class IndexController extends Controller
         echo $this->views->render('auth-reset-password', [
             'title' => 'Redefinir senha'
         ]);
-    }
-
-
-
-
-    public function error(array $data)
-    {
-        var_dump($data);
     }
 }

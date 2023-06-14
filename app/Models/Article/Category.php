@@ -3,7 +3,9 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
-use App\Traits\ModelTrait;
+
+use App\Core\Traits\ModelTrait;
+use App\Support\MessageType;
 
 class Category  extends Model
 {
@@ -27,7 +29,6 @@ class Category  extends Model
         if($this->failed('Erro ao recuperar as categorias')) return null;
         
         if($this->selected) {
-            //array_search()
             foreach($fetchCategories as $category) {
                 if($category->category == $this->selected) {
                     $category->selected = 'selected';
@@ -44,10 +45,10 @@ class Category  extends Model
         return $this;
     }
 
-    private function validateFields(): bool
+    protected function validateFields(): bool
     {
         if(!$this->required()) {
-            $this->message->info('Preencha todos os campos');
+            $this->message->make(MessageType::INFO, 'Preencha todos os campos');
             return false;
         }
         

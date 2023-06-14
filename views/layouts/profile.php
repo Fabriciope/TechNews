@@ -4,8 +4,7 @@
 <?= $this->insert('includes::user-banner', [
     'photo' => $userData->photo, 
     'banner' => $userData->banner,
-    'firstName' => $userData->first_name,
-    'lastName' => $userData->last_name
+    'name' => "{$userData->first_name} {$userData->last_name}"
 ]); ?>
 
 <section class="site_width section_content_profile">

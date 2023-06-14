@@ -6,7 +6,7 @@ use App\Core\Session;
 
 class Message
 {
-    private string $type;
+    private readonly MessageType $type;
     private string $message;
     private bool $fixed = false;
 
@@ -21,7 +21,7 @@ class Message
 
     private function getType(): string
     {
-        return $this->type;
+        return (string) $this->type->value;
     }
 
     private function getMessage(): string
@@ -41,37 +41,20 @@ class Message
         return $this;
     }
 
-    public function success(string $message): Message
+    public function make( MessageType $type, string $message): Message
     {
-        $this->type = 'success';
-        $this->message = self::filter($message);
+        $this->type = $type;
+        $this->message = $message;
         return $this;
-    }
+    }  
 
-    public function info(string $message): Message
+    public function render(bool $fixed = false): string
     {
-        $this->type = 'info';
-        $this->message = self::filter($message);
-        return $this;
-    }
-
-    public function warning(string $message): Message
-    {
-        $this->type = 'warning';
-        $this->message = self::filter($message);
-        return $this;
-    }
-
-    public function error(string $message): Message
-    {
-        $this->type = 'error';
-        $this->message = $this->filter($message);
-        return $this;
-    }
-
-    public function render(): string
-    {
-        $fixed = $this->fixed ? 'fixed' : '';
+        if($fixed || $this->fixed) {
+            $fixed = 'fixed';
+        } else {
+            $fixed = '';
+        }
         return <<<DIV
             <div class="message {$fixed} {$this->getType()}">
                 {$this->getMessage()}
@@ -85,8 +68,9 @@ class Message
         return $this;
     }
 
-    public function flash(): void
+    public function flash(bool $fixed = false): void
     {
+        $fixed ? $this->fixed= true :  $this->fixed = false;
         (new Session)->set('flashMessage', $this);
     }
 

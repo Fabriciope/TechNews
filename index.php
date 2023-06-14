@@ -17,7 +17,7 @@ $router->group('artigo');
 $router->get('/{articleUri}', 'IndexController@pageArticlePost');
 $router->get('/{articleUri}/{page}', 'IndexController@pageArticlePost');
 $router->post('/novo-comentario', 'ArticleController@newComment');
-//TODO: criar navegação para comentários;
+$router->post('/deletar-comentario', 'ArticleController@deleteComment');
 
 $router->group('/artigos');
 $router->get('/', 'IndexController@pageArticles');
@@ -30,7 +30,9 @@ $router->get('/categoria/{uri}', 'IndexController@pageCategoryArticles');
 $router->get('/categoria/{uri}/{page}', 'IndexController@pageCategoryArticles');
 
 $router->group(null);
-$router->get('/usuario/{userUri}', 'IndexController@pageUser');
+$router->get('/usuario/{userId}', 'IndexController@pageUser');
+$router->get('/usuario/{userId}/{page}', 'IndexController@pageUser');
+
 
 
 
@@ -47,7 +49,6 @@ $router->get('/redefinir-senha/{code}', 'AuthController@pageResetPassword');
 $router->post('/redefinir-senha', 'AuthController@resetPassword');
 
 $router->get('/sair', 'AuthController@logout');
-
 
 
 // OPTIN

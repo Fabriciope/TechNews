@@ -52,7 +52,6 @@
         </section>
     <?php endif; ?>
 
-    <!-- TODO: fazer a verificação se existe comentários naquele artigo -->
     <?php if ($comments) : ?>
         <section class="section_comments">
             <h4>Comentários:</h4>
@@ -60,8 +59,18 @@
                 <?php foreach ($comments as $comment) : ?>
                     <div class="box_comment_info_user">
                         <div class="box_info_user">
-                            <img src="<?=empty($comment->user('photo')) ? theme('/assets/images/perfil.jpg') : image($comment->user('photo')) ?>" alt="">
-                            <p><?= "{$comment->user('first_name')} {$comment->user('last_name')}" ?></p>
+                            <div class="box_info">
+                                <img src="<?= empty($comment->user('photo')) ? theme('/assets/images/perfil.jpg') : image($comment->user('photo')) ?>" alt="">
+                                <p><?= "{$comment->user('first_name')} {$comment->user('last_name')}" ?></p>
+                            </div>
+                            <!-- vERIFICAR SE O COMENTÁRIO È DO USUÁRIO -->
+                            <?php if ($comment->userComment()) : ?>
+                                <form action="<?= url("artigo/deletar-comentario") ?>" method="POST">
+                                    <!-- MOSTRAR UM POP-UP ANTES DE DELETAR -->
+                                    <button class="btn_action_user btn_red" name="commentId" value="<?= $comment->id ?>">Deletar comentário</button>
+                                </form>
+                            <?php endif; ?>
+
                         </div>
                         <div class="box_comment">
                             <h5>Comentário:</h5>
@@ -85,12 +94,9 @@
 
             <div class="box_new_comment">
                 <form class="formAjax" action="<?= url('/artigo/novo-comentario') ?>" method="POST">
-
-                    <!-- TODO: repensar se vai recarregar a página se o comentário for registrado ou se o usuário terá que recarregar página será apresentado uma mensagem de sucesso -->
                     <div class="ajax_response">
                         <?= flash() ?>
                     </div>
-
                     <?= csrf_input() ?>
 
                     <input type="hidden" name="articleId" value="<?= $articleData->id ?>">

@@ -6,6 +6,6 @@
             <?= $this->insert('includes::published-article-list', ['article' => $article]) ?>
         <?php endforeach; ?>
     <?php else: ?>
-        <h3>Você não possui nenhum artigo publicado. Artigos salvos</h3>
+        <h3 class="empty">Você não possui nenhum artigo publicado. <a href="<?=url('/perfil/artigo/novo')?>">Artigos salvos</a></h3>
     <?php endif; ?>
 </div>

@@ -12,7 +12,7 @@
     margin-bottom: 1.7rem;
     padding-right: 2rem;
 }
-.container_article_post .box_btn_action_user .btn_action_user {
+.btn_action_user {
     padding: .7rem 1rem;
     font-size: 1.5rem;
     font-weight: 700;
@@ -20,6 +20,7 @@
     border-radius: .4rem;
     border: none;
     color: var(--dark-font);
+    cursor: pointer;
 }
 
 

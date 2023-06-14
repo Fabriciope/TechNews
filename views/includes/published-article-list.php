@@ -8,8 +8,6 @@
     </div>
     <div class="box_comment_published">
         <i class="fa-regular fa-message"></i>
-        <span>
-            27
-        </span>
+        <span><?=$article->amountOfComments()?></span>
     </div>
 </article>

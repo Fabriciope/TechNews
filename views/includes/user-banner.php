@@ -8,7 +8,7 @@
                 <img src="<?= empty($photo) ? theme('/assets/images/perfil.jpg') : image($photo) ?>" alt="">
             </div>
             <div class="box_info_banner">
-                <h5><?= text($firstName) . ' ' . text($lastName)?></h5>
+                <h5><?= text($name)?></h5>
             </div>
         </div>
     </div>

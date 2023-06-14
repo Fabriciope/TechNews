@@ -6,25 +6,29 @@
     <h2 class="title_section text_effect">Artigos mais visualizados</h2>
     <div class="best">
 
-        <!-- TODO: adicionar um link para redirecionar para o artigo -->
         <div class="container_best">
             <div class="container_article_left">
-                <article class="article_left_best effect_article_best">
-                    <img src="<?= image($relevantArticles[0]->cover) ?>" alt="">
-                    <div class="title_article_best title_article_left">
-                        <h4><?= str_limit_chars($relevantArticles[0]->title, 130) ?></h4>
-                    </div>
-                </article>
+                <a href="<?= url("/artigo/{$relevantArticles[0]->uri}") ?>">
+                    <article class="article_left_best effect_article_best">
+                        <img src="<?= image($relevantArticles[0]->cover) ?>" alt="">
+                        <div class="title_article_best title_article_left">
+                            <h4><?= str_limit_chars($relevantArticles[0]->title, 130) ?></h4>
+                        </div>
+
+                    </article>
+                </a>
             </div>
 
             <div class="container_articles_right">
                 <?php foreach (array_slice($relevantArticles, 1) as $article) : ?>
-                    <article class="effect_article_best">
-                        <img src="<?= image($article->cover) ?>" alt="">
-                        <div class="title_article_best">
-                            <h4><?= str_limit_chars($article->title, 100) ?></h4>
-                        </div>
-                    </article>
+                    <a href="<?= url("/artigo/{$article->uri}") ?>">
+                        <article class="effect_article_best">
+                            <img src="<?= image($article->cover) ?>" alt="">
+                            <div class="title_article_best">
+                                <h4><?= str_limit_chars($article->title, 100) ?></h4>
+                            </div>
+                        </article>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>

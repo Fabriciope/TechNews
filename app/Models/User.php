@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Core\Model;
 
-use App\Traits\ModelTrait;
-use App\Support\Upload;
+use App\Core\Traits\ModelTrait;
+use App\Support\MessageType;
 
 class User extends Model
 {
@@ -38,7 +38,7 @@ class User extends Model
     public function checkStatus(): bool
     {
         if ($this->status != 'confirmed') {
-            $this->message->info('Ative sua conta, para usar este recurso');
+            $this->message->make(MessageType::INFO, 'Ative sua conta, para usar este recurso');
             return false;
         }
         return true;
@@ -77,7 +77,7 @@ class User extends Model
 
         $findEmail = $this->find('email = :email AND id <> :id', "email={$this->email}&id={$this->id}")->fetch();
         if ($findEmail) {
-            $this->message->warning('O e-mail informado já existe');
+            $this->message->make(MessageType::WARNING, 'O e-mail informado já existe');
             return false;
         }
 
@@ -119,7 +119,7 @@ class User extends Model
 
         $findByEmail = $this->findByEmail($this->email, 'id');
         if ($findByEmail) {
-            $this->message->warning('O email informado já está cadastrado');
+            $this->message->make(MessageType::WARNING, 'O email informado já está cadastrado');
             return false;
         }
 
@@ -130,27 +130,27 @@ class User extends Model
         return true;
     }
 
-    private function validateFields(?string $passwordConfirmation = null, ?array $photo = null, ?array $banner = null): bool
+    protected function validateFields(?string $passwordConfirmation = null, ?array $photo = null, ?array $banner = null): bool
     {
         if (!$this->required()) {
-            $this->message->info('Preencha todos os campos requeridos');
+            $this->message->make(MessageType::INFO, 'Preencha todos os campos requeridos');
             return false;
         }
         if (!is_email($this->email)) {
-            $this->message->warning('Insira um email válido');
+            $this->message->make(MessageType::WARNING, 'Insira um email válido');
             return false;
         }
 
         if ($passwordConfirmation) {
             if ($this->password != $passwordConfirmation) {
-                $this->message->warning('A confirmação de senhas está incorreta');
+                $this->message->make(MessageType::WARNING, 'A confirmação de senhas está incorreta');
                 return false;
             }
         }
         if (!is_password($this->password)) {
             $min = CONF_PASSWD_MIN_LEN;
             $max = CONF_PASSWD_MAX_LEN;
-            $this->message->warning("Insira uma senha entre {$min} e {$max} caracteres");
+            $this->message->make(MessageType::WARNING, "Insira uma senha entre {$min} e {$max} caracteres");
             return false;
         } else {
             $this->password = generatePassword($this->password);
@@ -158,21 +158,20 @@ class User extends Model
 
         if ($photo) {
             if (in_array('', $photo)) {
-                $this->message->warning('Esta foto não pode ser carregada');
+                $this->message->make(MessageType::WARNING, 'Esta foto não pode ser carregada');
                 return false;
             }
         }
         if ($banner) {
             if ($bannerImage = $banner['tmp_name']) {
-                //TODO: fazer o front para exibir as recomendações desejadas;
                 [$width, $height] = getimagesize($bannerImage);
                 $percentage = (40 * intval($width)) / 100;
                 if ($height >= $percentage) {
-                    $this->message->warning('Insira um banner com as recomendações desejadas');
+                    $this->message->make(MessageType::WARNING, 'Insira um banner com as recomendações desejadas');
                     return false;
                 }
             } else {
-                $this->message->warning('Este banner não pode ser carregada');
+                $this->message->make(MessageType::WARNING, 'Este banner não pode ser carregada');
                 return false;
             }
         }

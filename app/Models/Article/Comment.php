@@ -3,7 +3,9 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
-use App\Traits\ModelTrait;
+
+use App\Core\Traits\ModelTrait;
+use App\Support\MessageType;
 
 class Comment extends Model
 {
@@ -36,7 +38,7 @@ class Comment extends Model
 
         $article = (new Article)->findById($this->id_article);
         if($article->id ==  $this->id_user) {
-            $this->message->info('Você não pode comentar no próprio artigo');
+            $this->message->make(MessageType::INFO, 'Você não pode comentar no próprio artigo');
             return false;
         }
 
@@ -65,6 +67,18 @@ class Comment extends Model
         return null;
     }
 
+    public function userComment(): bool
+    {
+        if($user = \App\Models\AuthUser::user()) {
+            if($this->id_user == $user->id) {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
     public function getCommentsByArticleId(int $articleId, int $limit, int $offset): ?array
     {
         $articles = $this
@@ -79,10 +93,10 @@ class Comment extends Model
         return $articles;
     }
 
-    public function validateFields(): bool
+    protected function validateFields(): bool
     {
         if(!$this->required()) {
-            $this->message->warning('Preencha todos os campos requeridos');
+            $this->message->make(MessageType::WARNING, 'Preencha todos os campos requeridos');
             return false;   
         }
 

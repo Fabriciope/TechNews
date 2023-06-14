@@ -8,7 +8,7 @@ use App\Support\Message;
 use PDO;
 use PDOException;
 
-class Model
+abstract class Model
 {
     /** @var Message|null */
     protected ?Message $message;
@@ -113,16 +113,6 @@ class Model
             $stmt = Connection::getInstance()
                 ->prepare($this->query . $this->order . $this->limit . $this->offset);
 
-            // if($this->params) {
-            //     foreach($this->params as $key => $value) {
-            //         if($key == 'limit' || $key == 'offset' || is_numeric($value)) {
-            //             $stmt->bindValue(":{$key}", $value, PDO::PARAM_INT);
-            //         } else {
-            //             $stmt->bindValue(":{$key}", $value, PDO::PARAM_STR);
-            //         }
-            //     }
-            // }
-
             $stmt->execute($this->params);
             $this->params = null;
 
@@ -144,7 +134,6 @@ class Model
     {
         try {
             $conn = Connection::getInstance();
-            //TODO: mudar o comportamento deste if pois o comportamento do rowCount não é garantido com agrupamento de dados como o SELECT
             if (!empty($this->query)) {
                 $stmt = $conn->prepare($this->query);
                 $stmt->execute($this->params);
@@ -213,7 +202,7 @@ class Model
         }
     }
 
-    protected function destroy(): bool
+    public function destroy(): bool
     {
         try {
             $stmt = Connection::getInstance()
@@ -246,7 +235,6 @@ class Model
 
         foreach ($data as $key => $value) {
             // $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
             $filter[$key] = is_null($value) ? null : trim(filter_var($value));
         }
 
@@ -266,4 +254,6 @@ class Model
         }
         return true;
     }
+
+    abstract protected function validateFields();
 }

@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Core\Model;
 use App\Core\ViewsEngine;
 use App\Support\Email;
 use App\Core\Session;
 use App\Support\Message;
+use App\Support\MessageType;
 
 class AuthUser
 {
@@ -33,10 +33,9 @@ class AuthUser
 
     public static function authenticateUser(bool $checkStatus = false)
     {
-        //TODO: nesta função a melhor opção é instanciar a classe Message dentro do if ao invés de instanciar em uma variável no scopo da função e reutiliza-la nos if's, pois irá ocupar menos espaço de memória no servidor caso não caia em nenhum dos ifs  
         $user = self::user();
         if (!$user) {
-            return (new \App\Support\Message)->error('você precisa estar logado em sua conta');
+            return (new \App\Support\Message)->make(MessageType::ERROR, 'você precisa estar logado em sua conta');
         }
 
         if ($checkStatus) {
@@ -84,7 +83,7 @@ class AuthUser
     public function login(string $email, string $password, bool $save): bool|User
     {
         if (!is_email($email)) {
-            $this->message->warning('Insira um email válido');
+            $this->message->make(MessageType::WARNING, 'Insira um email válido');
             return false;
         }
 
@@ -96,12 +95,12 @@ class AuthUser
 
         $user = (new User)->findByEmail($email);
         if (!$user) {
-            $this->message->warning('O e-mail informado não está cadastrado');
+            $this->message->make(MessageType::WARNING, 'O e-mail informado não está cadastrado');
             return false;
         }
 
         if (!passwordVerify($password, $user->password)) {
-            $this->message->warning('A senha informada está incorreta');
+            $this->message->make(MessageType::WARNING, 'A senha informada está incorreta');
             return false;
         }
 
@@ -112,13 +111,13 @@ class AuthUser
     public function forgetPassword(string $email): bool
     {
         if (!is_email($email)) {
-            $this->message->info('Insira um e-mail válido');
+            $this->message->make(MessageType::INFO, 'Insira um e-mail válido');
             return false;
         }
 
         $user = (new User)->findByEmail($email);
         if (!$user) {
-            $this->message->warning('O e-mail informado não está cadastrado');
+            $this->message->make(MessageType::WARNING, 'O e-mail informado não está cadastrado');
             return false;
         }
 
@@ -153,17 +152,17 @@ class AuthUser
     {
         $user = (new User)->findByEmail($email);
         if (!$user) {
-            $this->message->error('Usuário não encontrado');
+            $this->message->make(MessageType::ERROR, 'Usuário não encontrado');
             return false;
         }
 
         if ($user->password_recovery != $code) {
-            $this->message->error('O código de verificação está incorreto');
+            $this->message->make(MessageType::ERROR, 'O código de verificação está incorreto');
             return false;
         }
 
         if ($password != $passwordConfirmation) {
-            $this->message->warning('A confirmação das senhas está incorreta');
+            $this->message->make(MessageType::WARNING, 'A confirmação das senhas está incorreta');
             return false;
         }
 

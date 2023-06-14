@@ -46,7 +46,7 @@ class Session
         return $this;
     }
 
-    public function  has(string $key) 
+    public function has(string $key) 
     {
         return isset($_SESSION[$key]);
     }

@@ -4,14 +4,7 @@ $minCSS = new MatthiasMullie\Minify\CSS();
 
 $minCSS->add(__DIR__ . './../../shared/css/boot.css');
 
-// $cssDir = array_map(function($nameFileOrFolder){
-//     $fileOrDir = __DIR__ . './../../views/assets/css/{$nameFileOrFolder}';
-//     var_dump($fileOrDir);
-//     if(is_dir($fileOrDir) && file_exists($fileOrDir)) $nameFileOrFolder;
-// }, scandir(__DIR__ . './../../views/assets/css'));
-
 $cssDir = scandir(__DIR__ . './../../views/assets/css');
-
 
 if (count($cssDir) > 2) {
 
@@ -22,16 +15,16 @@ if (count($cssDir) > 2) {
 
             if (is_dir($cssFIleOrDIr) && file_exists($cssFIleOrDIr)) {
     
-                $nameCssSubDir = $nameCssFileOrDir;
-                $pathCssSubDir = $cssFIleOrDIr;
+                $nameSubDir = $nameCssFileOrDir;
+                $pathSubDir = $cssFIleOrDIr;
     
-                $arrCssSubDir = scandir($pathCssSubDir);
+                $arrSubDir = scandir($pathSubDir);
     
-                foreach ($arrCssSubDir as $subFile) {
-                    $cssSubFile = __DIR__ . "./../../views/assets/css/{$nameCssSubDir}/{$subFile}";
+                foreach ($arrSubDir as $subFile) {
+                    $SubFile = __DIR__ . "./../../views/assets/css/{$nameSubDir}/{$subFile}";
     
-                    if (is_file($cssSubFile) && pathinfo($cssSubFile)['extension'] == 'css') {
-                        $minCSS->add($cssSubFile);
+                    if (is_file($SubFile) && pathinfo($SubFile)['extension'] == 'css') {
+                        $minCSS->add($SubFile);
                     }
                 }
                 continue;

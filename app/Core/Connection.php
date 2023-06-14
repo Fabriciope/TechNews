@@ -14,9 +14,9 @@ class Connection
         PDO::ATTR_CASE => PDO::CASE_NATURAL
     ];
 
-    private static \PDO $instance;
+    private static PDO $instance;
 
-    public static function getInstance(): \PDO
+    public static function getInstance(): PDO
     {
         if(empty(self::$instance)) {
             try {

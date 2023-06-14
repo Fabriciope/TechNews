@@ -106,12 +106,13 @@ use App\Core\Session;
         return CONF_URL_BASE;
     }
 
-    function url_back(): string
+    function back(): void
     {
         if ($_SERVER['HTTP_REFERER'] && str_contains($_SERVER['HTTP_REFERER'], CONF_SITE_DOMAIN_TEST)) {
-            return $_SERVER['HTTP_REFERER'];
+            redirect($_SERVER['HTTP_REFERER']);
+            return;
         }
-        return url();
+        redirect(url());
     }
 
     function redirect(string $url): void
@@ -119,6 +120,10 @@ use App\Core\Session;
         header("HTTP/1.1 302 Redirect");
 
         if (filter_input(INPUT_GET, "route", FILTER_DEFAULT) != $url) {
+            if(filter_var($url, FILTER_VALIDATE_URL)) {
+                header("Location: {$url}");
+                return;
+            }
             $location = url($url);
             header("Location: {$location}");
         }

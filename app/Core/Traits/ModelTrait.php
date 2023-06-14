@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Traits;
+namespace App\Core\Traits;
 
 use App\Core\Model;
 
 trait ModelTrait
 {
-
-    //TODO: mudar a assinatura desta função para a classe 'Model' pois será obrigatória a todos os modelos que à estende-la
-    abstract private function validateFields();
     
     public function findById(int $id, string $columns = '*'): ?Model
     {

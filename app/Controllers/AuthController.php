@@ -5,12 +5,15 @@ namespace App\Controllers;
 use App\Models\AuthUser;
 use App\Core\Controller;
 use App\Models\User;
+use App\Support\Message;
+use App\Support\MessageType;
+use CoffeeCode\Uploader\Media;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . '/../../views');
+        parent::__construct(new \App\Core\ViewsEngine(__DIR__ . '/../../views'));
     }
 
     public function register(array $data): void
@@ -21,12 +24,12 @@ class AuthController extends Controller
             return;
         }
         if (!csrf_verify($data)) {
-            $json['message'] = $this->message->error('Erro ao enviar, use o formulário')->render();
+            $json['message'] = $this->message->make(MessageType::ERROR, 'Erro ao enviar, use o formulário')->render();
             echo json_encode($json);
             return;
         }
         if (in_array('', $data)) {
-            $json['message'] = $this->message->info('Preencha todos os campos !')->render();
+            $json['message'] = $this->message->make(MessageType::INFO, 'Preencha todos os campos !')->render();
             echo json_encode($json);
             return;
         }
@@ -63,8 +66,8 @@ class AuthController extends Controller
     public function pageConfirmedEmail(array $data): void
     {
         if (empty($data['email'])) {
-            //tratar de outra maneira
-            redirect('/');
+            $this->message->make(MessageType::ERROR, 'Erro ao encontrar e-mail')->flash(true);
+            back();
         }
 
         $email = base64_decode($data['email']);
@@ -72,9 +75,8 @@ class AuthController extends Controller
         if ($user->status != 'confirmed') {
             $user->status = 'confirmed';
             if (!$user->updateUser()) {
-                //tratar de outra maneira
-                $user->message()->before('Oops! ')->fixed()->flash();
-                redirect('/');
+                $user->message()->before('Oops! ')->flash(true);
+                back();
             }
         }
 
@@ -94,7 +96,7 @@ class AuthController extends Controller
     {
 
         if (!csrf_input($data)) {
-            $json['message'] = $this->message->error('Favor use o formulário')->after('!')->render();
+            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->after('!')->render();
             echo json_encode($json);
             return;
         }
@@ -104,12 +106,12 @@ class AuthController extends Controller
             $minutes = 0;
             if (request_limit('login', 7, 60 * $minutes)) {
                 $json['message'] = $this->message
-                    ->error("Você atingiu o limite de tentativas, espere {$minutes} minutos para tentar novamente")
+                    ->make(MessageType::ERROR, "Você atingiu o limite de tentativas, espere {$minutes} minutos para tentar novamente")
                     ->after('!')->render();
                 echo json_encode($json);
                 return;
             }
-            $json['message'] = $this->message->info('Preencha todos os campos')->after('!')->render();
+            $json['message'] = $this->message->make(MessageType::INFO, 'Preencha todos os campos')->after('!')->render();
             echo json_encode($json);
             return;
         }
@@ -121,7 +123,7 @@ class AuthController extends Controller
 
         if ($login instanceof User) {
             request_limit('login', reset: true);
-            $this->message->success("Seja bem vindo(a) {$login->first_name}")->fixed()->flash();
+            $this->message->make(MessageType::SUCCESS, "Seja bem vindo(a) {$login->first_name}")->flash(true);
             $json['redirect'] = url('/perfil');
         } else {
             $json['message'] = $authUser->message()->before('Oops!')->render();
@@ -134,19 +136,19 @@ class AuthController extends Controller
     public function forgetPassword(array $data): void
     {
         if (!csrf_verify($data)) {
-            $json['message'] = $this->message->error('Favor use o formulário')->render();
+            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->render();
             echo json_encode($json);
             return;
         }
 
         if (empty($data['email'])) {
-            $json['message'] = $this->message->info('Informe o e-mail')->render();
+            $json['message'] = $this->message->make(MessageType::INFO, 'Informe o e-mail')->render();
             echo json_encode($json);
             return;
         }
 
         if (request_repeat('email', $data['email'])) {
-            $json['message'] = $this->message->info('Este e-mail já foi utilizado.')->render();
+            $json['message'] = $this->message->make(MessageType::INFO, 'Este e-mail já foi utilizado.')->render();
             echo json_encode($json);
             return;
         }
@@ -155,7 +157,7 @@ class AuthController extends Controller
         $email = trim($data['email']);
 
         if ($authUser->forgetPassword($email)) {
-            $json['message'] = $this->message->success('Acesse seu e-mail para recuperar a senha')->render();
+            $json['message'] = $this->message->make(MessageType::SUCCESS, 'Acesse seu e-mail para recuperar a senha')->render();
         } else {
             $json['message'] = $authUser->message()->render();
         }
@@ -175,7 +177,7 @@ class AuthController extends Controller
         $email = is_email($email) ? $email : null;
         $code = $code ?? null;
         if (!$email || $code) {
-            $this->message->error('Link inválido, Informe seu e-mail para recuperar a senha')->flash();
+            $this->message->make(MessageType::ERROR, 'Link inválido, Informe seu e-mail para recuperar a senha')->flash();
             redirect('/recuperar-senha');
             return;
         }
@@ -189,7 +191,7 @@ class AuthController extends Controller
     public function resetPassword(array $data): void
     {
         if (!csrf_verify($data)) {
-            $json['message'] = $this->message->error('Favor use o formulário')->render();
+            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->render();
             echo json_encode($json);
             return;
         }
@@ -198,13 +200,13 @@ class AuthController extends Controller
         $email = is_email($email) ? $email : null;
         $code = $code ?? null;
         if (!$email || $code) {
-            $this->message->error('Link inválido, Informe seu e-mail para recuperar a senha')->flash();
+            $this->message->make(MessageType::ERROR, 'Link inválido, Informe seu e-mail para recuperar a senha')->flash();
             redirect('/recuperar-senha');
             return;
         }
 
         if (in_array('', $data)) {
-            $json['message'] = $this->message->info('Preencha todos os campos')->render();
+            $json['message'] = $this->message->make(MessageType::INFO, 'Preencha todos os campos')->render();
             echo json_encode($json);
             return;
         }
@@ -218,7 +220,7 @@ class AuthController extends Controller
         );
 
         if ($checkPasswordRecovery) {
-            $this->message->success('Senha alterada com sucesso.')->flash();
+            $this->message->make(MessageType::SUCCESS, 'Senha alterada com sucesso.')->flash();
             $json['redirect'] = url('/entrar');
         } else {
             $json['message'] = $authUser->message()->before('Oops!')->render();
@@ -229,7 +231,7 @@ class AuthController extends Controller
 
     public function logout(): void
     {
-        $this->message->success('Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash();
+        $this->message->make(MessageType::SUCCESS, 'Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash();
         AuthUser::logout();
         redirect('entrar');
     }

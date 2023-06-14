@@ -3,7 +3,8 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
-use App\Traits\ModelTrait;
+use App\Core\Traits\ModelTrait;
+use App\Support\MessageType;
 
 class Paragraph extends Model
 {
@@ -122,10 +123,10 @@ class Paragraph extends Model
         return true;
     }
 
-    public function validateFields(): bool
+    protected function validateFields(): bool
     {
         if(!$this->required()) {
-            $this->message->info('Preencha todos os campos do parágrafo');
+            $this->message->make(MessageType::INFO, 'Preencha todos os campos do parágrafo');
             return false;
         }
         return true;

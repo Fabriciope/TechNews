@@ -4,20 +4,21 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\AuthUser;
+use App\Support\MessageType;
 
 class ArticleController extends Controller
 {
     public function __construct()
     {
-        parent::__construct(__DIR__ . './../../views/profile');
+        parent::__construct(new \App\Core\ViewsEngine(__DIR__ . './../../views/profile'));
     }
 
     public function pagePublishedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
@@ -27,20 +28,19 @@ class ArticleController extends Controller
             'title' => 'Artigos publicados',
             'userData' => $user->data(),
             'publishedArticles' => static::getModel('Article')
-                ->find( 
-                'status = :status AND id_user = :userId',  
-                "userId={$user->id}&status=published"
+                ->find(
+                    'status = :status AND id_user = :userId',
+                    "userId={$user->id}&status=published"
                 )->order('published_at', 'DESC')->fetch(true)
         ]);
     }
 
-
     public function pageSavedArticles(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
@@ -50,26 +50,25 @@ class ArticleController extends Controller
             'userData' => $user->data(),
             'savedArticles' => static::getModel('Article')
                 ->find(
-                'id_user = :userId AND status = :status', 
-                "userId={$user->id}&status=created"
+                    'id_user = :userId AND status = :status',
+                    "userId={$user->id}&status=created"
                 )->order('created_at', 'DESC')->fetch(true)
         ]);
-
     }
 
     public function publishArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (!$articleUri || empty($articleUri)) {
-            $this->message->error('Não foi possível encontrar artigo para exclusão')->flash();
+            $this->message->make(MessageType::ERROR, 'Não foi possível encontrar artigo para exclusão')->flash();
             redirect('/perfil');
             return;
         }
@@ -78,21 +77,21 @@ class ArticleController extends Controller
         $article->status = 'published';
         $article->published_at = date_fmt_datetime('now');
         if (!$article->updateArticle()) {
-            $article->message()->fixed()->flash();
+            $article->message()->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
         }
 
-        $this->message->success('Artigo publicado com sucesso!')->fixed()->flash();
-        redirect('/perfil/artigo/salvos');
+        $this->message->make(MessageType::SUCCESS, 'Artigo publicado com sucesso!')->flash(true);
+        redirect('/perfil/artigo/publicados');
     }
 
     public function pageEditArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
@@ -100,12 +99,12 @@ class ArticleController extends Controller
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
         if (empty($data['articleUri']) || !$article) {
-            $this->message->error('Artigo não encontrado para edição')->fixed()->flash();
+            $this->message->make(MessageType::ERROR, 'Artigo não encontrado para edição')->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
         }
         if ($article->id_user != $user->id) {
-            $this->message->error('Você pode editar somente seus artigos')->fixed()->flash();
+            $this->message->make(MessageType::INFO, 'Você pode editar somente seus artigos')->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
         }
@@ -127,19 +126,19 @@ class ArticleController extends Controller
             'formAction' => 'alterar'
         ]);
     }
-    
+
     public function updateArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
 
         if (!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
+            $json['fixedMessage'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário, ou recarregue a página')->render(true);
             echo json_encode($json);
             return;
         }
@@ -158,8 +157,8 @@ class ArticleController extends Controller
         if (isset($paragraphsAndTitles['position'])) {
             $position = $paragraphsAndTitles['position'];
             $json['fixedMessage'] = $this->message
-                ->error("Insira um conteúdo ao {$position}° parágrafo")
-                ->fixed()->render();
+                ->make(MessageType::ERROR, "Insira um conteúdo ao {$position}° parágrafo")
+                ->render(true);
 
             echo json_encode($json);
             return;
@@ -167,10 +166,10 @@ class ArticleController extends Controller
 
         extract($paragraphsAndTitles);
         if ($article->updateArticle($_FILES['cover'], $titles, $paragraphs)) {
-            $this->message->success('Artigo alterado com sucesso!')->fixed()->flash();
+            $this->message->make(MessageType::SUCCESS, 'Artigo alterado com sucesso!')->flash(true);
             $json['redirect'] = url('/perfil/artigo/salvos');
         } else {
-            $json['fixedMessage'] = $article->message()->fixed()->render();
+            $json['fixedMessage'] = $article->message()->render(true);
         }
 
         echo json_encode($json);
@@ -180,9 +179,9 @@ class ArticleController extends Controller
     public function deleteArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
@@ -190,23 +189,23 @@ class ArticleController extends Controller
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
         if (empty($data['articleUri']) || !$article) {
-            $this->message->error('Artigo não encontrado para exclusão')->fixed()->flash();
+            $this->message->make(MessageType::ERROR, 'Artigo não encontrado para exclusão')->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
         }
         if ($article->id_user != $user->id) {
-            $this->message->error('Você pode deletar somente seus artigos')->fixed()->flash();
+            $this->message->make(MessageType::ERROR, 'Você pode deletar somente seus artigos')->flash(true);
             redirect('/perfil/salvos');
             return;
         }
-        
-        if(!$article->destroy()) {
-            $article->message()->fixed()->flash();
+
+        if (!$article->destroy()) {
+            $article->message()->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
         }
 
-        $this->message->success('Artigo deletado com sucesso')->fixed()->flash();
+        $this->message->make(MessageType::SUCCESS, 'Artigo deletado com sucesso')->flash(true);
         redirect('/perfil/artigo/salvos');
         return;
     }
@@ -214,9 +213,9 @@ class ArticleController extends Controller
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
@@ -234,15 +233,15 @@ class ArticleController extends Controller
     public function createArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
-            $message->fixed()->flash();
+            $message->flash(true);
             redirect('/perfil');
             return;
         }
 
         if (!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message->error('Favor use o formulário, ou recarregue a página')->fixed()->render();
+            $json['fixedMessage'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário, ou recarregue a página')->render(true);
             echo json_encode($json);
             return;
         }
@@ -261,8 +260,8 @@ class ArticleController extends Controller
         if (isset($paragraphsAndTitles['position'])) {
             $position = $paragraphsAndTitles['position'];
             $json['fixedMessage'] = $this->message
-                    ->error("Insira um conteúdo ao {$position}° parágrafo")
-                    ->fixed()->render();
+                ->make(MessageType::WARNING, "Insira um conteúdo ao {$position}° parágrafo")
+                ->render(true);
 
             echo json_encode($json);
             return;
@@ -270,10 +269,10 @@ class ArticleController extends Controller
 
         extract($paragraphsAndTitles);
         if ($article->createArticle($_FILES['cover'], $titles, $paragraphs)) {
-            $this->message->success('Artigo criado com sucesso!')->fixed()->flash();
+            $this->message->make(MessageType::SUCCESS, 'Artigo criado com sucesso!')->flash(true);
             $json['redirect'] = url('/perfil/artigo/salvos');
         } else {
-            $json['fixedMessage'] = $article->message()->fixed()->render();
+            $json['fixedMessage'] = $article->message()->render(true);
         }
 
         echo json_encode($json);
@@ -282,14 +281,14 @@ class ArticleController extends Controller
 
     public function newComment(array $data): void
     {
-        if(!csrf_verify($data)) {
-            $json['message'] = $this->message->error('Favor use o formulário')->flash();
+        if (!csrf_verify($data)) {
+            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->flash();
             echo json_encode($json);
             return;
         }
 
         $user = AuthUser::authenticateUser(true);
-        if($user instanceof \App\Support\Message) {
+        if ($user instanceof \App\Support\Message) {
             $message = $user;
             $json['message'] = $message->before('Oops!')->render();
             echo json_encode($json);
@@ -299,20 +298,34 @@ class ArticleController extends Controller
 
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
         $comment = static::getModel('Comment')->bootstrap(
-                $user->id,
-                $articleId,
-                trim($data['comment'])
-            );
+            $user->id,
+            $articleId,
+            trim($data['comment'])
+        );
 
-        if($comment->createComment()) {
-            $this->message->success('Comentário realizado com sucesso!')->fixed()->flash();
+        if ($comment->createComment()) {
+            $this->message->make(MessageType::SUCCESS, 'Comentário realizado com sucesso!')->flash(true);
             $articleUri = static::getModel('Article')->findById($articleId)->uri;
             $json['redirect'] = url("/artigo/{$articleUri}");
         } else {
             $json['message'] = $comment->message()->after('!')->render();
         }
-        
+
         echo json_encode($json);
         return;
+    }
+
+    public function deleteComment(array $data): void
+    {
+        $comment = static::getModel('Comment')->findById($data['commentId']);
+
+        if (!$comment) {
+            $this->message->make(MessageType::ERROR, 'Comentário não encontrado para exclusão')->flash(true);
+            back();
+        }
+
+        $comment->destroy();
+        $this->message->make(MessageType::SUCCESS, 'Comentário excluído com sucesso')->flash(true);
+        back();
     }
 }

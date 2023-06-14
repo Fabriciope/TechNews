@@ -3,13 +3,12 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
-use App\Support\Upload;
-use App\Traits\ModelTrait;
 
 use App\Models\Article\Paragraph;
 use App\Models\User;
 
-//use App\Interfaces\ModelInterface;
+use App\Core\Traits\ModelTrait;
+use App\Support\MessageType;
 
 class Article extends Model
 {
@@ -75,7 +74,6 @@ class Article extends Model
         return $comment->find('id_article = :id', "id={$this->id}")->count();
     }
 
-    //TODO: ao invés de colocar update user colocar somente update, fazendo assim um polimorfismo, fazer também com os outros métodos dos outros modelos
     public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {
         $cover = empty($coverData['name']) ? null : $coverData;
@@ -84,12 +82,11 @@ class Article extends Model
             return false;
         }
 
-
         $findArticle = $this->find('uri = :uri AND id <> :id', "uri={$this->uri}&id={$this->id}")->fetch();
         if ($this->failed('Erro ao fazer a verificação do artigo')) return false;
 
         if ($findArticle) {
-            $this->message->warning('Titulo de artigo indisponível');
+            $this->message->make(MessageType::WARNING, 'Titulo de artigo indisponível');
             return false;
         }
 
@@ -134,7 +131,7 @@ class Article extends Model
         )) return false;
 
         if ($this->findByUri($this->uri)) {
-            $this->message->warning('Já existe um artigo com este titulo')->fixed()->render();
+            $this->message->make(MessageType::WARNING, 'Já existe um artigo com este titulo')->fixed()->render();
             return false;
         }
 
@@ -160,7 +157,7 @@ class Article extends Model
             return false;
         }
         if (!parent::destroy()) {
-            $this->message->error('Erro ao deletar artigo');
+            $this->message->make(MessageType::ERROR, 'Erro ao deletar artigo');
             //if($this->failed('Erro ao deletar artigo')) return false;
             return false;
         }
@@ -173,7 +170,7 @@ class Article extends Model
     {
         $ignore = $coverData ? 'cover' : null;
         if (!$this->required($ignore)) {
-            $this->message->info('Preencha todos os campos requeridos');
+            $this->message->make(MessageType::INFO, 'Preencha todos os campos requeridos');
             return false;
         }
 
@@ -181,7 +178,7 @@ class Article extends Model
             if (is_urlYouTube($this->video)) {
                 $this->video = convertToYouTubeEmbedUrl($this->video);
             } else {
-                $this->message->warning('Insira um link de compartilhamento do YouTube');
+                $this->message->make(MessageType::WARNING, 'Insira um link de compartilhamento do YouTube');
                 return false;
             }
         }
@@ -191,13 +188,13 @@ class Article extends Model
                 if ($cover = $coverData['tmp_name']) {
                     [$width, $height] = getimagesize($cover);
                     if ($height >= $width) {
-                        $this->message->warning('Selecione uma imagem com as recomendações desejadas');
+                        $this->message->make(MessageType::WARNING, 'Selecione uma imagem com as recomendações desejadas');
                         return false;
                     }
                 }
             }
             if (empty($coverData['name'])) {
-                $this->message->warning('Insira um imagem de capa');
+                $this->message->make(MessageType::WARNING, 'Insira um imagem de capa');
                 return false;
             }
         }

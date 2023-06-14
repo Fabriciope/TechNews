@@ -14,10 +14,16 @@
 
 .container_comments .box_info_user {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+}
+.container_comments .box_info_user .box_info {
+    display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
 }
 .container_comments .box_info_user img {
     width: 50px; height: 50px;
@@ -34,7 +40,7 @@
     margin: .9rem 0 1.15rem 2rem;
 }
 .container_comments .box_comment h5 {
-    margin-bottom: .1rem;
+    margin-bottom: .3rem;
     font-size: 1.6rem;
     font-weight: 300;
     color: var(--title-color);

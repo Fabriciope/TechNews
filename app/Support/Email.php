@@ -5,6 +5,7 @@ namespace App\Support;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as MailException;
 use App\Support\Message;
+use App\Support\MessageType;
 use stdClass;
 
 class Email
@@ -62,17 +63,17 @@ class Email
     public function send(string $emailFrom = CONF_MAIL_SENDER['address'], string $fromName = CONF_MAIL_SENDER['name']): bool
     {
         if (empty($this->data)) {
-            $this->message->error('Informe todos os dados para o envio do e-mail!');
+            $this->message->make(MEssageType::ERROR, 'Informe todos os dados para o envio do e-mail!');
             return false;
         }
 
         if(!is_email($this->data->mailTo)) {
-            $this->message->error('Email de destinatário invalido!');
+            $this->message->make(MEssageType::ERROR, 'Email de destinatário invalido!');
             return false;
         }
 
         if(!is_email($emailFrom)) {
-            $this->message->warning('Email de remetente inválido!');
+            $this->message->make(MessageType::WARNING, 'Email de remetente inválido!');
             return false;
         }
 
@@ -98,7 +99,7 @@ class Email
             return true;
             
         } catch(MailException $exception) {
-            $this->message->error("Erro ao enviar o email, tente novamente mais tarde. ERROR: {$exception->getMessage()}");
+            $this->message->make(MEssageType::ERROR, "Erro ao enviar o email, tente novamente mais tarde. ERROR: {$exception->getMessage()}");
             return false;
         }
     }
