@@ -20,5 +20,10 @@
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+        <div class="container_paginator">
+                    <nav class="paginator comments">
+                        <?= $this->insert('includes::paginator', ['paginator' => $paginator, 'uri' => $paginatorUri]) ?>
+                    </nav>
+                </div>
     </div>
 </section>

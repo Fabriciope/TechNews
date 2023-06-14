@@ -1,4 +1,7 @@
 /* BOX ARTIGO */
+.article_post {
+    max-width: 600px;
+}
 .article_post .link_img_post {
     display: block;
     margin: 0 auto;

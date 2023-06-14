@@ -107,14 +107,13 @@ abstract class Model
         return $this;
     }
 
-    public function fetch(bool $all = false)
+    public final function fetch(bool $all = false)
     {
         try {
             $stmt = Connection::getInstance()
                 ->prepare($this->query . $this->order . $this->limit . $this->offset);
 
             $stmt->execute($this->params);
-            $this->params = null;
 
             if ($stmt->rowCount()) {
                 if ($all) {

@@ -156,13 +156,25 @@ class IndexController extends Controller
             back();
             return;
         }
-        $userArticles = static::getModel('Article')->find('id_user = :userId', "userId={$userId}");
+
+        $findArticles = static::getModel('Article')->find('id_user = :userId', "userId={$userId}");
+        
         $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
+        $paginator = new Paginator(6, $page, $findArticles->count());
+
+        $userArticles = null;
+        if(count($findArticles->fetch(true)) >= 1) {
+            $userArticles = $findArticles
+                    ->limit($paginator->limit())
+                    ->offset($paginator->offset())
+                    ->fetch(true);
+        }
         echo $this->views->render('user', [
             'title' => "{$user->first_name} {$user->last_name}",
             'user' => $user,
-            'paginator' => new Paginator(6, $page, $userArticles->count()),
-            'userArticles' => count($userArticles->fetch(true)) == 0 ? false : $userArticles->fetch(true)
+            'userArticles' => $userArticles,
+            'paginator' => $paginator,
+            'paginatorUri' => "/usuario/{$userId}",
         ]);
     }
 

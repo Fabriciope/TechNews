@@ -63,10 +63,8 @@
                                 <img src="<?= empty($comment->user('photo')) ? theme('/assets/images/perfil.jpg') : image($comment->user('photo')) ?>" alt="">
                                 <p><?= "{$comment->user('first_name')} {$comment->user('last_name')}" ?></p>
                             </div>
-                            <!-- vERIFICAR SE O COMENTÁRIO È DO USUÁRIO -->
                             <?php if ($comment->userComment()) : ?>
                                 <form action="<?= url("artigo/deletar-comentario") ?>" method="POST">
-                                    <!-- MOSTRAR UM POP-UP ANTES DE DELETAR -->
                                     <button class="btn_action_user btn_red" name="commentId" value="<?= $comment->id ?>">Deletar comentário</button>
                                 </form>
                             <?php endif; ?>
@@ -88,23 +86,21 @@
     <?php endif; ?>
 
 
-    <?php if (true) : ?>
-        <section class="section_new_comment">
-            <h4>Adicionar um comentário</h4>
+    <section class="section_new_comment">
+        <h4>Adicionar um comentário</h4>
 
-            <div class="box_new_comment">
-                <form class="formAjax" action="<?= url('/artigo/novo-comentario') ?>" method="POST">
-                    <div class="ajax_response">
-                        <?= flash() ?>
-                    </div>
-                    <?= csrf_input() ?>
+        <div class="box_new_comment">
+            <form class="formAjax" action="<?= url('/artigo/novo-comentario') ?>" method="POST">
+                <div class="ajax_response">
+                    <?= flash() ?>
+                </div>
+                <?= csrf_input() ?>
 
-                    <input type="hidden" name="articleId" value="<?= $articleData->id ?>">
+                <input type="hidden" name="articleId" value="<?= $articleData->id ?>">
 
-                    <textarea name="comment" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
-                    <button type="submit" class="gb_btn">Comentar</button>
-                </form>
-            </div>
-        </section>
-    <?php endif; ?>
+                <textarea name="comment" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
+                <button type="submit" class="gb_btn">Comentar</button>
+            </form>
+        </div>
+    </section>
 </section>
