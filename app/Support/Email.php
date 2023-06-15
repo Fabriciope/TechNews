@@ -8,6 +8,9 @@ use App\Support\Message;
 use App\Support\MessageType;
 use stdClass;
 
+/**
+ * Classe responsável por fazer o envio de e-mail
+ */
 class Email
 {
     private object $data;
@@ -15,7 +18,12 @@ class Email
     private PHPMailer $phpMailer;
 
     private Message $message;
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->message = new Message;
@@ -36,7 +44,12 @@ class Email
         $this->phpMailer->Password = CONF_MAIL_PASS;
         $this->phpMailer->Port = CONF_MAIL_PORT;
     }
-
+    
+    /**
+     * bootstrap
+     *
+     * @return Email
+     */
     public function bootstrap(
         string $subject,
         string $body,
@@ -53,13 +66,27 @@ class Email
 
         return $this;
     }
-
+    
+    /**
+     * attach
+     *
+     * @param  string $fileName
+     * @param  string $filePath
+     * @return Email
+     */
     public function attach(string $fileName, string $filePath): Email
     {
         $this->data->attach[$fileName] = $filePath;
         return $this;
     }
-
+    
+    /**
+     * send
+     *
+     * @param  string $emailFrom
+     * @param  string $fromName
+     * @return bool
+     */
     public function send(string $emailFrom = CONF_MAIL_SENDER['address'], string $fromName = CONF_MAIL_SENDER['name']): bool
     {
         if (empty($this->data)) {
@@ -103,7 +130,12 @@ class Email
             return false;
         }
     }
-    
+        
+    /**
+     * message
+     *
+     * @return Message
+     */
     public function message(): Message
     {
         return $this->message;

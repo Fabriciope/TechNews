@@ -7,28 +7,50 @@ use App\Models\AuthUser;
 use App\Support\Message;
 use App\Support\MessageType;
 
+/**
+ * Controller onde estão todas as rotas relacionadas ao usuário
+ */
 class UserController extends Controller
-{
+{    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(new \App\Core\ViewsEngine(__DIR__ . './../../views/profile'));
     }
-
+    
+    /**
+     * > Method => GET
+     * Página de perfil do usuário
+     *
+     * @return void
+     */
     public function pageProfile(): void
     {
         $user = AuthUser::authenticateUser();
-        if(!$user) {
-            $this->message->make(MessageType::ERROR, 'Faça o login para ter acesso à esta página')->flash(true);
+        if ($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->flash(true);
             redirect('/entrar');
+            return;
         }
-
-
+        
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
             'userData' => $user->data()
         ]);
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por fazer a edição do perfil do usuário
+     *
+     * @param  array $data
+     * @return void
+     */
     public function updateProfile(array $data): void
     {
 

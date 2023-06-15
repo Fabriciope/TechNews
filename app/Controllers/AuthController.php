@@ -4,18 +4,33 @@ namespace App\Controllers;
 
 use App\Models\AuthUser;
 use App\Core\Controller;
+use App\Core\ViewsEngine;
 use App\Models\User;
-use App\Support\Message;
+use App\Support\Email;
 use App\Support\MessageType;
-use CoffeeCode\Uploader\Media;
 
+/**
+ * Controller onde estão todas as rotas relacionadas a autenticação 
+ */
 class AuthController extends Controller
-{
+{    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(new \App\Core\ViewsEngine(__DIR__ . '/../../views'));
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por fazer o registro de um usuário
+     *
+     * @param  array $data
+     * @return void
+     */
     public function register(array $data): void
     {
         if (AuthUser::user()) {
@@ -50,9 +65,36 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-
+    
+    /**
+     * > Method => GET
+     * Página de aviso da confirmação do e-mail
+     *
+     * @return void
+     */
     public function pageConfirmEmail(): void
     {
+        if($user = AuthUser::user()) {
+            $views = (new ViewsEngine(__DIR__ . './../../shared/views/email'));
+            $message = $views->render('confirm', [
+                'firstName' => $user->first_name,
+                'confirmLink' => url('/obrigado/' . base64_encode($user->email))
+            ]);
+    
+            $email = new Email;
+            $email->bootstrap(
+                'Ative sua conta na TechNes',
+                $message,
+                $user->email,
+                "{$user->first_name} {$user->last_name}"
+            );
+            if (!$email->send()) {
+                $this->message = $email->message();
+                $this->message->make(MessageType::ERROR, 'Erro ao enviar e-mail d confirmação')->flash(true);
+                return;
+            }
+        }
+
         echo $this->views->render('optin', [
             'title' => 'Confirmar email',
             'data' => (object) [
@@ -62,7 +104,14 @@ class AuthController extends Controller
             ]
         ]);
     }
-
+    
+    /**
+     * > Method => GET
+     * Página onde a conta do usuário é verificada pela confirmação do e-mail
+     *
+     * @param  array $data
+     * @return void
+     */
     public function pageConfirmedEmail(array $data): void
     {
         if (empty($data['email'])) {
@@ -91,7 +140,14 @@ class AuthController extends Controller
             ]
         ]);
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por fazer o login do usuário
+     *
+     * @param  mixed $data
+     * @return void
+     */
     public function login(array $data): void
     {
 
@@ -133,6 +189,15 @@ class AuthController extends Controller
         return;
     }
 
+    //TODO: adicionar a Controller da página re colocar o email para recuperar a senha (repensar)
+    
+    /**
+     * > Method => POST
+     * Controller responsável por receber o e-mail e enviar para a recuperação de senha
+     *
+     * @param  mixed $data
+     * @return void
+     */
     public function forgetPassword(array $data): void
     {
         if (!csrf_verify($data)) {
@@ -165,7 +230,14 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-
+    
+    /**
+     * > Method => GET
+     * Página de alteração de senha
+     *
+     * @param  mixed $data
+     * @return void
+     */
     public function pageResetPassword(array $data): void
     {
         if (empty($data)) {
@@ -187,7 +259,14 @@ class AuthController extends Controller
             'code' => $data['code']
         ]);
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por fazer a alteração da senha
+     *
+     * @param  mixed $data
+     * @return void
+     */
     public function resetPassword(array $data): void
     {
         if (!csrf_verify($data)) {
@@ -228,7 +307,13 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-
+    
+    /**
+     * > Method => GET
+     * Controller responsável por fazer o logout do usuário
+     *
+     * @return void
+     */
     public function logout(): void
     {
         $this->message->make(MessageType::SUCCESS, 'Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash();

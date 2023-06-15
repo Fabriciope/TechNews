@@ -7,13 +7,21 @@ use App\Core\Model;
 use App\Core\Traits\ModelTrait;
 use App\Support\MessageType;
 
+/**
+ * Modelo de usuário
+ */
 class User extends Model
 {
 
     use ModelTrait;
 
     protected static $entity = 'users';
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(
@@ -21,7 +29,12 @@ class User extends Model
             ['first_name', 'last_name', 'email', 'password']
         );
     }
-
+    
+    /**
+     * bootstrap
+     *
+     * @return User
+     */
     public function bootstrap(
         string $firstName,
         string $lastName,
@@ -34,7 +47,12 @@ class User extends Model
         $this->password = $password;
         return $this;
     }
-
+    
+    /**
+     * checkStatus
+     *
+     * @return bool
+     */
     public function checkStatus(): bool
     {
         if ($this->status != 'confirmed') {
@@ -43,7 +61,14 @@ class User extends Model
         }
         return true;
     }
-
+    
+    /**
+     * findByEmail
+     *
+     * @param  string $email
+     * @param  string $columns
+     * @return ?User
+     */
     public function findByEmail(string $email, string $columns = '*'): ?User
     {
         $user = $this->find('email = :email', "email={$email}", $columns)->fetch();
@@ -52,27 +77,27 @@ class User extends Model
 
         return $user;
     }
-
+    
+    /**
+     * updateUser
+     *
+     * @param  ?array $files
+     * @return bool
+     */
     public function updateUser(?array $files = null): bool
     {
         $photo = null;
         $banner = null;
         if ($files) {
             ['userPhoto' => $userPhoto, 'userBanner' => $userBanner] = $files;
-
-            if (!empty($userPhoto['name'])) {
-                $photo = $userPhoto;
-            }
-            if (!empty($userBanner['name'])) {
-                $banner = $userBanner;
-            }
+            if (!empty($userPhoto['name']))  $photo = $userPhoto;
+            if (!empty($userBanner['name'])) $banner = $userBanner;
         }
 
         if (!$this->validateFields(photo: $photo, banner: $banner)) {
             return false;
         }
 
-        // $this->data = (object) filter_var_array((array)$this->data, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $this->data = (object) filter_var_array((array)$this->data);
 
         $findEmail = $this->find('email = :email AND id <> :id', "email={$this->email}&id={$this->id}")->fetch();
@@ -110,7 +135,13 @@ class User extends Model
         $this->data = ($this->findById($this->id))->data();
         return true;
     }
-
+    
+    /**
+     * createUser
+     *
+     * @param  ?string $passwordConfirmation
+     * @return bool
+     */
     public function createUser(?string $passwordConfirmation = null): bool
     {
         if (!$this->validateFields($passwordConfirmation)) {
@@ -129,7 +160,15 @@ class User extends Model
         $this->data = ($this->findById($userId))->data();
         return true;
     }
-
+    
+    /**
+     * validateFields
+     *
+     * @param  ?string $passwordConfirmation
+     * @param  ?array $photo
+     * @param  ?array $banner
+     * @return bool
+     */
     protected function validateFields(?string $passwordConfirmation = null, ?array $photo = null, ?array $banner = null): bool
     {
         if (!$this->required()) {
@@ -165,8 +204,8 @@ class User extends Model
         if ($banner) {
             if ($bannerImage = $banner['tmp_name']) {
                 [$width, $height] = getimagesize($bannerImage);
-                $percentage = (40 * intval($width)) / 100;
-                if ($height >= $percentage) {
+                $minimumHeight = (50 * intval($width)) / 100;
+                if ($height >= $minimumHeight) {
                     $this->message->make(MessageType::WARNING, 'Insira um banner com as recomendações desejadas');
                     return false;
                 }

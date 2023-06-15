@@ -5,6 +5,9 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
+/**
+ * Classe responsável por fazer a conexão com o banco de dados usando o design pattern Singleton
+ */
 class Connection
 {
     private const OPTIONS = [
@@ -15,7 +18,12 @@ class Connection
     ];
 
     private static PDO $instance;
-
+    
+    /**
+     * getInstance
+     *
+     * @return PDO
+     */
     public static function getInstance(): PDO
     {
         if(empty(self::$instance)) {

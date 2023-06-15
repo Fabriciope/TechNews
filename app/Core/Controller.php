@@ -5,10 +5,19 @@ namespace App\Core;
 use App\Core\ViewsEngine;
 use App\Support\Message;
 
-class Controller
+/**
+ * Classe abstrata do controller
+ */
+abstract class Controller
 {
     protected Message $message;
-
+    
+    /**
+     * __construct
+     *
+     * @param  ViewsEngine $views
+     * @return void
+     */
     public function __construct( protected ViewsEngine $views)
     {
         $this->views->addFolder('layouts', __DIR__ . '/../../views/layouts')
@@ -16,7 +25,13 @@ class Controller
         
         $this->message = new Message;
     }
-
+    
+    /**
+     * getModel
+     *
+     * @param  string $model
+     * @return App\Core\Model
+     */
     protected static function getModel(string $model): \App\Core\Model
     {
         if(str_contains($model, 'User')) {

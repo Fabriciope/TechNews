@@ -5,20 +5,42 @@ namespace App\Support;
 use CoffeeCode\Uploader\Image;
 use App\Support\MessageType;
 
+/**
+ * Classe responsável por fazer o upload de arquivos
+ */
 class Upload
 {
     private Message $message;
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->message = new Message;
     }
-
+    
+    /**
+     * message
+     *
+     * @return Message
+     */
     public function message(): Message
     {
         return $this->message;
     }
-
+    
+    /**
+     * image
+     *
+     * @param array $image
+     * @param string $name
+     * @param int $width
+     * @param string $dir
+     * @return void
+     */
     public function image(
         array $image,
         string $name,

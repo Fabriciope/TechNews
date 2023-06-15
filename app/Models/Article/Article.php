@@ -3,13 +3,14 @@
 namespace App\Models\Article;
 
 use App\Core\Model;
-
 use App\Models\Article\Paragraph;
 use App\Models\User;
-
 use App\Core\Traits\ModelTrait;
 use App\Support\MessageType;
 
+/**
+ * Model do artigo
+ */
 class Article extends Model
 {
     use ModelTrait;
@@ -23,7 +24,12 @@ class Article extends Model
             ['id_user', 'id_category', 'title', 'subtitle', 'uri', 'cover']
         );
     }
-
+    
+    /**
+     * bootstrap
+     *
+     * @return Article
+     */
     public function bootstrap(
         int $id_user,
         int $id_category,
@@ -43,7 +49,13 @@ class Article extends Model
 
         return $this;
     }
-
+    
+    /**
+     * author
+     *
+     * @param  ?string $field
+     * @return void
+     */
     public function author(?string $field = null)
     {
         if ($userId = $this->id_user) {
@@ -55,7 +67,13 @@ class Article extends Model
         }
         return null;
     }
-
+    
+    /**
+     * category
+     *
+     * @param  ?string $field
+     * @return void
+     */
     public function category(?string $field = null)
     {
         if ($categoryId = $this->id_category) {
@@ -67,13 +85,26 @@ class Article extends Model
         }
         return null;
     }
-
+    
+    /**
+     * amountOfComments
+     *
+     * @return int
+     */
     public function amountOfComments(): int
     {
         $comment = new \App\Models\Article\Comment;
         return $comment->find('id_article = :id', "id={$this->id}")->count();
     }
-
+    
+    /**
+     * updateArticle
+     *
+     * @param  ?array $coverData
+     * @param  ?array $titles
+     * @param  ?array $paragraphs
+     * @return bool
+     */
     public function updateArticle(?array $coverData = null, ?array $titles = null, ?array $paragraphs = null): bool
     {
         $cover = empty($coverData['name']) ? null : $coverData;
@@ -115,7 +146,15 @@ class Article extends Model
         $this->data = ($this->findById($this->id))->data();
         return true;
     }
-
+    
+    /**
+     * createArticle
+     *
+     * @param  array $coverData
+     * @param  ?array $titles
+     * @param  array $paragraphs
+     * @return bool
+     */
     public function createArticle(array $coverData, ?array $titles, array $paragraphs): bool
     {
         if (!$this->validateFields($coverData)) {
@@ -147,7 +186,12 @@ class Article extends Model
         $this->data = ($this->findById($articleId))->data();
         return true;
     }
-
+    
+    /**
+     * destroy
+     *
+     * @return bool
+     */
     public function destroy(): bool
     {
         $paragraph = new Paragraph;
@@ -171,7 +215,13 @@ class Article extends Model
         return true;
     }
 
-
+    
+    /**
+     * validateFields
+     *
+     * @param  ?array $coverData
+     * @return bool
+     */
     protected function validateFields(?array $coverData = null): bool
     {
         $ignore = $coverData ? 'cover' : null;

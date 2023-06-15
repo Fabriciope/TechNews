@@ -8,20 +8,39 @@ use App\Core\Session;
 use App\Support\Message;
 use App\Support\MessageType;
 
+/**
+ * Model de autenticação do usuário
+ */
 class AuthUser
 {
     private Message $message;
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->message = new Message;
     }
-
+    
+    /**
+     * message
+     *
+     * @return Message
+     */
     public function message(): Message
     {
         return $this->message;
     }
-
+    
+    /**
+     * user
+     *
+     * @param  string $columns
+     * @return User
+     */
     public static function user(string $columns = '*'): ?User
     {
         $session = new Session;
@@ -30,7 +49,13 @@ class AuthUser
         }
         return (new User)->findById($session->userId, $columns);
     }
-
+    
+    /**
+     * authenticateUser
+     *
+     * @param  bool $checkStatus
+     * @return void
+     */
     public static function authenticateUser(bool $checkStatus = false)
     {
         $user = self::user();
@@ -46,16 +71,28 @@ class AuthUser
 
         return $user;
     }
-
+    
+    /**
+     * logout
+     *
+     * @return void
+     */
     public static function logout(): void
     {
         (new Session)->unset('userId');
     }
-
+    
+    /**
+     * register
+     *
+     * @param  User $user
+     * @param  string $passwordConfirmation
+     * @return bool
+     */
     public function register(User $user, string $passwordConfirmation): bool
     {
         if (!$user->createUser($passwordConfirmation)) {
-            $this->message = $user->message;
+            $this->message = $user->message();
             return false;
         }
 
@@ -79,7 +116,15 @@ class AuthUser
 
         return true;
     }
-
+    
+    /**
+     * login
+     *
+     * @param  string $email
+     * @param  string $password
+     * @param  bool $save
+     * @return bool
+     */
     public function login(string $email, string $password, bool $save): bool|User
     {
         if (!is_email($email)) {
@@ -107,7 +152,13 @@ class AuthUser
         (new Session)->set('userId', $user->id);
         return $user;
     }
-
+    
+    /**
+     * forgetPassword
+     *
+     * @param  string $email
+     * @return bool
+     */
     public function forgetPassword(string $email): bool
     {
         if (!is_email($email)) {
@@ -147,7 +198,16 @@ class AuthUser
 
         return true;
     }
-
+    
+    /**
+     * resetPassword
+     *
+     * @param  string $email
+     * @param  string $code
+     * @param  string $password
+     * @param  string $passwordConfirmation
+     * @return bool
+     */
     public function resetPassword(string $email, string $code, string $password, string $passwordConfirmation): bool
     {
         $user = (new User)->findByEmail($email);

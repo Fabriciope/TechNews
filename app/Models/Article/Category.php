@@ -7,6 +7,9 @@ use App\Core\Model;
 use App\Core\Traits\ModelTrait;
 use App\Support\MessageType;
 
+/**
+ * Model da categoria
+ */
 class Category  extends Model
 {
     use ModelTrait;
@@ -14,7 +17,12 @@ class Category  extends Model
     protected static string $entity = 'categories';
 
     public mixed $selected = null;
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(
@@ -22,7 +30,12 @@ class Category  extends Model
             ['category', 'uri']
         );
     }
-
+    
+    /**
+     * getCategories
+     *
+     * @return ?array
+     */
     public function getCategories(): ?array
     {
         $categories = $this->find()->fetch(true);
@@ -38,13 +51,24 @@ class Category  extends Model
 
         return $categories;
     }
-
+    
+    /**
+     * selected
+     *
+     * @param  int $categoryId
+     * @return Category
+     */
     public function selected(int $categoryId): Category
     {
         $this->selected = $categoryId;
         return $this;
     }
-
+    
+    /**
+     * validateFields
+     *
+     * @return bool
+     */
     protected function validateFields(): bool
     {
         if(!$this->required()) {

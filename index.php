@@ -10,8 +10,6 @@ $router = new Router(url(), '@');
 $router->namespace('App\Controllers');
 $router->get('/', 'IndexController@pageHome');
 
-$router->get('/teste', 'IndexController@teste2');
-
 // ARTICLES ROUTES
 $router->group('artigo');
 $router->get('/{articleUri}', 'IndexController@pageArticlePost');
@@ -65,9 +63,11 @@ $router->post('/atualizar', 'UserController@updateProfile');
 $router->group('perfil/artigo');
 
 $router->get('/salvos', 'ArticleController@pageSavedArticles');
+$router->get('/salvos/{page}', 'ArticleController@pageSavedArticles');
 $router->post('/publicar', 'ArticleController@publishArticle');
 $router->post('/deletar', 'ArticleController@deleteArticle');
 $router->get('/publicados', 'ArticleController@pagePublishedArticles');
+$router->get('/publicados/{page}', 'ArticleController@pagePublishedArticles');
 $router->get('/novo', 'ArticleController@pageNewArticle');
 $router->post('/criar', 'ArticleController@createArticle');
 $router->get('/editar/{articleUri}', 'ArticleController@pageEditArticle');

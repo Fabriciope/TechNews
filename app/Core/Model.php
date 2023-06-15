@@ -48,8 +48,15 @@ abstract class Model
         static::$required = $required;
         $this->message = new Message;
     }
-
-    public function __set($name, $value)
+    
+    /**
+     * __set
+     *
+     * @param  string $name
+     * @param  string $value
+     * @return void
+     */
+    public function __set(string $name, string $value): void
     {
         if (empty($this->data)) {
             $this->data = new \stdClass();
@@ -57,27 +64,56 @@ abstract class Model
 
         $this->data->$name = $value;
     }
-
-    public function __get($name)
+    
+    /**
+     * __get
+     *
+     * @param  mixed $name
+     * @return mixed
+     */
+    public function __get(string $name): mixed
     {
         return $this->data->$name ?? null;
     }
-
+    
+    /**
+     * data
+     *
+     * @return object
+     */
     public function data(): ?object
     {
         return $this->data;
     }
-
+    
+    /**
+     * fail
+     *
+     * @return PDOException
+     */
     protected function fail(): ?\PDOException
     {
         return $this->fail;
     }
-
+    
+    /**
+     * message
+     *
+     * @return Message
+     */
     public function message(): Message
     {
         return $this->message;
     }
-
+    
+    /**
+     * find
+     *
+     * @param  ?string $terms
+     * @param  ?string $params
+     * @param  string $columns
+     * @return Model
+     */
     public function find(?string $terms = null, ?string $params = null, string $columns = '*'): Model
     {
         if ($terms !== null) {
@@ -88,25 +124,50 @@ abstract class Model
         $this->query = "SELECT {$columns} FROM " . static::$entity;
         return $this;
     }
-
+    
+    /**
+     * order
+     *
+     * @param  string $column
+     * @param  string $order
+     * @return Model
+     */
     public function order(string $column, string $order = 'DESC'): Model
     {
         $this->order = " ORDER BY {$column} {$order}";
         return $this;
     }
-
+    
+    /**
+     * limit
+     *
+     * @param  int $limit
+     * @return Model
+     */
     public function limit(int $limit): Model
     {
         $this->limit = " LIMIT {$limit}";
         return $this;
     }
-
+    
+    /**
+     * offset
+     *
+     * @param  int $offset
+     * @return Model
+     */
     public function offset(int $offset): Model
     {
         $this->offset = " OFFSET {$offset}";
         return $this;
     }
-
+    
+    /**
+     * fetch
+     *
+     * @param  bool $all
+     * @return void
+     */
     public final function fetch(bool $all = false)
     {
         try {
@@ -128,8 +189,14 @@ abstract class Model
             return null;
         }
     }
-
-    public function count(?string $columns = 'id'): ?int
+    
+    /**
+     * count
+     *
+     * @param  string $columns
+     * @return ?int
+     */
+    public function count(string $columns = 'id'): ?int
     {
         try {
             $conn = Connection::getInstance();
@@ -146,7 +213,13 @@ abstract class Model
             return null;
         }
     }
-
+    
+    /**
+     * create
+     *
+     * @param  array $data
+     * @return int
+     */
     protected function create(array $data): ?int
     {
         try {
@@ -164,7 +237,15 @@ abstract class Model
             return null;
         }
     }
-
+    
+    /**
+     * update
+     *
+     * @param  array $data
+     * @param  string $terms
+     * @param  string $params
+     * @return int
+     */
     protected function update(array $data, string $terms, string $params): ?int
     {
         try {
@@ -186,7 +267,15 @@ abstract class Model
             return null;
         }
     }
-
+    
+    /**
+     * delete
+     *
+     * @param  string $key
+     * @param  string $value
+     * @param  string $condition
+     * @return bool
+     */
     protected function delete(string $key, string $value, string $condition = '='): bool
     {
         try {
@@ -200,7 +289,12 @@ abstract class Model
             return false;
         }
     }
-
+    
+    /**
+     * destroy
+     *
+     * @return bool
+     */
     public function destroy(): bool
     {
         try {
@@ -214,7 +308,12 @@ abstract class Model
             return false;
         }
     }
-
+    
+    /**
+     * safe
+     *
+     * @return ?array
+     */
     protected function safe(): ?array
     {
         $data = (array) $this->data;
@@ -227,19 +326,29 @@ abstract class Model
 
         return $data;
     }
-
+    
+    /**
+     * filter
+     *
+     * @param  mixed $data
+     * @return array
+     */
     public function filter(array $data): array
     {
         $filter = [];
-
         foreach ($data as $key => $value) {
-            // $filter[$key] = is_null($value) ? null : trim(filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
             $filter[$key] = is_null($value) ? null : trim(filter_var($value));
         }
 
         return $filter;
     }
-
+    
+    /**
+     * required
+     *
+     * @param  ?string $ignore
+     * @return bool
+     */
     public function required(?string $ignore = null): bool
     {
         $data = (array) $this->data;
@@ -253,6 +362,11 @@ abstract class Model
         }
         return true;
     }
-
-    abstract protected function validateFields();
+    
+    /**
+     * validateFields
+     *
+     * @return bool
+     */
+    abstract protected function validateFields(): bool;
 }

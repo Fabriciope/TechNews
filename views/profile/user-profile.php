@@ -56,7 +56,7 @@
                     </p>
                 <?php else : ?>
                     <div class="box_check_the_password">
-                        <a href="">Verificar meu perfil</a>
+                        <a href="<?=url('/confirma')?>">Verificar meu perfil</a>
                     </div>
                 <?php endif; ?>
             </div>

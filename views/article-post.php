@@ -40,7 +40,6 @@
 
     </article>
 
-    <!-- TODO: melhorar a responsividade dos artigos relacionados -->
     <?php if (!empty($relatedArticles)) : ?>
         <section class="section_related_articles">
             <h4>Artigos relacionados</h4>

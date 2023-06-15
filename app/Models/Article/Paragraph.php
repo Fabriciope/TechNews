@@ -6,12 +6,20 @@ use App\Core\Model;
 use App\Core\Traits\ModelTrait;
 use App\Support\MessageType;
 
+/**
+ * Model dos parágrafos
+ */
 class Paragraph extends Model
 {
     use ModelTrait;
 
     protected static string $entity = 'paragraphs';
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(
@@ -19,7 +27,13 @@ class Paragraph extends Model
             ['id_article', 'paragraph', 'position']
         );
     }
-    
+        
+    /**
+     * findParagraphsByArticleId
+     *
+     * @param  int $articleId
+     * @return ?array
+     */
     public function findParagraphsByArticleId(int $articleId): ?array
     {
         $paragraphs = $this->find('id_article = :id', "id={$articleId}")
@@ -30,15 +44,23 @@ class Paragraph extends Model
 
         return $paragraphs;
     }
-
+    
+    /**
+     * addParagraph
+     *
+     * @param int $id_article
+     * @param string $paragraph
+     * @param int $position
+     * @return bool
+     */
     public function addParagraph(
-        int $id_article,
+        int $articleId,
         string $paragraph,
         int $position,
         ?string $title = null
     ): bool
     {
-        $this->id_article = $id_article;
+        $this->id_article = $articleId;
         $this->paragraph = $paragraph;
         $this->position = $position;
         $this->title = $title;
@@ -50,7 +72,13 @@ class Paragraph extends Model
 
         return true;
     }
-
+    
+    /**
+     * getParagraphsAndTitles
+     *
+     * @param  string $data
+     * @return array
+     */
     public static function getParagraphsAndTitles(array $data): array
     {
         $titles =  array();
@@ -77,8 +105,16 @@ class Paragraph extends Model
             'paragraphs' => $paragraphs
         ];
     }
-
-    public function createArticleParagraphs(int $articleId, array $titles, $paragraphs): bool
+    
+    /**
+     * createArticleParagraphs
+     *
+     * @param  int $articleId
+     * @param  array $titles
+     * @param  array $paragraphs
+     * @return bool
+     */
+    public function createArticleParagraphs(int $articleId, array $titles, array $paragraphs): bool
     {
         foreach($paragraphs as $position => $paragraphContent) {
             if (isset($titles[$position]) && !empty($titles[$position])) {
@@ -105,7 +141,15 @@ class Paragraph extends Model
 
         return true;
     }
-
+    
+    /**
+     * updateArticleParagraphs
+     *
+     * @param  int $articleId
+     * @param  array $titles
+     * @param  array $paragraphs
+     * @return bool
+     */
     public function updateArticleParagraphs(int $articleId, array $titles, array $paragraphs): bool
     {
         if(!$this->deleteParagraphsByArticle($articleId)) {
@@ -114,7 +158,13 @@ class Paragraph extends Model
 
         return $this->createArticleParagraphs($articleId, $titles, $paragraphs);
     }
-
+    
+    /**
+     * deleteParagraphsByArticle
+     *
+     * @param  int $articleId
+     * @return bool
+     */
     public function deleteParagraphsByArticle(int $articleId): bool
     {
         $this->delete('id_article', $articleId);
@@ -122,7 +172,12 @@ class Paragraph extends Model
 
         return true;
     }
-
+    
+    /**
+     * validateFields
+     *
+     * @return bool
+     */
     protected function validateFields(): bool
     {
         if(!$this->required()) {

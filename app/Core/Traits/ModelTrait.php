@@ -5,9 +5,19 @@ namespace App\Core\Traits;
 use App\Core\Model;
 use App\Support\MessageType;
 
+/**
+ * Trait responsável por abstrair comportamentos comuns entre os Models
+ */
 trait ModelTrait
 {
-    
+        
+    /**
+     * findById
+     *
+     * @param  int $id
+     * @param  string $columns
+     * @return Model
+     */
     public function findById(int $id, string $columns = '*'): ?Model
     {
         $fetch = $this->find('id = :id', "id={$id}", $columns)->fetch();
@@ -16,7 +26,14 @@ trait ModelTrait
 
         return $fetch;
     }
-
+    
+    /**
+     * findByUri
+     *
+     * @param  string $uri
+     * @param  string $columns
+     * @return Model
+     */
     public function findByUri(string $uri, string $columns = '*'): ?Model
     {
         $article = $this->find('uri = :uri', "uri={$uri}", $columns)->fetch();
@@ -25,7 +42,13 @@ trait ModelTrait
 
         return $article;
     }
-
+    
+    /**
+     * failed
+     *
+     * @param  string $message
+     * @return bool
+     */
     protected function failed(string $message): bool
     {
         if ($this->fail()) {
@@ -34,7 +57,19 @@ trait ModelTrait
         }
         return false;
     }
-
+    
+    
+        
+    /**
+     * uploadImage
+     *
+     * @param string $imageField
+     * @param array $imageData
+     * @param int $imageSize
+     * @param string $imageDir
+     * @param ?string $oldImagePath
+     * @return void
+     */
     protected function uploadImage(
         string $imageField,
         array $imageData,
@@ -57,8 +92,7 @@ trait ModelTrait
 
         $oldImagePath = __DIR__ . "{$oldImagePath}{$this->$imageField}";
         if (is_file($oldImagePath) &&file_exists($oldImagePath)) {
-            //@unlink()
-            unlink($oldImagePath);
+            @unlink($oldImagePath);
         }
 
         $this->$imageField = $image;

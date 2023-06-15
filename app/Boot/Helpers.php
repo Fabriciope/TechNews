@@ -2,7 +2,6 @@
 
 use App\Core\Session;
 
-
 /**
  * ####################
  * ###   VALIDATE   ###
@@ -80,7 +79,6 @@ use App\Core\Session;
     }
 }
 
-
 /**
  * ################
  * ###   URLs   ###
@@ -138,7 +136,6 @@ use App\Core\Session;
     }
 }
 
-
 /**
  * ################
  * ###   DATE   ###
@@ -150,7 +147,6 @@ use App\Core\Session;
         return (new DateTime($date))->format($format);
     }
 }
-
 
 /**
  * ##################
@@ -192,7 +188,6 @@ use App\Core\Session;
     //     return url() . (new \App\Support\Thumb)->make($image, $width, $height);
     // }
 }
-
 
 /**
  * ##################
@@ -287,7 +282,6 @@ use App\Core\Session;
 
 }
 
-
 /**
  * ###################
  * ###   REQUEST   ###
@@ -361,8 +355,6 @@ function flash(): ?\App\Support\Message
 {
     return session()->getFlashMessage();
 }
-
-
 
 function session(): Session
 {

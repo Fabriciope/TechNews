@@ -7,12 +7,20 @@ use App\Core\Model;
 use App\Core\Traits\ModelTrait;
 use App\Support\MessageType;
 
+/**
+ * Model dos comentários
+ */
 class Comment extends Model
 {
     use ModelTrait;
 
     protected static string $entity = 'comments';
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(
@@ -20,7 +28,15 @@ class Comment extends Model
             ['id_user', 'id_article', 'comment']
         );
     }
-
+    
+    /**
+     * bootstrap
+     *
+     * @param  int $userId
+     * @param  int $articleId
+     * @param  string $comment
+     * @return Comment
+     */
     public function bootstrap(int $userId, int $articleId, string $comment): Comment
     {
         $this->id_user = $userId;
@@ -29,7 +45,12 @@ class Comment extends Model
 
         return $this;
     }
-
+    
+    /**
+     * createComment
+     *
+     * @return bool
+     */
     public function createComment(): bool
     {
         if(!$this->validateFields()) {
@@ -50,7 +71,13 @@ class Comment extends Model
         $this->data = ($this->findById($commentId))->data();
         return true;
     }
-
+    
+    /**
+     * user
+     *
+     * @param  ?string $field
+     * @return mixed
+     */
     public function user(?string $field = null): mixed
     {
         if($user = $this->id_user) {
@@ -66,7 +93,12 @@ class Comment extends Model
 
         return null;
     }
-
+    
+    /**
+     * userComment
+     *
+     * @return bool
+     */
     public function userComment(): bool
     {
         if($user = \App\Models\AuthUser::user()) {
@@ -78,7 +110,15 @@ class Comment extends Model
             return false;
         }
     }
-
+    
+    /**
+     * getCommentsByArticleId
+     *
+     * @param  int $articleId
+     * @param  int $limit
+     * @param  int $offset
+     * @return array
+     */
     public function getCommentsByArticleId(int $articleId, int $limit, int $offset): ?array
     {
         $articles = $this
@@ -92,7 +132,13 @@ class Comment extends Model
 
         return $articles;
     }
-
+    
+    /**
+     * deleteCommentsByArticle
+     *
+     * @param  int $articleId
+     * @return bool
+     */
     public function deleteCommentsByArticle(int $articleId): bool
     {
         $this->delete('id_article', $articleId);
@@ -100,7 +146,12 @@ class Comment extends Model
 
         return true;
     }
-
+    
+    /**
+     * validateFields
+     *
+     * @return bool
+     */
     protected function validateFields(): bool
     {
         if(!$this->required()) {

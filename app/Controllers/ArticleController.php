@@ -7,14 +7,31 @@ use App\Models\AuthUser;
 use App\Support\MessageType;
 use App\Support\Paginator;
 
+/**
+ * ArticleController
+ */
 class ArticleController extends Controller
-{
+{    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct(new \App\Core\ViewsEngine(__DIR__ . './../../views/profile'));
     }
 
-    public function pagePublishedArticles(): void
+    //TODO: trocar algumas s para o controller de usuário
+    
+    /**
+     * > Method => GET
+     * Página dos artigos publicados pelo usuário
+     *
+     * @param  array $data
+     * @return void
+     */
+    public function pagePublishedArticles(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
         if ($user instanceof \App\Support\Message) {
@@ -24,8 +41,6 @@ class ArticleController extends Controller
             return;
         }
 
-        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1;
-
         $findArticles = static::getModel('Article')
             ->find(
                 'status = :status AND id_user = :userId',
@@ -34,8 +49,8 @@ class ArticleController extends Controller
 
         $paginator =  new Paginator(
             6,
-            $page,
-            "perfil/artigo/publicados/",
+            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
+            "/perfil/artigo/publicados/",
             $findArticles->count()
         );
 
@@ -43,16 +58,23 @@ class ArticleController extends Controller
             'title' => 'Artigos publicados',
             'userData' => $user->data(),
             'publishedArticles' => $findArticles
+                ->order('published_at', 'DESC')
                 ->limit($paginator->limit())
                 ->offset($paginator->offset())
-                ->order('published_at', 'DESC')
                 ->fetch(true),
             'paginator' => $paginator
 
         ]);
     }
-
-    public function pageSavedArticles(): void
+    
+    /**
+     * > Method => GET
+     * Página dos artigos salvos pelo usuário
+     *
+     * @param  array $data
+     * @return void
+     */
+    public function pageSavedArticles(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
         if ($user instanceof \App\Support\Message) {
@@ -71,7 +93,7 @@ class ArticleController extends Controller
         $paginator = new Paginator(
             6,
             isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
-            "/perfil/artigos/publicados/",
+            "/perfil/artigos/salvos/",
             $findArticles->count()
         );
 
@@ -79,14 +101,21 @@ class ArticleController extends Controller
             'title' => 'Artigos salvos',
             'userData' => $user->data(),
             'savedArticles' => $findArticles
+                ->order('created_at', 'DESC')
                 ->limit($paginator->limit())
                 ->offset($paginator->offset())
-                ->order('created_at', 'DESC')
                 ->fetch(true),
             'paginator' => $paginator
         ]);
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por fazer a publicação de um artigo salvo
+     *
+     * @param  array $data
+     * @return void
+     */
     public function publishArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -116,7 +145,14 @@ class ArticleController extends Controller
         $this->message->make(MessageType::SUCCESS, 'Artigo publicado com sucesso!')->flash(true);
         redirect('/perfil/artigo/publicados');
     }
-
+    
+    /**
+     * > Method => GET
+     * Página responsável por carregar os dodos de um artigo para edição
+     *
+     * @param  mixed $data
+     * @return void
+     */
     public function pageEditArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -151,7 +187,14 @@ class ArticleController extends Controller
             'formAction' => 'alterar'
         ]);
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por fazer a edição de um artigo
+     *
+     * @param  array $data
+     * @return void
+     */
     public function updateArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -200,7 +243,14 @@ class ArticleController extends Controller
         echo json_encode($json);
         return;
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por deletar um artigo
+     *
+     * @param  array $data
+     * @return void
+     */
     public function deleteArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -213,7 +263,7 @@ class ArticleController extends Controller
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
-        if (empty($data['articleUri']) || !$article) {
+        if (!$article) {
             $this->message->make(MessageType::ERROR, 'Artigo não encontrado para exclusão')->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
@@ -234,7 +284,13 @@ class ArticleController extends Controller
         redirect('/perfil/artigo/salvos');
         return;
     }
-
+    
+    /**
+     * > Method => GET
+     * Página para criação de novo artigo
+     *
+     * @return void
+     */
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -254,7 +310,14 @@ class ArticleController extends Controller
             'formAction' => 'criar'
         ]);
     }
-
+    
+    /**
+     * > Method => POST
+     * createArticle
+     *
+     * @param  array $data
+     * @return void
+     */
     public function createArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
@@ -303,7 +366,14 @@ class ArticleController extends Controller
         echo json_encode($json);
         return;
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por criar um comentário em algum artigo
+     *
+     * @param  array $data
+     * @return void
+     */
     public function newComment(array $data): void
     {
         if (!csrf_verify($data)) {
@@ -339,7 +409,14 @@ class ArticleController extends Controller
         echo json_encode($json);
         return;
     }
-
+    
+    /**
+     * > Method => POST
+     * Controller responsável por deletar um comentário
+     *
+     * @param  array $data
+     * @return void
+     */
     public function deleteComment(array $data): void
     {
         $comment = static::getModel('Comment')->findById($data['commentId']);

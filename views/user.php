@@ -9,7 +9,7 @@
 <section class="site_width container_info_user">
     <div class="box_description">
         <h3>Descrição:</h3>
-        <p><?=text($user->description ?? '')?></p>
+        <p><?= text($user->description ?? '') ?></p>
     </div>
     <div class="container_user_articles">
         <h3>Artigos publicados na plataforma</h3>
@@ -21,9 +21,9 @@
             <?php endif; ?>
         </div>
         <div class="container_paginator">
-                    <nav class="paginator comments">
-                        <?= $this->insert('includes::paginator', ['paginator' => $paginator, 'uri' => $paginatorUri]) ?>
-                    </nav>
-                </div>
+            <nav class="paginator comments">
+                <?= $this->insert('includes::paginator', ['paginator' => $paginator]) ?>
+            </nav>
+        </div>
     </div>
 </section>
