@@ -62,12 +62,15 @@ $router->post('/atualizar', 'UserController@updateProfile');
 // ARTICLES ACTIONS
 $router->group('perfil/artigo');
 
-$router->get('/salvos', 'ArticleController@pageSavedArticles');
-$router->get('/salvos/{page}', 'ArticleController@pageSavedArticles');
+$router->get('/salvos', 'UserController@pageSavedArticles');
+$router->get('/salvos/{page}', 'UserController@pageSavedArticles');
+
 $router->post('/publicar', 'ArticleController@publishArticle');
 $router->post('/deletar', 'ArticleController@deleteArticle');
-$router->get('/publicados', 'ArticleController@pagePublishedArticles');
-$router->get('/publicados/{page}', 'ArticleController@pagePublishedArticles');
+
+$router->get('/publicados', 'UserController@pagePublishedArticles');
+$router->get('/publicados/{page}', 'UserController@pagePublishedArticles');
+
 $router->get('/novo', 'ArticleController@pageNewArticle');
 $router->post('/criar', 'ArticleController@createArticle');
 $router->get('/editar/{articleUri}', 'ArticleController@pageEditArticle');

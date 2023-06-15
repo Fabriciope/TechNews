@@ -58,6 +58,7 @@ class IndexController extends Controller
             '/artigos/',
             $article->count()
         );
+
         echo $this->views->render('articles', [
             'title' => 'Artigos',
             'relevantArticles' => $article

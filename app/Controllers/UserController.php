@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\AuthUser;
-use App\Support\Message;
+use App\Support\Paginator;
 use App\Support\MessageType;
 
 /**
@@ -84,5 +84,90 @@ class UserController extends Controller
         }
         echo json_encode($json);
         return;
+    }
+
+        /**
+     * > Method => GET
+     * Página dos artigos publicados pelo usuário
+     *
+     * @param  array $data
+     * @return void
+     */
+    public function pagePublishedArticles(array $data): void
+    {
+        $user = AuthUser::authenticateUser(true);
+        if ($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->flash(true);
+            redirect('/perfil');
+            return;
+        }
+
+        $findArticles = static::getModel('Article')
+            ->find(
+                'status = :status AND id_user = :userId',
+                "userId={$user->id}&status=published"
+            );
+
+        $paginator =  new Paginator(
+            6,
+            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
+            "/perfil/artigo/publicados/",
+            $findArticles->count()
+        );
+
+        echo $this->views->render('published-articles', [
+            'title' => 'Artigos publicados',
+            'userData' => $user->data(),
+            'publishedArticles' => $findArticles
+                ->order('published_at', 'DESC')
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->fetch(true),
+            'paginator' => $paginator
+
+        ]);
+    }
+
+        /**
+     * > Method => GET
+     * Página dos artigos salvos pelo usuário
+     *
+     * @param  array $data
+     * @return void
+     */
+    public function pageSavedArticles(array $data): void
+    {
+        $user = AuthUser::authenticateUser(true);
+        if ($user instanceof \App\Support\Message) {
+            $message = $user;
+            $message->flash(true);
+            redirect('/perfil');
+            return;
+        }
+
+        $findArticles = static::getModel('Article')
+            ->find(
+                'id_user = :userId AND status = :status',
+                "userId={$user->id}&status=created"
+            );
+
+        $paginator = new Paginator(
+            6,
+            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
+            "/perfil/artigos/salvos/",
+            $findArticles->count()
+        );
+
+        echo $this->views->render('saved-articles', [
+            'title' => 'Artigos salvos',
+            'userData' => $user->data(),
+            'savedArticles' => $findArticles
+                ->order('created_at', 'DESC')
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->fetch(true),
+            'paginator' => $paginator
+        ]);
     }
 }

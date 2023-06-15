@@ -166,9 +166,9 @@ abstract class Model
      * fetch
      *
      * @param  bool $all
-     * @return void
+     * @return mixed
      */
-    public final function fetch(bool $all = false)
+    public final function fetch(bool $all = false): mixed
     {
         try {
             $stmt = Connection::getInstance()
