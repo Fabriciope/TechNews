@@ -188,8 +188,6 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-
-    //TODO: adicionar a Controller da página re colocar o email para recuperar a senha (repensar)
     
     /**
      * > Method => POST
@@ -245,10 +243,11 @@ class AuthController extends Controller
             redirect('/recuperar-senha');
         }
 
-        list($email, $code) = explode('-', $data['code']);
+        list($emailReceived, $code) = explode('-', $data['code']);
+        $email = base64_decode($emailReceived);
         $email = is_email($email) ? $email : null;
         $code = $code ?? null;
-        if (!$email || $code) {
+        if (!$email || !$code) {
             $this->message->make(MessageType::ERROR, 'Link inválido, Informe seu e-mail para recuperar a senha')->flash();
             redirect('/recuperar-senha');
             return;
@@ -275,12 +274,14 @@ class AuthController extends Controller
             return;
         }
 
-        list($email, $code) = explode('-', $data['code']);
+        list($emailReceived, $code) = explode('-', $data['code']);
+        $email = base64_decode($emailReceived);
         $email = is_email($email) ? $email : null;
         $code = $code ?? null;
-        if (!$email || $code) {
+        if (!$email || !$code) {
             $this->message->make(MessageType::ERROR, 'Link inválido, Informe seu e-mail para recuperar a senha')->flash();
-            redirect('/recuperar-senha');
+            $json['redirect'] = url('/recuperar-senha');
+            echo json_encode($json);
             return;
         }
 
@@ -292,7 +293,7 @@ class AuthController extends Controller
 
         $authUser = new AuthUser;
         $checkPasswordRecovery = $authUser->resetPassword(
-            base64_decode($email),
+            $email,
             $code,
             trim($data['password']),
             trim($data['passwordConfirmation'])

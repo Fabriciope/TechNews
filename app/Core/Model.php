@@ -56,7 +56,7 @@ abstract class Model
      * @param  string $value
      * @return void
      */
-    public function __set(string $name, string $value): void
+    public function __set($name, $value)
     {
         if (empty($this->data)) {
             $this->data = new \stdClass();
@@ -68,10 +68,10 @@ abstract class Model
     /**
      * __get
      *
-     * @param  mixed $name
+     * @param  string $name
      * @return mixed
      */
-    public function __get(string $name): mixed
+    public function __get($name)
     {
         return $this->data->$name ?? null;
     }
@@ -162,13 +162,8 @@ abstract class Model
         return $this;
     }
     
-    /**
-     * fetch
-     *
-     * @param  bool $all
-     * @return mixed
-     */
-    public final function fetch(bool $all = false): mixed
+    
+    public final function fetch(bool $all = false)
     {
         try {
             $stmt = Connection::getInstance()
