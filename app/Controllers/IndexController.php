@@ -41,6 +41,13 @@ class IndexController extends Controller
         ]);
     }
 
+    public function pageAbout(): void
+    {
+        echo $this->views->render('about', [
+            'title' => 'Sobre nós'
+        ]);
+    }
+
     /**
      * > Method => GET 
      * Página onde estão todos os artigos publicados e os mais visualizados

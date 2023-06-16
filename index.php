@@ -10,6 +10,8 @@ $router = new Router(url(), '@');
 $router->namespace('App\Controllers');
 $router->get('/', 'IndexController@pageHome');
 
+$router->get('/sobre', 'IndexController@pageAbout');
+
 // ARTICLES ROUTES
 $router->group('artigo');
 $router->get('/{articleUri}', 'IndexController@pageArticlePost');

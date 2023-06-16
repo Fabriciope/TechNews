@@ -37,7 +37,7 @@
         <ul class="ul_main_mobile_active">
             <li><a href="<?= url("/") ?>">Home</a></li>
             <li><a href="<?= url("/artigos") ?>">Artigos</a></li>
-            <li><a href="">Sobre</a></li>
+            <li><a href="<?=url('/sobre')?>">Sobre</a></li>
             <?php if (isLogged()) : ?>
                 <li class="li_profile">
                     <span>Perfil <i class="fa-solid fa-angle-down"></i></span> 
@@ -74,7 +74,7 @@
                 <ul class="ul_main">
                     <li><a href="<?=url("/") ?>">Home</a></li>
                     <li><a href="<?=url("/artigos")?>">Artigos</a></li>
-                    <li><a href="">Sobre</a></li>
+                    <li><a href="<?=url('/sobre')?>">Sobre</a></li>
                     <?php if (isLogged()) : ?>
                         <li>
                             <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
