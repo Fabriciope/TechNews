@@ -14,7 +14,6 @@
                         <div class="title_article_best title_article_left">
                             <h4><?= str_limit_chars($relevantArticles[0]->title, 130) ?></h4>
                         </div>
-
                     </article>
                 </a>
             </div>
@@ -39,10 +38,6 @@
 <section class="site_width latest_news">
     <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>
     <form class="formAjax" action="<?= url('/artigos/buscar') ?>" method="POST">
-
-        <div class="ajax_response">
-            <?= flash() ?>
-        </div>
 
         <?= csrf_input() ?>
 

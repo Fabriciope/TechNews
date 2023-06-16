@@ -308,7 +308,7 @@ use App\Core\Session;
 
     function request_limit(
         string $requestName,
-        int $requestLimit = 3,
+        int $requestLimit = 5,
         int $minutes = 3,
         bool $reset = false
     ): bool {

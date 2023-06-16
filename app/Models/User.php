@@ -16,7 +16,7 @@ class User extends Model
     use ModelTrait;
 
     protected static $entity = 'users';
-    
+
     /**
      * __construct
      *
@@ -29,7 +29,7 @@ class User extends Model
             ['first_name', 'last_name', 'email', 'password']
         );
     }
-    
+
     /**
      * bootstrap
      *
@@ -47,7 +47,7 @@ class User extends Model
         $this->password = $password;
         return $this;
     }
-    
+
     /**
      * checkStatus
      *
@@ -61,7 +61,7 @@ class User extends Model
         }
         return true;
     }
-    
+
     /**
      * findByEmail
      *
@@ -77,7 +77,7 @@ class User extends Model
 
         return $user;
     }
-    
+
     /**
      * updateUser
      *
@@ -98,7 +98,7 @@ class User extends Model
             return false;
         }
 
-        $this->data = (object) filter_var_array((array)$this->data);
+        $this->data = (object) filter_var_array((array)$this->data, FILTER_DEFAULT);
 
         $findEmail = $this->find('email = :email AND id <> :id', "email={$this->email}&id={$this->id}")->fetch();
         if ($findEmail) {
@@ -135,7 +135,7 @@ class User extends Model
         $this->data = ($this->findById($this->id))->data();
         return true;
     }
-    
+
     /**
      * createUser
      *
@@ -160,7 +160,7 @@ class User extends Model
         $this->data = ($this->findById($userId))->data();
         return true;
     }
-    
+
     /**
      * validateFields
      *

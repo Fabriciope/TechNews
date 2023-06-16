@@ -13,7 +13,7 @@ use App\Support\MessageType;
  * Controller onde estão todas as rotas relacionadas a autenticação 
  */
 class AuthController extends Controller
-{    
+{
     /**
      * __construct
      *
@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         parent::__construct(new \App\Core\ViewsEngine(__DIR__ . '/../../views'));
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por fazer o registro de um usuário
@@ -33,8 +33,13 @@ class AuthController extends Controller
      */
     public function register(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
-  
+        if (!$this->checkRequest($data)) return;
+
+        if (\App\Models\AuthUser::user()) {
+            echo json_encode(['redirect' => url('/perfil')]);
+            return;
+        }
+
         if (in_array('', $data)) {
             $json['message'] = $this->message->make(MessageType::INFO, 'Preencha todos os campos !')->render();
             echo json_encode($json);
@@ -42,12 +47,13 @@ class AuthController extends Controller
         }
 
         $auth =  new AuthUser;
-        $user = static::getModel('User')->bootstrap(
-            trim($data['first_name']),
-            trim($data['last_name']),
-            trim($data['email']),
-            trim($data['password'])
-        );
+        $user = static::getModel('User')
+            ->bootstrap(
+                trim($data['first_name']),
+                trim($data['last_name']),
+                trim($data['email']),
+                trim($data['password'])
+            );
 
         if ($auth->register($user, trim($data['passwordConfirmation']))) {
             $json['redirect'] = url('/confirma');
@@ -57,7 +63,7 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => GET
      * Página de aviso da confirmação do e-mail
@@ -66,13 +72,14 @@ class AuthController extends Controller
      */
     public function pageConfirmEmail(): void
     {
-        if($user = AuthUser::user()) {
+        //TODO: verificar se o if está funcionando
+        if ($user = AuthUser::user()) {
             $views = (new ViewsEngine(__DIR__ . './../../shared/views/email'));
             $message = $views->render('confirm', [
                 'firstName' => $user->first_name,
                 'confirmLink' => url('/obrigado/' . base64_encode($user->email))
             ]);
-    
+
             $email = new Email;
             $email->bootstrap(
                 'Ative sua conta na TechNes',
@@ -81,9 +88,7 @@ class AuthController extends Controller
                 "{$user->first_name} {$user->last_name}"
             );
             if (!$email->send()) {
-                $this->message = $email->message();
-                $this->message->make(MessageType::ERROR, 'Erro ao enviar e-mail d confirmação')->flash(true);
-                return;
+                $email->message()->make(MessageType::ERROR, 'Erro ao enviar e-mail d confirmação')->flash(true);
             }
         }
 
@@ -96,7 +101,7 @@ class AuthController extends Controller
             ]
         ]);
     }
-    
+
     /**
      * > Method => GET
      * Página onde a conta do usuário é verificada pela confirmação do e-mail
@@ -106,9 +111,13 @@ class AuthController extends Controller
      */
     public function pageConfirmedEmail(array $data): void
     {
+        if (\App\Models\AuthUser::user()) {
+            redirect('/perfil');
+        }
+
         if (empty($data['email'])) {
-            $this->message->make(MessageType::ERROR, 'Erro ao encontrar e-mail')->flash(true);
-            back();
+            $this->message->make(MessageType::ERROR, 'Link de confirmação inválido')->flash(true);
+            redirect('/');
         }
 
         $email = base64_decode($data['email']);
@@ -132,7 +141,7 @@ class AuthController extends Controller
             ]
         ]);
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por fazer o login do usuário
@@ -142,22 +151,22 @@ class AuthController extends Controller
      */
     public function login(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
         if (empty($data['email']) || empty($data['password'])) {
-            $minutes = 0;
-            if (request_limit('login', 7, 60 * $minutes)) {
-                $json['message'] = $this->message
-                    ->make(MessageType::ERROR, "Você atingiu o limite de tentativas, espere {$minutes} minutos para tentar novamente")
-                    ->after('!')->render();
-                echo json_encode($json);
-                return;
-            }
             $json['message'] = $this->message->make(MessageType::INFO, 'Preencha todos os campos')->after('!')->render();
             echo json_encode($json);
             return;
         }
 
+        $minutes = 5;
+        if (request_limit('login', 7, 60 * $minutes)) {
+            $json['message'] = $this->message
+                ->make(MessageType::ERROR, "Você atingiu o limite de tentativas, espere {$minutes} minutos para tentar novamente")
+                ->after('!')->render();
+            echo json_encode($json);
+            return;
+        }
 
         $save = (!empty($data['save']) && $data['save'] == 'on') ? true : false;
         $authUser = new AuthUser;
@@ -174,7 +183,7 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por receber o e-mail e enviar para a recuperação de senha
@@ -184,10 +193,10 @@ class AuthController extends Controller
      */
     public function forgetPassword(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
         if (empty($data['email'])) {
-            $json['message'] = $this->message->make(MessageType::INFO, 'Informe o e-mail')->render();
+            $json['message'] = $this->message->make(MessageType::INFO, 'Informe seu e-mail para alterar a senha')->render();
             echo json_encode($json);
             return;
         }
@@ -202,7 +211,7 @@ class AuthController extends Controller
         $email = trim($data['email']);
 
         if ($authUser->forgetPassword($email)) {
-            $json['message'] = $this->message->make(MessageType::SUCCESS, 'Acesse seu e-mail para recuperar a senha')->render();
+            $json['message'] = $this->message->make(MessageType::SUCCESS, 'Acesse seu e-mail para alterar a senha')->render();
         } else {
             $json['message'] = $authUser->message()->render();
         }
@@ -210,7 +219,7 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => GET
      * Página de alteração de senha
@@ -220,17 +229,12 @@ class AuthController extends Controller
      */
     public function pageResetPassword(array $data): void
     {
-        if (empty($data)) {
-            //tratar de outra maneira
-            redirect('/recuperar-senha');
+        if (\App\Models\AuthUser::user()) {
+            redirect('/perfil');
         }
 
-        list($emailReceived, $code) = explode('-', $data['code']);
-        $email = base64_decode($emailReceived);
-        $email = is_email($email) ? $email : null;
-        $code = $code ?? null;
-        if (!$email || !$code) {
-            $this->message->make(MessageType::ERROR, 'Link inválido, Informe seu e-mail para recuperar a senha')->flash();
+        if (empty($data)) {
+            $this->message->make(MessageType::ERROR, 'Link inválido, Informe novamente seu e-mail para recuperar a senha ou tente mais tarde')->flash();
             redirect('/recuperar-senha');
             return;
         }
@@ -240,7 +244,7 @@ class AuthController extends Controller
             'code' => $data['code']
         ]);
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por fazer a alteração da senha
@@ -250,14 +254,14 @@ class AuthController extends Controller
      */
     public function resetPassword(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
-        list($emailReceived, $code) = explode('-', $data['code']);
-        $email = base64_decode($emailReceived);
-        $email = is_email($email) ? $email : null;
+        list($emailCode, $code) = explode('-', $data['code']);
+        $emailReceived = base64_decode($emailCode);
+        $email = is_email($emailReceived) ? $emailReceived : null;
         $code = $code ?? null;
         if (!$email || !$code) {
-            $this->message->make(MessageType::ERROR, 'Link inválido, Informe seu e-mail para recuperar a senha')->flash();
+            $this->message->make(MessageType::ERROR, 'Link inválido, Informe novamente seu e-mail para recuperar a senha ou tente mais tarde')->flash();
             $json['redirect'] = url('/recuperar-senha');
             echo json_encode($json);
             return;
@@ -270,14 +274,14 @@ class AuthController extends Controller
         }
 
         $authUser = new AuthUser;
-        $checkPasswordRecovery = $authUser->resetPassword(
+        $resetPassword = $authUser->resetPassword(
             $email,
             $code,
             trim($data['password']),
             trim($data['passwordConfirmation'])
         );
 
-        if ($checkPasswordRecovery) {
+        if ($resetPassword) {
             $this->message->make(MessageType::SUCCESS, 'Senha alterada com sucesso.')->flash();
             $json['redirect'] = url('/entrar');
         } else {
@@ -286,7 +290,7 @@ class AuthController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => GET
      * Controller responsável por fazer o logout do usuário
@@ -297,6 +301,6 @@ class AuthController extends Controller
     {
         $this->message->make(MessageType::SUCCESS, 'Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash();
         AuthUser::logout();
-        redirect('entrar');
+        redirect('/entrar');
     }
 }

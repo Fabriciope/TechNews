@@ -105,6 +105,10 @@
     padding: 1rem 1.33rem;
 }
 
+.full_width {
+    height: 90vh;
+}
+
 @media(max-width: 725px) {
     .best {
         padding: .7rem;

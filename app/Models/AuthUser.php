@@ -54,18 +54,34 @@ class AuthUser
      * authenticateUser
      *
      * @param  bool $checkStatus
-     * @return object
+     * @return bool|User
      */
-    public static function authenticateUser(bool $checkStatus = false)
+    public static function authenticateUser(bool $checkStatus = false, bool $json = false): bool|User
     {
         $user = self::user();
         if (!$user) {
-            return (new \App\Support\Message)->make(MessageType::INFO, 'você precisa estar logado em sua conta');
+            (new \App\Support\Message)->make(MessageType::INFO, 'você precisa estar logado em sua conta')->flash(true);
+            if($json) {
+                echo json_encode([
+                    'redirect' => url('/entrar')
+                ]);
+                return false;
+            }
+            redirect('/entrar');
+            return false;
         }
 
         if ($checkStatus) {
             if (!$user->checkStatus()) {
-                return $user->message();
+                $user->message()->flash(true);
+                if($json) {
+                    echo json_encode([
+                        'redirect' => url('/perfil')
+                    ]);
+                    return false;
+                }
+                redirect('/perfil');
+                return false;
             }
         }
 
@@ -212,12 +228,12 @@ class AuthUser
     {
         $user = (new User)->findByEmail($email);
         if (!$user) {
-            $this->message->make(MessageType::ERROR, 'Usuário não encontrado');
+            $this->message->make(MessageType::ERROR, 'Link inválido, usuário não encontrado');
             return false;
         }
 
         if ($user->password_recovery != $code) {
-            $this->message->make(MessageType::ERROR, 'O código de verificação está incorreto');
+            $this->message->make(MessageType::ERROR, 'Erro ao autenticar a recuperação de senha, reenvie seu e-mail para recuperar');
             return false;
         }
 

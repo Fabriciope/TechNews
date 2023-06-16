@@ -10,7 +10,7 @@
                 <p>Crie seus próprios artigos sobre tecnologia e compartilhe com todos em nossa comunidade.</p>
             </div>
             <div class="box_btn_banner">
-                <a href="">Criar meus próprios artigos</a>
+                <a href="<?=url('/cadastrar')?>">Criar meus próprios artigos</a>
             </div>
 
         </div>
@@ -73,8 +73,8 @@
                 <input type="text" name="last_name" class="input" placeholder="Último nome:" />
                 <input type="email" name="email" class="input" placeholder="Melhor e-mail:" />
                 <input type="password" name="password" class="input" placeholder="Senha de acesso:" />
-                <input type="password" name="passwordConfirmation" class="input" placeholder="Senha de acesso:" />
-                <button class="gb_btn">Criar minha conta</button>
+                <input type="password" name="passwordConfirmation" class="input" placeholder="Confirme sua senha de acesso:" />
+                <button class="gb_btn" type="submit" >Criar minha conta</button>
             </form>
         </div>
     </div>
@@ -83,19 +83,6 @@
 <!-- CAIXA DE PESQUISA E ULTIMAS NOTÍCIAS -->
 <section class="site_width latest_news">
     <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>
-    <form class="formAjax" action="<?= url('/artigos/buscar') ?>" method="POST">
-
-        <div class="ajax_response">
-            <?= flash() ?>
-        </div>
-
-        <?= csrf_input() ?>
-
-        <label id="search_article" class="box_search_article">
-            <input name="search" type="text" id="search_article" placeholder="pesquise por algo ...">
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        </label>
-    </form>
     <div class="container_article">
         <?php foreach ($articles as $article) : ?>
             <?= $this->insert("includes::article-list", ['article' => $article]) ?>

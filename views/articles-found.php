@@ -1,9 +1,9 @@
 <?php $this->layout("layouts::default", ["title" => $title]) ?>
 
 <section class="site_width latest_news">
-    <h2 class="title_section text_effect"><?=$search ? 'voce pesquisou por: ' . text($search) : text($category)?></h2>
+    <h2 class="title_section text_effect"><?= $search ? 'voce pesquisou por: ' . text($search) : text($category) ?></h2>
     <form class="formAjax" action="<?= url('/artigos/buscar') ?>" method="POST">
-    
+
         <div class="ajax_response">
             <?= flash() ?>
         </div>
@@ -15,21 +15,23 @@
             <button><i class="fa-solid fa-magnifying-glass"></i></button>
         </label>
     </form>
-    <div class="container_article">
-        <div class="container_article">
-            <?php if ($articlesFound != null) : ?>
+    <div>
+        <?php if ($articlesFound != null) : ?>
+            <div class="container_article">
                 <?php foreach ($articlesFound as $article) : ?>
                     <?= $this->insert("includes::article-list", ['article' => $article]) ?>
                 <?php endforeach; ?>
-            <?php else : ?>
-                <h1>Nada encontrado</h1>
-            <?php endif; ?>
-        </div>
+            </div>
+            <div class="container_paginator">
+                <nav class="paginator">
+                    <?= $this->insert('includes::paginator', ['paginator' => $paginator]) ?>
+                </nav>
+            </div>
+        <?php else : ?>
+            <h3 class="empty">Nenhum artigo encontrado para a sua pesquisa.
+            </h3>
+        <?php endif; ?>
     </div>
 
-    <div class="container_paginator">
-        <nav class="paginator">
-            <?= $this->insert('includes::paginator', ['paginator' => $paginator]) ?>
-        </nav>
-    </div>
+
 </section>

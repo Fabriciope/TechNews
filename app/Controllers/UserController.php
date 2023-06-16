@@ -31,12 +31,6 @@ class UserController extends Controller
     public function pageProfile(): void
     {
         $user = AuthUser::authenticateUser();
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/entrar');
-            return;
-        }
         
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
@@ -54,6 +48,9 @@ class UserController extends Controller
     public function updateProfile(array $data): void
     {
         if(!$this->checkRequest($data)) return;
+
+        $user = AuthUser::authenticateUser(json:true);
+        if(!$user) return;
 
         if (empty($data['firstName']) || empty($data['lastName'])) {
             $json['fixedMessage'] = $this->message
@@ -89,12 +86,6 @@ class UserController extends Controller
     public function pagePublishedArticles(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
 
         $findArticles = static::getModel('Article')
             ->find(
@@ -132,12 +123,6 @@ class UserController extends Controller
     public function pageSavedArticles(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
 
         $findArticles = static::getModel('Article')
             ->find(

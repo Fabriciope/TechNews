@@ -32,12 +32,7 @@ class ArticleController extends Controller
     public function publishArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
+        if(!$user) return;
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (!$articleUri || empty($articleUri)) {
@@ -69,12 +64,7 @@ class ArticleController extends Controller
     public function pageEditArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
+        if(!$user) return;
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
@@ -112,13 +102,9 @@ class ArticleController extends Controller
     {
         if(!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
+        $user = AuthUser::authenticateUser(true, json:true);
+        if(!$user) return;
+
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
@@ -163,12 +149,7 @@ class ArticleController extends Controller
     public function deleteArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
+        if(!$user) return;
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
@@ -203,12 +184,7 @@ class ArticleController extends Controller
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
+        if(!$user) return;
 
         $categoryOptions = static::getModel('Category')->getCategories();
 
@@ -231,13 +207,8 @@ class ArticleController extends Controller
     {
         if(!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $message->flash(true);
-            redirect('/perfil');
-            return;
-        }
+        $user = AuthUser::authenticateUser(true, json:true);
+        if(!$user) return;
 
         $article = static::getModel('Article');
         $article->bootstrap(
@@ -283,14 +254,8 @@ class ArticleController extends Controller
     {
         if(!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(true);
-        if ($user instanceof \App\Support\Message) {
-            $message = $user;
-            $json['message'] = $message->before('Oops!')->render();
-            echo json_encode($json);
-            return;
-        }
-
+        $user = AuthUser::authenticateUser(true, json:true);
+        if(!$user) return;
 
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
         $comment = static::getModel('Comment')->bootstrap(
@@ -320,6 +285,7 @@ class ArticleController extends Controller
      */
     public function deleteComment(array $data): void
     {
+        //TODO: verificar melhor
         $comment = static::getModel('Comment')->findById($data['commentId']);
 
         if (!$comment) {

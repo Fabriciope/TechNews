@@ -44,6 +44,7 @@ abstract class Controller
         }
     }
 
+    //TODO: documentar
     protected function checkRequest(array $request): bool
     {
         if(!csrf_verify($request)) {

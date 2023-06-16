@@ -66,7 +66,7 @@ class IndexController extends Controller
         $article = static::getModel('Article');
 
         $paginator = new Paginator(
-            6,
+            9,
             isset($data['page']) ? intval($data['page']) : 1,
             '/artigos/',
             $article->count()
@@ -110,9 +110,9 @@ class IndexController extends Controller
 
         $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : null;
 
-        if($page === null) {
+        if ($page === null) {
             if ($user) {
-                if($article->id_user != $user->id) $article->views += 1;
+                if ($article->id_user != $user->id) $article->views += 1;
             } else {
                 $article->views += 1;
             }
@@ -158,24 +158,30 @@ class IndexController extends Controller
      */
     public function searchArticle(array $data): void
     {
-        if (!empty($data['search'])) {
+        if (isset($data['search'])) {
+            if (!$this->checkRequest($data)) return;
+
+            if (empty($data['search'])) {
+                $json['fixedMessage'] = $this->message->make(MessageType::WARNING, 'Digite algo para fazer a busca')->render(true);
+                echo json_encode($json);
+                return;
+            }
+
             $search = filter_var($data['search'], FILTER_DEFAULT);
             echo json_encode(['redirect' => url("/artigos/buscar/{$search}/1")]);
             return;
         }
 
         $search = filter_var($data['terms'] ?? '', FILTER_DEFAULT);
-        $page = filter_var($data['page'], FILTER_VALIDATE_INT) >= 1 ? $data['page'] : 1;
-
         $findArticles = static::getModel('Article')->find(
             'MATCH(title, subtitle) AGAINST(:search) AND status = :status',
             "search={$search}&status=published"
         );
 
         $paginator = new Paginator(
-            6,
-            $page,
-            "artigos/{$search}",
+            9,
+            filter_var($data['page'], FILTER_VALIDATE_INT) ? $data['page'] : 1,
+            "artigos/buscar/{$search}",
             $findArticles->count()
         );
         echo $this->views->render('articles-found', [
@@ -200,9 +206,12 @@ class IndexController extends Controller
     public function pageCategoryArticles(array $data): void
     {
         $categoryUri = filter_var($data['uri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
         $category = static::getModel('Category')->findByUri($categoryUri);
-        $categoryArticles = static::getModel('Article')->find('id_category = :categoryId AND status = :status', "categoryId={$category->id}&status=published");
+        $categoryArticles = static::getModel('Article')
+            ->find(
+                'id_category = :categoryId AND status = :status',
+                "categoryId={$category->id}&status=published"
+            );
 
         $paginator = new Paginator(
             9,
@@ -232,21 +241,22 @@ class IndexController extends Controller
      */
     public function pageUser(array $data): void
     {
-        $userId = $data['userId'] ?? null;
+        $userId = filter_var($data['userId'], FILTER_VALIDATE_INT) ? $data['userId'] : 0;
         $user = static::getModel('User')->findById($userId);
         if (!$user) {
-            $this->message->make(MessageType::ERROR, 'Erro ao encontrar usuário')->flash(true);
+            $this->message->make(MessageType::ERROR, 'O usuário buscado não existe')->flash(true);
             back();
             return;
         }
 
-        $findArticles = static::getModel('Article')->find(
-            'id_user = :userId AND status = :status',
-            "userId={$userId}&status=published"
-        );
+        $findArticles = static::getModel('Article')
+            ->find(
+                'id_user = :userId AND status = :status',
+                "userId={$userId}&status=published"
+            );
 
         $paginator = new Paginator(
-            6,
+            8,
             isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
             "/usuario/{$userId}/",
             $findArticles->count()
@@ -322,19 +332,6 @@ class IndexController extends Controller
 
     /**
      * > Method => GET
-     * Página para alterar a senha
-     *
-     * @return void
-     */
-    public function pageResetPassword(): void
-    {
-        echo $this->views->render('auth-reset-password', [
-            'title' => 'Redefinir senha'
-        ]);
-    }
-
-    /**
-     * > Method => GET
      * Página de erros
      *
      * @param  array $data
@@ -347,21 +344,24 @@ class IndexController extends Controller
         switch ($data["errcode"]) {
             case "problemas":
                 $error->code = "OPS";
-                $error->message = "Parece que nosso serviço está indisponível no momento. Já estamos vendo isso mas :/";
+                $error->message = "Parece que nosso serviço está indisponível no momento :/";
                 $error->linkTitle = "Enviar e-mail";
                 $error->link = "mailto:" . CONF_MAIL_SENDER['address'];
+                $error->layout = false;
                 break;
             case "manutencao":
                 $error->code = "OPS";
-                $error->message = "Voltamos logo. Por hora estamos trabalhando para melhorar nosso conteúdo para você controlar melhor as suas contas :P";
+                $error->message = "Voltamos logo. Neste momento estamos trabalhando para melhorar nosso conteúdo para você controlar melhor as suas contas :P";
                 $error->linkTitle = null;
                 $error->link = null;
+                $error->layout = false;
                 break;
             default:
                 $error->code = $data["errcode"];
                 $error->message = "Sentimos muito, mas o conteúdo que você tentou acessar não existe, está indisponível no momento ou foi removido :/";
                 $error->linkTitle = "Continue navegando";
                 $error->link = url_back();
+                $error->layout = true;
                 break;
         }
 

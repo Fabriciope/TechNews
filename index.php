@@ -35,7 +35,6 @@ $router->get('/usuario/{userId}/{page}', 'IndexController@pageUser');
 
 
 
-
 // AUTH ROUTES
 $router->get('/entrar', 'IndexController@pageLogin');
 $router->post('/entrar', 'AuthController@login');
@@ -78,16 +77,14 @@ $router->post('/criar', 'ArticleController@createArticle');
 $router->get('/editar/{articleUri}', 'ArticleController@pageEditArticle');
 $router->post('/alterar', 'ArticleController@updateArticle');
 
+//ERROR
 
-
-$router->group('error')->namespace('App\Controllers');
+$router->group('/oops')->namespace('App\Controllers');
 $router->get('/{errcode}', 'IndexController@error');
 
 
-$router->post('/teste', 'IndexController@teste');
 $router->dispatch();
 
-
 if ($router->error()) {
-    $router->redirect("/error/{$router->error()}");
+    $router->redirect("/oops/{$router->error()}");
 }

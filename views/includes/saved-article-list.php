@@ -14,7 +14,6 @@
         </form>
         <a class="btn_action_saved btn_yellow" href="<?= url("/perfil/artigo/editar/{$article->uri}") ?>">Editar</a>
         <form action="<?= url("perfil/artigo/deletar") ?>" method="POST">
-            <!-- MOSTRAR UM POP-UP ANTES DE DELETAR -->
             <button class="btn_action_saved btn_red" name="articleUri" value="<?= $article->uri ?>">Deletar</button>
         </form>
     </div>
