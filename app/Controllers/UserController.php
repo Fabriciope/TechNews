@@ -53,15 +53,8 @@ class UserController extends Controller
      */
     public function updateProfile(array $data): void
     {
+        if(!$this->checkRequest($data)) return;
 
-        if (!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message
-                ->make(MessageType::ERROR, 'Favor use o formulário!')
-                ->render(true);
-                echo json_encode($json);
-            return;
-        }
-        
         if (empty($data['firstName']) || empty($data['lastName'])) {
             $json['fixedMessage'] = $this->message
                 ->make(MessageType::INFO, 'Preencha no mínimo o nome e sobrenome')

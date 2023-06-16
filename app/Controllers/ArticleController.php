@@ -110,17 +110,13 @@ class ArticleController extends Controller
      */
     public function updateArticle(array $data): void
     {
+        if(!$this->checkRequest($data)) return;
+
         $user = AuthUser::authenticateUser(true);
         if ($user instanceof \App\Support\Message) {
             $message = $user;
             $message->flash(true);
             redirect('/perfil');
-            return;
-        }
-
-        if (!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário, ou recarregue a página')->render(true);
-            echo json_encode($json);
             return;
         }
 
@@ -233,17 +229,13 @@ class ArticleController extends Controller
      */
     public function createArticle(array $data): void
     {
+        if(!$this->checkRequest($data)) return;
+
         $user = AuthUser::authenticateUser(true);
         if ($user instanceof \App\Support\Message) {
             $message = $user;
             $message->flash(true);
             redirect('/perfil');
-            return;
-        }
-
-        if (!csrf_verify($data)) {
-            $json['fixedMessage'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário, ou recarregue a página')->render(true);
-            echo json_encode($json);
             return;
         }
 
@@ -289,11 +281,7 @@ class ArticleController extends Controller
      */
     public function newComment(array $data): void
     {
-        if (!csrf_verify($data)) {
-            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->flash();
-            echo json_encode($json);
-            return;
-        }
+        if(!$this->checkRequest($data)) return;
 
         $user = AuthUser::authenticateUser(true);
         if ($user instanceof \App\Support\Message) {

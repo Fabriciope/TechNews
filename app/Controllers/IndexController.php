@@ -116,13 +116,13 @@ class IndexController extends Controller
             } else {
                 $article->views += 1;
             }
+            $article->updateArticle();
         }
-        $article->updateArticle();
 
         $comment = static::getModel('Comment');
         $comment->find('id_article = :articleId', "articleId={$article->id}");
         $paginator = new Paginator(
-            2,
+            5,
             $page ?? 1,
             "artigo/{$article->uri}/",
             $comment->count()
@@ -139,7 +139,11 @@ class IndexController extends Controller
                 )->order('rand()')
                 ->limit(3)
                 ->fetch(true),
-            'comments' => $comment->getCommentsByArticleId($article->id, $paginator->limit(), $paginator->offset()),
+            'comments' => $comment->find('id_article = :articleId', "articleId={$article->id}")
+                ->order('created_at', 'DESC')
+                ->limit($paginator->limit())
+                ->offset($paginator->offset())
+                ->fetch(true),
             'userArticle' => is_null($user) ? false : ($user->id == $article->id_user),
             'commentPagination' => $paginator,
         ]);

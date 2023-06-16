@@ -14,7 +14,7 @@ class Paragraph extends Model
     use ModelTrait;
 
     protected static string $entity = 'paragraphs';
-    
+
     /**
      * __construct
      *
@@ -27,7 +27,7 @@ class Paragraph extends Model
             ['id_article', 'paragraph', 'position']
         );
     }
-        
+
     /**
      * findParagraphsByArticleId
      *
@@ -37,14 +37,14 @@ class Paragraph extends Model
     public function findParagraphsByArticleId(int $articleId): ?array
     {
         $paragraphs = $this->find('id_article = :id', "id={$articleId}")
-        ->order('position', 'ASC')
-        ->fetch(true);
+            ->order('position', 'ASC')
+            ->fetch(true);
 
-        if($this->failed('Erro ao buscar parágrafos do artigo')) return null;
+        if ($this->failed('Erro ao buscar parágrafos do artigo')) return null;
 
         return $paragraphs;
     }
-    
+
     /**
      * addParagraph
      *
@@ -58,25 +58,24 @@ class Paragraph extends Model
         string $paragraph,
         int $position,
         ?string $title = null
-    ): bool
-    {
+    ): bool {
         $this->id_article = $articleId;
         $this->paragraph = $paragraph;
         $this->position = $position;
         $this->title = $title;
 
-        if(!$this->validateFields()) return false;
+        if (!$this->validateFields()) return false;
 
         $this->create($this->safe());
-        if($this->failed('Erro ao adicionar um novo parágrafo')) return false;
+        if ($this->failed('Erro ao adicionar um novo parágrafo')) return false;
 
         return true;
     }
-    
+
     /**
      * getParagraphsAndTitles
      *
-     * @param  string $data
+     * @param  array $data
      * @return array
      */
     public static function getParagraphsAndTitles(array $data): array
@@ -105,7 +104,7 @@ class Paragraph extends Model
             'paragraphs' => $paragraphs
         ];
     }
-    
+
     /**
      * createArticleParagraphs
      *
@@ -116,7 +115,7 @@ class Paragraph extends Model
      */
     public function createArticleParagraphs(int $articleId, array $titles, array $paragraphs): bool
     {
-        foreach($paragraphs as $position => $paragraphContent) {
+        foreach ($paragraphs as $position => $paragraphContent) {
             if (isset($titles[$position]) && !empty($titles[$position])) {
                 $newParagraph = $this->addParagraph(
                     $articleId,
@@ -124,24 +123,20 @@ class Paragraph extends Model
                     intval($position),
                     trim($titles[$position])
                 );
-                if (!$newParagraph) {
-                    return false;
-                }
+                if (!$newParagraph) return false;
             } else {
                 $newParagraph = $this->addParagraph(
                     $articleId,
                     trim($paragraphContent),
                     intval($position),
                 );
-                if (!$newParagraph) {
-                    return false;
-                }
+                if (!$newParagraph) return false;
             }
         }
-
+        
         return true;
     }
-    
+
     /**
      * updateArticleParagraphs
      *
@@ -152,13 +147,12 @@ class Paragraph extends Model
      */
     public function updateArticleParagraphs(int $articleId, array $titles, array $paragraphs): bool
     {
-        if(!$this->deleteParagraphsByArticle($articleId)) {
-            return false;
-        }
+        $this->delete('id_article', $articleId);
+        if ($this->failed('Erro ao excluir parágrafos do artigo')) return false;
 
         return $this->createArticleParagraphs($articleId, $titles, $paragraphs);
     }
-    
+
     /**
      * deleteParagraphsByArticle
      *
@@ -168,11 +162,11 @@ class Paragraph extends Model
     public function deleteParagraphsByArticle(int $articleId): bool
     {
         $this->delete('id_article', $articleId);
-        if($this->failed('Erro ao excluir parágrafos do artigo')) return false;
+        if ($this->failed('Erro ao excluir parágrafos do artigo')) return false;
 
         return true;
     }
-    
+
     /**
      * validateFields
      *
@@ -180,7 +174,7 @@ class Paragraph extends Model
      */
     protected function validateFields(): bool
     {
-        if(!$this->required()) {
+        if (!$this->required()) {
             $this->message->make(MessageType::INFO, 'Preencha todos os campos do parágrafo');
             return false;
         }

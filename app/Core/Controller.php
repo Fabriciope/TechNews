@@ -4,6 +4,7 @@ namespace App\Core;
 
 use App\Core\ViewsEngine;
 use App\Support\Message;
+use App\Support\MessageType;
 
 /**
  * Classe abstrata do controller
@@ -41,5 +42,17 @@ abstract class Controller
             $class = "\\App\\Models\\Article\\" . ucfirst($model);
             return new $class;
         }
+    }
+
+    protected function checkRequest(array $request): bool
+    {
+        if(!csrf_verify($request)) {
+            echo json_encode([
+                'fixedMessage' => $this->message->make(MessageType::ERROR, 'Favor use o formulário!')->render(true)
+            ]);
+            return false;
+        }
+        
+        return true;
     }
 }

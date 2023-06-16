@@ -91,8 +91,8 @@
 
         <?= csrf_input() ?>
 
-        <label id="serch_article" class="box_search_article">
-            <input name="search" type="text" id="serch_article" placeholder="pesquise por algo ...">
+        <label id="search_article" class="box_search_article">
+            <input name="search" type="text" id="search_article" placeholder="pesquise por algo ...">
             <button><i class="fa-solid fa-magnifying-glass"></i></button>
         </label>
     </form>

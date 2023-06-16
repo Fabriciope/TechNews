@@ -112,42 +112,6 @@ class Comment extends Model
     }
     
     /**
-     * getCommentsByArticleId
-     *
-     * @param  int $articleId
-     * @param  int $limit
-     * @param  int $offset
-     * @return array
-     */
-    public function getCommentsByArticleId(int $articleId, int $limit, int $offset): ?array
-    {
-        $articles = $this
-            ->find('id_article = :articleId', "articleId={$articleId}")
-            ->order('created_at', 'DESC')
-            ->limit($limit)
-            ->offset($offset)
-            ->fetch(true);
-
-        if($this->failed('Erro ao buscar comentários do artigo')) return null;
-
-        return $articles;
-    }
-    
-    /**
-     * deleteCommentsByArticle
-     *
-     * @param  int $articleId
-     * @return bool
-     */
-    public function deleteCommentsByArticle(int $articleId): bool
-    {
-        $this->delete('id_article', $articleId);
-        if($this->failed('Erro ao excluir comentários do artigo')) return false;
-
-        return true;
-    }
-    
-    /**
      * validateFields
      *
      * @return bool

@@ -33,16 +33,8 @@ class AuthController extends Controller
      */
     public function register(array $data): void
     {
-        if (AuthUser::user()) {
-            $json['redirect'] = url('/perfil');
-            echo json_encode($json);
-            return;
-        }
-        if (!csrf_verify($data)) {
-            $json['message'] = $this->message->make(MessageType::ERROR, 'Erro ao enviar, use o formulário')->render();
-            echo json_encode($json);
-            return;
-        }
+        if(!$this->checkRequest($data)) return;
+  
         if (in_array('', $data)) {
             $json['message'] = $this->message->make(MessageType::INFO, 'Preencha todos os campos !')->render();
             echo json_encode($json);
@@ -150,13 +142,7 @@ class AuthController extends Controller
      */
     public function login(array $data): void
     {
-
-        if (!csrf_input($data)) {
-            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->after('!')->render();
-            echo json_encode($json);
-            return;
-        }
-
+        if(!$this->checkRequest($data)) return;
 
         if (empty($data['email']) || empty($data['password'])) {
             $minutes = 0;
@@ -198,11 +184,7 @@ class AuthController extends Controller
      */
     public function forgetPassword(array $data): void
     {
-        if (!csrf_verify($data)) {
-            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->render();
-            echo json_encode($json);
-            return;
-        }
+        if(!$this->checkRequest($data)) return;
 
         if (empty($data['email'])) {
             $json['message'] = $this->message->make(MessageType::INFO, 'Informe o e-mail')->render();
@@ -268,11 +250,7 @@ class AuthController extends Controller
      */
     public function resetPassword(array $data): void
     {
-        if (!csrf_verify($data)) {
-            $json['message'] = $this->message->make(MessageType::ERROR, 'Favor use o formulário')->render();
-            echo json_encode($json);
-            return;
-        }
+        if(!$this->checkRequest($data)) return;
 
         list($emailReceived, $code) = explode('-', $data['code']);
         $email = base64_decode($emailReceived);

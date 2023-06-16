@@ -35,8 +35,6 @@
     </div>
 </section>
 
-
-
 <!-- CAIXA DE PESQUISA E ULTIMAS NOTÍCIAS -->
 <section class="site_width latest_news">
     <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>

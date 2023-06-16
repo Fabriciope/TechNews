@@ -194,21 +194,18 @@ class Article extends Model
      */
     public function destroy(): bool
     {
-        $paragraph = new Paragraph;
-        if (!$paragraph->deleteParagraphsByArticle($this->id)) {
-            $this->message = $paragraph->message();
+        if (!(new Paragraph)->delete('id_article', $this->id)) {
+            $this->message->make(MessageType::ERROR, 'Erro ao excluir parágrafos do artigo');
             return false;
         }
-
-        $comment = new Comment;
-        if(!$comment->deleteCommentsByArticle($this->id)) {
-            $this->message = $comment->message();
+        
+        if(!(new Comment)->delete('id_article', $this->id)) {
+            $this->message->make(MessageType::ERROR, 'Erro ao excluir comentários do artigo');
             return false;
         }
         
         if (!parent::destroy()) {
             $this->message->make(MessageType::ERROR, 'Erro ao deletar artigo');
-            var_dump($this->fail());
             return false;
         }
 
