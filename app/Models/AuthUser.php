@@ -54,7 +54,7 @@ class AuthUser
      * authenticateUser
      *
      * @param  bool $checkStatus
-     * @return void
+     * @return object
      */
     public static function authenticateUser(bool $checkStatus = false)
     {

@@ -41,6 +41,12 @@ class IndexController extends Controller
         ]);
     }
 
+    /**
+     * > Method => GET
+     * Página sobre nós
+     *
+     * @return void
+     */
     public function pageAbout(): void
     {
         echo $this->views->render('about', [
@@ -102,12 +108,14 @@ class IndexController extends Controller
             return;
         }
 
-        if ($user) {
-            if ($article->id_user != $user->id) {
+        $page = isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : null;
+
+        if($page === null) {
+            if ($user) {
+                if($article->id_user != $user->id) $article->views += 1;
+            } else {
                 $article->views += 1;
             }
-        } else {
-            $article->views += 1;
         }
         $article->updateArticle();
 
@@ -115,7 +123,7 @@ class IndexController extends Controller
         $comment->find('id_article = :articleId', "articleId={$article->id}");
         $paginator = new Paginator(
             2,
-            isset($data['page']) ? filter_var($data['page'], FILTER_VALIDATE_INT) : 1,
+            $page ?? 1,
             "artigo/{$article->uri}/",
             $comment->count()
         );
@@ -302,12 +310,12 @@ class IndexController extends Controller
         if (\App\Models\AuthUser::user()) {
             redirect('/perfil');
         }
-        
+
         echo $this->views->render('auth-forget-password', [
             'title' => 'Recuperar senha'
         ]);
     }
-    
+
     /**
      * > Method => GET
      * Página para alterar a senha
@@ -320,7 +328,7 @@ class IndexController extends Controller
             'title' => 'Redefinir senha'
         ]);
     }
-    
+
     /**
      * > Method => GET
      * Página de erros

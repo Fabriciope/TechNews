@@ -1,6 +1,6 @@
 <?php $this->layout('layouts::default', ['title' => $title]) ?>
 
-<section class="site_width">
+<section class="site_width sobre">
 <h2 class="title_section text_effect">Conecte-se, Crie e Compartilhe!</h2>
 
 <div class="container_article_content">
@@ -16,7 +16,7 @@
     <p>Acreditamos que a verdadeira magia acontece quando compartilhamos nossas criações com outras pessoas. Por isso, incentivamos uma comunidade ativa e engajada em nosso site. Leia os artigos de outros membros, deixe comentários para iniciar discussões interessantes e aprimore sua escrita com feedback valioso. Nossa plataforma é um espaço de aprendizado mútuo e colaboração, onde todos são bem-vindos para contribuir com suas perspectivas únicas.</p>
 
     <h3>Construa uma Rede de Conexões</h3>
-    <p>Além de interagir com a comunidade através de comentários, você também tem a oportunidade de construir relacionamentos duradouros com outros escritores. Siga seus autores favoritos, descubra novos talentos e crie uma rede de conexões que o inspire e o apoie em sua jornada literária. Juntos, podemos amplificar nossas vozes e alcançar novos patamares.</p>
+    <p>Além de interagir com a comunidade através de comentários, você também tem a oportunidade de construir relacionamentos duradouros com outros escritores. Siga seus autores favoritos, descubra novos talentos e crie uma rede de conexões que o inspire e o apoie em sua jornada literária. Juntos, podemos amplificar nossas0 vozes e alcançar novos patamares.</p>
 
     <h3>Inspire-se e Seja Inspirado</h3>
     <p>Nossa plataforma é um verdadeiro tesouro de conhecimento e inspiração. Explore uma ampla variedade de tópicos e descubra artigos de pessoas apaixonadas por assuntos que você também adora. Deixe-se envolver pelas histórias cativantes, pelos pontos de vista desafiadores e pelas experiências únicas compartilhadas por nossos membros. Aqui, a inspiração está em cada palavra escrita.</p>
