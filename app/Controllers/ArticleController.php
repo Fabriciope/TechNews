@@ -5,13 +5,12 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\AuthUser;
 use App\Support\MessageType;
-use App\Support\Paginator;
 
 /**
  * ArticleController
  */
 class ArticleController extends Controller
-{    
+{
     /**
      * __construct
      *
@@ -21,7 +20,7 @@ class ArticleController extends Controller
     {
         parent::__construct(new \App\Core\ViewsEngine(__DIR__ . './../../views/profile'));
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por fazer a publicação de um artigo salvo
@@ -32,16 +31,16 @@ class ArticleController extends Controller
     public function publishArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) return;
+        if (!$user) return;
 
-        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if (!$articleUri || empty($articleUri)) {
-            $this->message->make(MessageType::ERROR, 'Não foi possível encontrar artigo para exclusão')->flash();
-            redirect('/perfil');
+        $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
+        $article = static::getModel('Article')->findById($articleId);
+        if (!$article) {
+            $this->message->make(MessageType::ERROR, 'Não foi possível encontrar artigo para publicação')->flash(true);
+            redirect('/perfil/artigo/salvos');
             return;
         }
 
-        $article = static::getModel('Article')->findByUri($articleUri);
         $article->status = 'published';
         $article->published_at = date_fmt('now', 'Y-m-d H:i:s');
         if (!$article->updateArticle()) {
@@ -53,7 +52,7 @@ class ArticleController extends Controller
         $this->message->make(MessageType::SUCCESS, 'Artigo publicado com sucesso!')->flash(true);
         redirect('/perfil/artigo/publicados');
     }
-    
+
     /**
      * > Method => GET
      * Página responsável por carregar os dodos de um artigo para edição
@@ -64,11 +63,11 @@ class ArticleController extends Controller
     public function pageEditArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) return;
+        if (!$user) return;
 
         $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $article = static::getModel('Article')->findByUri($articleUri);
-        if (empty($data['articleUri']) || !$article) {
+        if (!$article) {
             $this->message->make(MessageType::ERROR, 'Artigo não encontrado para edição')->flash(true);
             redirect('/perfil/artigo/salvos');
             return;
@@ -90,7 +89,7 @@ class ArticleController extends Controller
             'formAction' => 'alterar'
         ]);
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por fazer a edição de um artigo
@@ -100,14 +99,20 @@ class ArticleController extends Controller
      */
     public function updateArticle(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(true, json:true);
-        if(!$user) return;
+        $user = AuthUser::authenticateUser(true, json: true);
+        if (!$user) return;
 
-
-        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $article = static::getModel('Article')->findByUri($articleUri);
+        $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
+        $article = static::getModel('Article')->findById($articleId);
+        if ($article->id_user != $user->id) {
+            $json['fixedMessage'] = $this->message
+                ->make(MessageType::ERROR, "Você pode editar apenas os seus artigos!")
+                ->render(true);
+            echo json_encode($json);
+            return;
+        }
         $article->id_user = $user->id;
         $article->id_category = intval($data['category']);
         $article->title = str_title(trim($data['title']));
@@ -115,14 +120,12 @@ class ArticleController extends Controller
         $article->uri = str_slug(trim($data['title']));
         $article->video = empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo']);
 
-
         $paragraphsAndTitles = \App\Models\Article\Paragraph::getParagraphsAndTitles($data);
         if (isset($paragraphsAndTitles['position'])) {
             $position = $paragraphsAndTitles['position'];
             $json['fixedMessage'] = $this->message
-                ->make(MessageType::ERROR, "Insira um conteúdo ao {$position}° parágrafo")
+                ->make(MessageType::WARNING, "Insira um conteúdo ao {$position}° parágrafo")
                 ->render(true);
-
             echo json_encode($json);
             return;
         }
@@ -138,7 +141,7 @@ class ArticleController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por deletar um artigo
@@ -149,10 +152,10 @@ class ArticleController extends Controller
     public function deleteArticle(array $data): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) return;
+        if (!$user) return;
 
-        $articleUri = filter_var($data['articleUri'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $article = static::getModel('Article')->findByUri($articleUri);
+        $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
+        $article = static::getModel('Article')->findById($articleId);
         if (!$article) {
             $this->message->make(MessageType::ERROR, 'Artigo não encontrado para exclusão')->flash(true);
             redirect('/perfil/artigo/salvos');
@@ -174,7 +177,7 @@ class ArticleController extends Controller
         redirect('/perfil/artigo/salvos');
         return;
     }
-    
+
     /**
      * > Method => GET
      * Página para criação de novo artigo
@@ -184,7 +187,7 @@ class ArticleController extends Controller
     public function pageNewArticle(): void
     {
         $user = AuthUser::authenticateUser(true);
-        if(!$user) return;
+        if (!$user) return;
 
         $categoryOptions = static::getModel('Category')->getCategories();
 
@@ -195,7 +198,7 @@ class ArticleController extends Controller
             'formAction' => 'criar'
         ]);
     }
-    
+
     /**
      * > Method => POST
      * createArticle
@@ -205,10 +208,10 @@ class ArticleController extends Controller
      */
     public function createArticle(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(true, json:true);
-        if(!$user) return;
+        $user = AuthUser::authenticateUser(true, json: true);
+        if (!$user) return;
 
         $article = static::getModel('Article');
         $article->bootstrap(
@@ -242,7 +245,7 @@ class ArticleController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por criar um comentário em algum artigo
@@ -252,10 +255,10 @@ class ArticleController extends Controller
      */
     public function newComment(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(true, json:true);
-        if(!$user) return;
+        $user = AuthUser::authenticateUser(true, json: true);
+        if (!$user) return;
 
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
         $comment = static::getModel('Comment')->bootstrap(
@@ -275,7 +278,7 @@ class ArticleController extends Controller
         echo json_encode($json);
         return;
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por deletar um comentário
