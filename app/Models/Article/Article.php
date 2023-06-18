@@ -2,10 +2,10 @@
 
 namespace App\Models\Article;
 
-use App\Core\Model;
-use App\Models\Article\Paragraph;
+use App\Core\Database\Model;
+use App\Core\Database\SupportModels;
 use App\Models\User;
-use App\Core\Traits\ModelTrait;
+use App\Models\Article\Paragraph;
 use App\Support\MessageType;
 
 /**
@@ -13,7 +13,7 @@ use App\Support\MessageType;
  */
 class Article extends Model
 {
-    use ModelTrait;
+    use SupportModels;
 
     protected static string $entity = 'articles';
 
@@ -114,7 +114,7 @@ class Article extends Model
         }
 
         $findArticle = $this->find('uri = :uri AND id <> :id', "uri={$this->uri}&id={$this->id}")->fetch();
-        if ($this->failed('Erro ao fazer a verificação do artigo')) return false;
+        if ($this->failed('Erro ao fazer a verificação do artigo, tente novamente mais tarde')) return false;
 
         if ($findArticle) {
             $this->message->make(MessageType::WARNING, 'Titulo de artigo indisponível');
@@ -132,8 +132,7 @@ class Article extends Model
         }
 
         if ($paragraphs) {
-            $paragraph = new Paragraph;
-            if (!$paragraph->updateArticleParagraphs($this->id, $titles, $paragraphs)) return false;
+            if (!(new Paragraph)->updateArticleParagraphs($this->id, $titles, $paragraphs)) return false;
         }
 
         $this->update(
@@ -245,8 +244,7 @@ class Article extends Model
                         return false;
                     }
                 }
-            }
-            if (empty($coverData['name'])) {
+            } else {
                 $this->message->make(MessageType::WARNING, 'Insira um imagem de capa');
                 return false;
             }

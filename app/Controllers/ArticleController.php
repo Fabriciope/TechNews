@@ -107,10 +107,8 @@ class ArticleController extends Controller
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
         $article = static::getModel('Article')->findById($articleId);
         if ($article->id_user != $user->id) {
-            $json['fixedMessage'] = $this->message
-                ->make(MessageType::ERROR, "Você pode editar apenas os seus artigos!")
-                ->render(true);
-            echo json_encode($json);
+            $this->message->make(MessageType::ERROR, "Você pode editar apenas os seus artigos!")->flash(true);
+            echo json_encode(['redirect' => url('/perfil/artigo/salvos')]);
             return;
         }
         $article->id_user = $user->id;
@@ -118,7 +116,7 @@ class ArticleController extends Controller
         $article->title = str_title(trim($data['title']));
         $article->subtitle = ucfirst(trim($data['subtitle']));
         $article->uri = str_slug(trim($data['title']));
-        $article->video = empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo']);
+        $article->video = empty($data['linkVideo']) ? null : trim($data['linkVideo']);
 
         $paragraphsAndTitles = \App\Models\Article\Paragraph::getParagraphsAndTitles($data);
         if (isset($paragraphsAndTitles['position'])) {

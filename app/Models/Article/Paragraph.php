@@ -2,8 +2,8 @@
 
 namespace App\Models\Article;
 
-use App\Core\Model;
-use App\Core\Traits\ModelTrait;
+use App\Core\Database\Model;
+use App\Core\Database\SupportModels;
 use App\Support\MessageType;
 
 /**
@@ -11,7 +11,7 @@ use App\Support\MessageType;
  */
 class Paragraph extends Model
 {
-    use ModelTrait;
+    use SupportModels;
 
     protected static string $entity = 'paragraphs';
 
@@ -80,8 +80,8 @@ class Paragraph extends Model
      */
     public static function getParagraphsAndTitles(array $data): array
     {
-        $titles =  array();
-        $paragraphs =  array();
+        $titles =  [];
+        $paragraphs = [];
         foreach ($data as $field => $content) {
             if (str_contains($field, 'Paragraph')) {
                 list($type, $position) = explode('-', $field);
@@ -98,7 +98,7 @@ class Paragraph extends Model
                 }
             }
         }
-
+        
         return [
             'titles' => $titles,
             'paragraphs' => $paragraphs

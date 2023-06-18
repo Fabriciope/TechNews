@@ -166,7 +166,6 @@ class IndexController extends Controller
                 echo json_encode($json);
                 return;
             }
-
             $search = filter_var($data['search'], FILTER_DEFAULT);
             echo json_encode(['redirect' => url("/artigos/buscar/{$search}/1")]);
             return;

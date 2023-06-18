@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Core\Traits;
+namespace App\Core\Database;
 
-use App\Core\Model;
+use App\Core\Database\Model;
 use App\Support\MessageType;
 
 /**
  * Trait responsável por abstrair comportamentos comuns entre os Models
  */
-trait ModelTrait
+trait SupportModels
 {
         
     /**
@@ -21,7 +21,6 @@ trait ModelTrait
     public function findById(int $id, string $columns = '*'): ?Model
     {
         $fetch = $this->find('id = :id', "id={$id}", $columns)->fetch();
-        
         if ($this->failed('Erro ao encontrar ' . static::$entity)) return null;
 
         return $fetch;
@@ -57,8 +56,6 @@ trait ModelTrait
         }
         return false;
     }
-    
-    
         
     /**
      * uploadImage

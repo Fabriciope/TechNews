@@ -10,11 +10,11 @@
     </div>
     <div class="box_actions_saved">
         <form action="<?= url('/perfil/artigo/publicar') ?>" method="POST">
-            <button class="btn_action_saved publish" name="articleUri" value="<?= $article->uri ?>">Publicar</button>
+            <button class="btn_action_saved publish" name="articleId" value="<?= $article->id ?>">Publicar</button>
         </form>
         <a class="btn_action_saved btn_yellow" href="<?= url("/perfil/artigo/editar/{$article->uri}") ?>">Editar</a>
         <form action="<?= url("perfil/artigo/deletar") ?>" method="POST">
-            <button class="btn_action_saved btn_red" name="articleUri" value="<?= $article->uri ?>">Deletar</button>
+            <button class="btn_action_saved btn_red" name="articleId" value="<?= $article->id ?>">Deletar</button>
         </form>
     </div>
 </div>

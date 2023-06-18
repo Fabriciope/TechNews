@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Database;
 
-use App\Core\Connection;
+use App\Core\Database\Connection;
 use App\Support\Message;
 
 use PDO;
@@ -330,7 +330,7 @@ abstract class Model
      */
     public function filter(array $data): array
     {
-        $filter = [];
+        $filter = array();
         foreach ($data as $key => $value) {
             $filter[$key] = is_null($value) ? null : trim(filter_var($value));
         }

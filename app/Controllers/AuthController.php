@@ -111,10 +111,6 @@ class AuthController extends Controller
      */
     public function pageConfirmedEmail(array $data): void
     {
-        if (\App\Models\AuthUser::user()) {
-            redirect('/perfil');
-        }
-
         if (empty($data['email'])) {
             $this->message->make(MessageType::ERROR, 'Link de confirmação inválido')->flash(true);
             redirect('/');
@@ -299,7 +295,7 @@ class AuthController extends Controller
      */
     public function logout(): void
     {
-        $this->message->make(MessageType::SUCCESS, 'Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash();
+        $this->message->make(MessageType::SUCCESS, 'Você saiu com sucesso ' . AuthUser::user()->first_name . '. Volte logo :)')->flash(true);
         AuthUser::logout();
         redirect('/entrar');
     }

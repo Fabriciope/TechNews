@@ -7,7 +7,7 @@
                 <a class="btn_action_user btn_yellow" href="<?= url("/perfil/artigo/editar/{$articleData->uri}") ?>">Editar</a>
                 <form action="<?= url("perfil/artigo/deletar") ?>" method="POST">
                     <!-- MOSTRAR UM POP-UP ANTES DE DELETAR -->
-                    <button class="btn_action_user btn_red" name="articleUri" value="<?= $articleData->uri ?>">Deletar</button>
+                    <button class="btn_action_user btn_red" name="articleId" value="<?= $articleData->id ?>">Deletar</button>
                 </form>
             </div>
         <?php endif; ?>

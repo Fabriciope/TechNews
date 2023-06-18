@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Core\Model;
-
-use App\Core\Traits\ModelTrait;
+use App\Core\Database\Model;
+use App\Core\Database\SupportModels;
 use App\Support\MessageType;
 
 /**
@@ -13,7 +12,7 @@ use App\Support\MessageType;
 class User extends Model
 {
 
-    use ModelTrait;
+    use SupportModels;
 
     protected static $entity = 'users';
 

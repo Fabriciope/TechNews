@@ -4,7 +4,7 @@
 
     <?= csrf_input() ?>
 
-    <?= isset($articleData) ? "<input type='hidden' name='articleUri' value='{$articleData->uri}'>" : ''?>
+    <?= isset($articleData) ? "<input type='hidden' name='articleId' value='{$articleData->id}'>" : ''?>
 
     <div class="box_input">
         <label for="title">Titulo do artigo:</label>

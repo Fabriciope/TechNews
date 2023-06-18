@@ -11,7 +11,7 @@ use App\Support\MessageType;
  * Controller onde estão todas as rotas relacionadas ao usuário
  */
 class UserController extends Controller
-{    
+{
     /**
      * __construct
      *
@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         parent::__construct(new \App\Core\ViewsEngine(__DIR__ . './../../views/profile'));
     }
-    
+
     /**
      * > Method => GET
      * Página de perfil do usuário
@@ -31,13 +31,13 @@ class UserController extends Controller
     public function pageProfile(): void
     {
         $user = AuthUser::authenticateUser();
-        
+
         echo $this->views->render('user-profile', [
             'title' => 'Perfil',
             'userData' => $user->data()
         ]);
     }
-    
+
     /**
      * > Method => POST
      * Controller responsável por fazer a edição do perfil do usuário
@@ -47,10 +47,10 @@ class UserController extends Controller
      */
     public function updateProfile(array $data): void
     {
-        if(!$this->checkRequest($data)) return;
+        if (!$this->checkRequest($data)) return;
 
-        $user = AuthUser::authenticateUser(json:true);
-        if(!$user) return;
+        $user = AuthUser::authenticateUser(json: true);
+        if (!$user) return;
 
         if (empty($data['firstName']) || empty($data['lastName'])) {
             $json['fixedMessage'] = $this->message
@@ -65,18 +65,18 @@ class UserController extends Controller
         $user->last_name = trim($data['lastName']);
         $user->description = trim($data['description']);
 
-       
+
         if (!$user->updateUser($_FILES)) {
             $json['fixedMessage'] = $user->message()->render(true);
         } else {
-            $this->message->make( MessageType::SUCCESS, 'Perfil atualizado com sucesso!')->flash(true);
+            $this->message->make(MessageType::SUCCESS, 'Perfil atualizado com sucesso!')->flash(true);
             $json['redirect'] = url('/perfil');
         }
         echo json_encode($json);
         return;
     }
 
-        /**
+    /**
      * > Method => GET
      * Página dos artigos publicados pelo usuário
      *
@@ -89,7 +89,7 @@ class UserController extends Controller
 
         $findArticles = static::getModel('Article')
             ->find(
-                'status = :status AND id_user = :userId',
+                'id_user = :userId AND status = :status',
                 "userId={$user->id}&status=published"
             );
 
@@ -109,11 +109,10 @@ class UserController extends Controller
                 ->offset($paginator->offset())
                 ->fetch(true),
             'paginator' => $paginator
-
         ]);
     }
 
-        /**
+    /**
      * > Method => GET
      * Página dos artigos salvos pelo usuário
      *

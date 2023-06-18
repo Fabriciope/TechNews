@@ -50,10 +50,12 @@ class AuthUser
         return (new User)->findById($session->userId, $columns);
     }
     
+    
     /**
      * authenticateUser
      *
      * @param  bool $checkStatus
+     * @param  bool $json
      * @return bool|User
      */
     public static function authenticateUser(bool $checkStatus = false, bool $json = false): bool|User

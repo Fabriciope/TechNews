@@ -49,7 +49,6 @@ $router->post('/redefinir-senha', 'AuthController@resetPassword');
 
 $router->get('/sair', 'AuthController@logout');
 
-
 // OPTIN
 $router->get('/confirma', 'AuthController@pageConfirmEmail');
 $router->get("/obrigado/{email}", 'AuthController@pageConfirmedEmail');
