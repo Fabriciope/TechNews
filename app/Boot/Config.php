@@ -9,9 +9,6 @@ const CONF_DB_NAME = 'TechNews';
 const CONF_DB_USER = 'root';
 const CONF_DB_PASSWORD = '';
 
-
-
-
 /**
  *   PROJECT URLs
  */
@@ -22,13 +19,11 @@ const CONF_URL_SENAC = 'http://localhost/repos-TechNews/';
 
 const CONF_PATH_VIEWS = CONF_URL_BASE . '/views';
 
-
 /**
  * SITE
  */
 
 const CONF_SITE_DOMAIN_TEST = 'localhost';
-
 
 /**
  * PASSWORD
@@ -38,7 +33,6 @@ const CONF_PASSWD_MIN_LEN = 6;
 const CONF_PASSWD_MAX_LEN = 40;
 const CONF_PASSWD_ALGO = PASSWORD_DEFAULT;
 const CONF_PASSWD_OPTIONS = ['cost' => 10];
-
 
 /**
  * UPLOAD

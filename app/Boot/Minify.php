@@ -21,11 +21,11 @@ if (count($cssDir) > 2) {
     
                 $arrSubDir = scandir($pathSubDir);
     
-                foreach ($arrSubDir as $subFile) {
-                    $SubFile = __DIR__ . "./../../views/assets/css/{$nameSubDir}/{$subFile}";
+                foreach ($arrSubDir as $file) {
+                    $subFile = __DIR__ . "./../../views/assets/css/{$nameSubDir}/{$file}";
     
-                    if (is_file($SubFile) && pathinfo($SubFile)['extension'] == 'css') {
-                        $minCSS->add($SubFile);
+                    if (is_file($subFile) && pathinfo($subFile)['extension'] == 'css') {
+                        $minCSS->add($subFile);
                     }
                 }
                 continue;

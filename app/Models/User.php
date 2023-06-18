@@ -106,12 +106,13 @@ class User extends Model
         }
 
         if ($photo) {
+            //TODO: refatorar os ifs de upload
             if (!$this->uploadImage(
                 'photo',
                 $photo,
                 CONF_IMAGE_PHOTO_SIZE,
                 CONF_UPLOAD_PHOTO_DIR,
-                './../..'
+                true
             )) return false;
         }
         if ($banner) {
@@ -120,7 +121,7 @@ class User extends Model
                 $banner,
                 CONF_IMAGE_BANNER_SIZE,
                 CONF_UPLOAD_BANNER_DIR,
-                './../..'
+                true
             )) return false;
         }
 

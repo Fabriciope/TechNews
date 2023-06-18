@@ -72,7 +72,7 @@ trait SupportModels
         array $imageData,
         int  $imageSize,
         string $imageDir,
-        ?string $oldImagePath = null
+        bool $deleteOldImage = false
     ): bool 
     {
         $upload = new \App\Support\Upload;
@@ -87,9 +87,11 @@ trait SupportModels
             return false;
         }
 
-        $oldImagePath = __DIR__ . "{$oldImagePath}{$this->$imageField}";
-        if (is_file($oldImagePath) &&file_exists($oldImagePath)) {
-            @unlink($oldImagePath);
+        if($deleteOldImage) {
+            $oldImagePath = __DIR__ . "./../../..{$this->$imageField}";
+            if (is_file($oldImagePath) &&file_exists($oldImagePath)) {
+                @unlink($oldImagePath);
+            }
         }
 
         $this->$imageField = $image;

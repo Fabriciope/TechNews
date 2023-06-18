@@ -154,14 +154,9 @@ class ArticleController extends Controller
 
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
         $article = static::getModel('Article')->findById($articleId);
-        if (!$article) {
-            $this->message->make(MessageType::ERROR, 'Artigo não encontrado para exclusão')->flash(true);
-            redirect('/perfil/artigo/salvos');
-            return;
-        }
         if ($article->id_user != $user->id) {
             $this->message->make(MessageType::ERROR, 'Você pode deletar somente seus artigos')->flash(true);
-            redirect('/perfil/salvos');
+            redirect('/perfil/artigo/salvos');
             return;
         }
 

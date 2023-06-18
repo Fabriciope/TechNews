@@ -127,7 +127,7 @@ class Article extends Model
                 $cover,
                 CONF_IMAGE_COVER_SIZE,
                 CONF_UPLOAD_COVER_DIR,
-                './../..'
+                true
             )) return false;
         }
 
@@ -164,8 +164,7 @@ class Article extends Model
             'cover',
             $coverData,
             CONF_IMAGE_COVER_SIZE,
-            CONF_UPLOAD_COVER_DIR,
-            __DIR__ . "./../.."
+            CONF_UPLOAD_COVER_DIR
         )) return false;
 
         if ($this->findByUri($this->uri)) {
@@ -201,6 +200,11 @@ class Article extends Model
         if(!(new Comment)->delete('id_article', $this->id)) {
             $this->message->make(MessageType::ERROR, 'Erro ao excluir comentários do artigo');
             return false;
+        }
+
+        $imagePath = __DIR__ . "./../../../{$this->cover}";
+        if (is_file($imagePath) &&file_exists($imagePath)) {
+            @unlink($imagePath);
         }
         
         if (!parent::destroy()) {
