@@ -31,8 +31,8 @@ use App\Core\Session;
         
         if (!is_url($url)) return false;
 
-        $urlBase = substr($url, 0, 32);
-        if ($urlBase == "https://www.youtube.com/watch?v=") return true;
+        $urlBase = substr($url, 0, 17);
+        if ($urlBase == "https://youtu.be/") return true;
 
         return false;
     }
@@ -175,18 +175,10 @@ use App\Core\Session;
 
     function image(?string $image): ?string
     {
-        // var_dump((new \App\Support\Thumb)->make($image, $width, $height));
-        // return (new \App\Support\Thumb)->make($image, $width, $height);
         if (empty($image)) return null;
 
         return url() . $image;
     }
-
-    // function makeImage(?string $image, int $width, int $height = null): ?string
-    // {
-    //     var_dump( url() . (new \App\Support\Thumb)->make($image, $width, $height));
-    //     return url() . (new \App\Support\Thumb)->make($image, $width, $height);
-    // }
 }
 
 /**
@@ -226,11 +218,20 @@ use App\Core\Session;
         return $slug;
     }
 
-    function str_limit_words(){}
+    function str_limit_words(string $string, int $limit, string $pointer = "..."): string
+    {
+        $string = trim(filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS));
+        $arrWords = explode(' ', $string);
+        $numWords = count($arrWords);
+
+        if ($numWords <= $limit) return $string;
+
+        $words = implode(' ', array_slice($arrWords, 0, $limit));
+        return "{$words} {$pointer}";
+    }
 
     function str_limit_chars(string $string, int $limit, string $pointer = '...'): string
     {
-       // $string = trim(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
         $string = trim(filter_var(text($string)));
 
         if(mb_strlen($string) <= $limit) return $string;
@@ -241,20 +242,15 @@ use App\Core\Session;
 
     function str_title(string $string): string
     {
-        //return ucwords(filter_var($string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
         return ucwords(filter_var($string));
     }
 
     function convertToYouTubeEmbedUrl(string $url): string
     {
-        //$url = filter_var($url, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
         $url = filter_var($url);
-        //https://www.youtube.com/watch?v=LPgTz6tRldo
-        $videoCode = substr($url, 32);
-        $embedUrl = "https://www.youtube.com/embed/";
+        $videoCode = substr($url, 17);
 
-        return $embedUrl . $videoCode;
+        return "https://www.youtube.com/embed/{$videoCode}";
     }
     
     function convertToYouTubeUrl(?string $embedUrl): string
@@ -262,20 +258,13 @@ use App\Core\Session;
         if(is_null($embedUrl)) return '';
 
         $videoCode = substr($embedUrl, 30);
-        $youTubeUrl = "https://www.youtube.com/watch?v=";
 
-        return $youTubeUrl . $videoCode;
+        return "https://youtu.be/{$videoCode}";
     }
-
-    // function text_html(string $string): string
-    // {
-    //     return html_entity_decode($string);
-    // }
 
     function text(?string $string): string
     {
         if(is_null($string) || empty($string)) return '';
-
 
         return htmlentities($string);
     }

@@ -6,7 +6,6 @@
             <div class="box_btn_action_user">
                 <a class="btn_action_user btn_yellow" href="<?= url("/perfil/artigo/editar/{$articleData->uri}") ?>">Editar</a>
                 <form action="<?= url("perfil/artigo/deletar") ?>" method="POST">
-                    <!-- MOSTRAR UM POP-UP ANTES DE DELETAR -->
                     <button class="btn_action_user btn_red" name="articleId" value="<?= $articleData->id ?>">Deletar</button>
                 </form>
             </div>
@@ -15,7 +14,9 @@
             <h1 class="text_effect"><?= $articleData->title ?></h1>
             <div class="box_info_article_post">
                 <div class="box_info_left">
-                    <img class="photo_author_article_post" src="<?= image($articleData->author('photo')) ?>" alt="">
+                    <div class="photo_author_article_post">
+                        <img src="<?= image($articleData->author('photo')) ?>" alt="">
+                    </div>
                     <p class="name_author_article">Por:
                         <a href="<?= url("/usuario/{$articleData->author('id')}") ?>"><?= text($articleData->author('first_name')) . ' ' .  $articleData->author('last_name') ?></a>
                     </p>
@@ -59,7 +60,9 @@
                     <div class="box_comment_info_user">
                         <div class="box_info_user">
                             <div class="box_info">
-                                <img src="<?= empty($comment->user('photo')) ? theme('/assets/images/perfil.jpg') : image($comment->user('photo')) ?>" alt="">
+                                <div class="img_photo">
+                                    <img src="<?= empty($comment->user('photo')) ? theme('/assets/images/perfil.jpg') : image($comment->user('photo')) ?>" alt="">
+                                </div>
                                 <p><?= "{$comment->user('first_name')} {$comment->user('last_name')}" ?></p>
                             </div>
                             <?php if ($comment->userComment()) : ?>
@@ -84,22 +87,23 @@
         </section>
     <?php endif; ?>
 
-
-    <section class="section_new_comment">
-        <h4>Adicionar um comentário</h4>
-
-        <div class="box_new_comment">
-            <form class="formAjax" action="<?= url('/artigo/novo-comentario') ?>" method="POST">
-                <div class="ajax_response">
-                    <?= flash() ?>
-                </div>
-                <?= csrf_input() ?>
-
-                <input type="hidden" name="articleId" value="<?= $articleData->id ?>">
-
-                <textarea name="comment" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
-                <button type="submit" class="gb_btn">Comentar</button>
-            </form>
-        </div>
-    </section>
+    <?php if(!$userArticle): ?>
+        <section class="section_new_comment">
+            <h4>Adicionar um comentário</h4>
+    
+            <div class="box_new_comment">
+                <form class="formAjax" action="<?= url('/artigo/novo-comentario') ?>" method="POST">
+                    <div class="ajax_response">
+                        <?= flash() ?>
+                    </div>
+                    <?= csrf_input() ?>
+    
+                    <input type="hidden" name="articleId" value="<?= $articleData->id ?>">
+    
+                    <textarea name="comment" id="" rows="6" placeholder="Digite oque você deseja comentar..."></textarea>
+                    <button type="submit" class="gb_btn">Comentar</button>
+                </form>
+            </div>
+        </section>
+    <?php endif; ?>
 </section>

@@ -72,7 +72,6 @@ class AuthController extends Controller
      */
     public function pageConfirmEmail(): void
     {
-        //TODO: verificar se o if está funcionando
         if ($user = AuthUser::user()) {
             $views = (new ViewsEngine(__DIR__ . './../../shared/views/email'));
             $message = $views->render('confirm', [

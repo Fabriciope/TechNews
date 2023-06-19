@@ -8,7 +8,6 @@
     box-shadow: 0 4px 17px rgba(0, 0, 0, .45);
 }
 
-
 .center_header{
     display: flex;
     justify-content: space-between;
@@ -81,7 +80,7 @@
     color: var(--title-color);
 }
 .ul_main_mobile_active a:hover {
-        background: #272626;
+    background: #242839;
 }
 .ul_main_mobile_active .dropdown_menu_mobile_active {
     display: block;
@@ -201,7 +200,7 @@
     box-shadow: none;
     color: var(--title-color);
     transition: .3s;
-    background: #272626;
+    background: #242839;
 }
 
 @media(max-width: 660px) {

@@ -39,7 +39,6 @@ if (count($cssDir) > 2) {
         }
     }
 }
-
 $minCSS->minify(__DIR__ . './../../views/assets/style.css');
 
 

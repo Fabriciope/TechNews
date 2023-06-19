@@ -43,9 +43,9 @@
                     <span>Perfil <i class="fa-solid fa-angle-down"></i></span> 
                     <ul class="dropdown_menu_mobile_active">
                         <li><a href="<?=url("/perfil")?>">Perfil</a></li>
-                        <li><a href="<?=url("/perfil/artigo/publicados")?>">Artigos já publicados</a></li>
-                        <li><a href="<?=url("/perfil/artigo/salvos")?>">Artigos salvos</a></li>
-                        <li><a href="<?=url("/perfil/artigo/novo")?>">Adicionar novo artigo</a></li>
+                        <li><a href="<?=url("/perfil/artigo/publicados")?>">Artigos publicados</a></li>
+                        <li><a href="<?=url("/perfil/artigo/salvos")?>">Salvos para publicação</a></li>
+                        <li><a href="<?=url("/perfil/artigo/novo")?>">Novo artigo</a></li>
                     </ul>
                 </li>
             <?php else : ?>
@@ -80,9 +80,9 @@
                             <a href="<?=url("/perfil")?>">Perfil <i class="fa-solid fa-angle-down"></i> </a>
                             <ul class="dropdown_menu">
                                 <li><a href="<?=url("/perfil")?>">Perfil</a></li>
-                                <li><a href="<?=url("/perfil/artigo/publicados")?>">Artigos já publicados</a></li>
-                                <li><a href="<?=url("/perfil/artigo/salvos")?>">Artigos salvos</a></li>
-                                <li><a href="<?=url("/perfil/artigo/novo")?>">Adicionar novo artigo</a></li>
+                                <li><a href="<?=url("/perfil/artigo/publicados")?>">Artigos publicados</a></li>
+                                <li><a href="<?=url("/perfil/artigo/salvos")?>">Salvos para publicação</a></li>
+                                <li><a href="<?=url("/perfil/artigo/novo")?>">Novo artigo</a></li>
                             </ul>
                         </li>
                     <?php else : ?>

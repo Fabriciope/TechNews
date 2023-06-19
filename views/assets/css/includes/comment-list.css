@@ -25,10 +25,17 @@
     align-items: center;
     gap: 1rem;
 }
-.container_comments .box_info_user img {
+.container_comments .box_info_user .img_photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 50px; height: 50px;
     border-radius: 50rem;
     border: 1px solid var(--subtitle-color);
+    overflow: hidden;
+}
+.container_comments .box_info_user img {
+    width: 106%;
 }
 
 .container_comments .box_info_user p {

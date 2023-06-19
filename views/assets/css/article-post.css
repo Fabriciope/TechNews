@@ -36,10 +36,6 @@
     text-shadow: 3px 3px 0 black;
     color: var(--title-color);
 }
-
-.header_article_post {
-
-}
 .box_info_article_post {
     display: flex;
     justify-content: space-between;
@@ -56,9 +52,16 @@
     gap: .8rem;
 }
 .box_info_article_post .photo_author_article_post{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 45px; height: 45px;
     border-radius: 50rem;
     border: 1px solid var(--subtitle-color);
+    overflow: hidden;
+}
+.box_info_article_post .photo_author_article_post img {
+    width: 106%;
 }
 .box_info_article_post .box_info_left  .name_author_article {
     font-size: 1.6rem;

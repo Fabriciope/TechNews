@@ -57,7 +57,7 @@ class Email
         string $mailName
     ): Email 
     {
-        $this->data = new \stdClass;
+        $this->data = new stdClass;
 
         $this->data->subject = $subject;
         $this->data->body = $body;

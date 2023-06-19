@@ -9,8 +9,8 @@ $router = new Router(url(), '@');
 // WEB ROUTES
 $router->namespace('App\Controllers');
 $router->get('/', 'IndexController@pageHome');
-
 $router->get('/sobre', 'IndexController@pageAbout');
+
 
 // ARTICLES ROUTES
 $router->group('artigo');
@@ -34,7 +34,6 @@ $router->get('/usuario/{userId}', 'IndexController@pageUser');
 $router->get('/usuario/{userId}/{page}', 'IndexController@pageUser');
 
 
-
 // AUTH ROUTES
 $router->get('/entrar', 'IndexController@pageLogin');
 $router->post('/entrar', 'AuthController@login');
@@ -49,9 +48,11 @@ $router->post('/redefinir-senha', 'AuthController@resetPassword');
 
 $router->get('/sair', 'AuthController@logout');
 
+
 // OPTIN
 $router->get('/confirma', 'AuthController@pageConfirmEmail');
 $router->get("/obrigado/{email}", 'AuthController@pageConfirmedEmail');
+
 
 // PROFILE ROUTES
 $router->group('/perfil');
@@ -77,13 +78,11 @@ $router->get('/editar/{articleUri}', 'ArticleController@pageEditArticle');
 $router->post('/alterar', 'ArticleController@updateArticle');
 
 //ERROR
-
 $router->group('/oops')->namespace('App\Controllers');
 $router->get('/{errcode}', 'IndexController@error');
 
 
 $router->dispatch();
-
 if ($router->error()) {
     $router->redirect("/oops/{$router->error()}");
 }

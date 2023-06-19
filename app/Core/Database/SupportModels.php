@@ -89,7 +89,7 @@ trait SupportModels
 
         if($deleteOldImage) {
             $oldImagePath = __DIR__ . "./../../..{$this->$imageField}";
-            if (is_file($oldImagePath) &&file_exists($oldImagePath)) {
+            if (is_file($oldImagePath) && file_exists($oldImagePath)) {
                 @unlink($oldImagePath);
             }
         }

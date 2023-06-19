@@ -106,23 +106,24 @@ class User extends Model
         }
 
         if ($photo) {
-            //TODO: refatorar os ifs de upload
-            if (!$this->uploadImage(
+            $upload = $this->uploadImage(
                 'photo',
                 $photo,
                 CONF_IMAGE_PHOTO_SIZE,
                 CONF_UPLOAD_PHOTO_DIR,
                 true
-            )) return false;
+            );
+            if (!$upload) return false;
         }
         if ($banner) {
-            if (!$this->uploadImage(
+            $upload = $this->uploadImage(
                 'banner',
                 $banner,
                 CONF_IMAGE_BANNER_SIZE,
                 CONF_UPLOAD_BANNER_DIR,
                 true
-            )) return false;
+            );
+            if (!$upload) return false;
         }
 
         $this->update(

@@ -16,7 +16,7 @@ class Category  extends Model
     protected static string $entity = 'categories';
 
     public mixed $selected = null;
-    
+
     /**
      * __construct
      *
@@ -29,7 +29,7 @@ class Category  extends Model
             ['category', 'uri']
         );
     }
-    
+
     /**
      * getCategories
      *
@@ -38,19 +38,17 @@ class Category  extends Model
     public function getCategories(): ?array
     {
         $categories = $this->find()->fetch(true);
-        if($this->failed('Erro ao recuperar as categorias')) return null;
-        
-        if($this->selected) {
-            foreach($categories as $category) {
-                if($category->id == $this->selected) {
-                    $category->selected = 'selected';
-                }
+        if ($this->failed('Erro ao recuperar as categorias')) return null;
+
+        foreach ($categories as $category) {
+            if ($category->id == $this->selected) {
+                $category->selected = 'selected';
             }
         }
 
         return $categories;
     }
-    
+
     /**
      * selected
      *
@@ -62,7 +60,7 @@ class Category  extends Model
         $this->selected = $categoryId;
         return $this;
     }
-    
+
     /**
      * validateFields
      *
@@ -70,12 +68,11 @@ class Category  extends Model
      */
     protected function validateFields(): bool
     {
-        if(!$this->required()) {
+        if (!$this->required()) {
             $this->message->make(MessageType::INFO, 'Preencha todos os campos');
             return false;
         }
-        
+
         return true;
     }
-
 }

@@ -3,7 +3,6 @@ Object.values(document.forms).forEach( form => {
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            //iniciar load
             document.querySelector(".ajax_load").style.display = "flex";
 
             const formData = new FormData(form);
@@ -11,14 +10,10 @@ Object.values(document.forms).forEach( form => {
             try {
                 fetch(form.action, {
                     method: form.method,
-                    // headers: {
-                    //     'Content-Type': 'multipart/form-data'
-                    // },
                     body: formData
                 }).then( data => {
                     return data.json();
                 }).then( response => {
-
                     if(response.redirect) {
                         location.href = response.redirect;
                     }
@@ -30,13 +25,11 @@ Object.values(document.forms).forEach( form => {
                         let boxResponse = document.querySelector('.fixedMessage');
                         boxResponse.innerHTML = response.fixedMessage;
                     }
-    
-                    //terminar load
+
                     document.querySelector(".ajax_load").style.display = "none";
                 })
             } catch(error) {
-                //location.href = 'url' + '/oops/problemas/'; 
-                console.log(error);
+                location.href = 'http://localhost/TechNews/oops/problemas/';
             }
         });
     }

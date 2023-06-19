@@ -57,12 +57,10 @@ class Comment extends Model
         }
 
         $article = (new Article)->findById($this->id_article);
-        if($article->id ==  $this->id_user) {
+        if($article->id_user ==  $this->id_user) {
             $this->message->make(MessageType::INFO, 'Você não pode comentar no próprio artigo');
             return false;
         }
-
-        $this->id_article = $article->id;
 
         $commentId = $this->create($this->safe());
         if($this->failed('Erro ao criar novo comentário')) return false;

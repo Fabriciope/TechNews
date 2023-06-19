@@ -17,6 +17,7 @@
 
 .box_remove_paragraph span.icon_remove_paragraph {
     margin-right: .25rem;
+    cursor: pointer;
 }
 .box_remove_paragraph span.icon_remove_paragraph i {
     font-size: 1.75rem;

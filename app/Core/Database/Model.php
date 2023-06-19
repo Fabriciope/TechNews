@@ -349,7 +349,7 @@ abstract class Model
         $data = (array) $this->data;
         foreach (static::$required as $field) {
             if ($ignore && $field == $ignore) continue;
-        
+            
             if (!isset($data[$field]) || empty($data[$field])) {
                 return false;
                 break;

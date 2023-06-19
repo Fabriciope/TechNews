@@ -109,11 +109,11 @@ class Paragraph extends Model
      * createArticleParagraphs
      *
      * @param  int $articleId
-     * @param  array $titles
+     * @param  ?array $titles
      * @param  array $paragraphs
      * @return bool
      */
-    public function createArticleParagraphs(int $articleId, array $titles, array $paragraphs): bool
+    public function createArticleParagraphs(int $articleId, ?array $titles, array $paragraphs): bool
     {
         foreach ($paragraphs as $position => $paragraphContent) {
             if (isset($titles[$position]) && !empty($titles[$position])) {
@@ -178,6 +178,19 @@ class Paragraph extends Model
             $this->message->make(MessageType::INFO, 'Preencha todos os campos do parágrafo');
             return false;
         }
+
+        if(is_string($this->title)) {
+            if(mb_strlen($this->title) < 5) {
+                $this->message->make(MessageType::WARNING, 'Insira um título com no mínimo 5 caracteres');
+                return false;
+            }
+        }
+        
+        if(mb_strlen($this->paragraph) < 10) {
+            $this->message->make(MessageType::WARNING, 'Insira um paragrafo com no mínimo 10 caracteres');
+            return false;
+        }
+
         return true;
     }
 }

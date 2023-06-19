@@ -1,6 +1,6 @@
 <?php $this->layout("layouts::default", ["title" => $title]) ?>
 
-<section class="site_width latest_news">
+<section class="site_width latest_news" style="margin-top: 2rem;">
     <h2 class="title_section text_effect"><?= $search ? 'voce pesquisou por: ' . text($search) : text($category) ?></h2>
     <form class="formAjax" action="<?= url('/artigos/buscar') ?>" method="POST">
 

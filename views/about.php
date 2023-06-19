@@ -1,6 +1,6 @@
 <?php $this->layout('layouts::default', ['title' => $title]) ?>
 
-<section class="site_width sobre">
+<section class="site_width sobre" style="margin-top: 2rem;">
 <h2 class="title_section text_effect">Conecte-se, Crie e Compartilhe!</h2>
 
 <div class="container_article_content">

@@ -206,15 +206,15 @@ class ArticleController extends Controller
         $user = AuthUser::authenticateUser(true, json: true);
         if (!$user) return;
 
-        $article = static::getModel('Article');
-        $article->bootstrap(
-            $user->id,
-            intval($data['category']),
-            str_title(trim($data['title'])),
-            ucfirst(trim($data['subtitle'])),
-            str_slug(trim($data['title'])),
-            empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
-        );
+        $article = static::getModel('Article')
+            ->bootstrap(
+                $user->id,
+                intval($data['category']),
+                str_title(trim($data['title'])),
+                ucfirst(trim($data['subtitle'])),
+                str_slug(trim($data['title'])),
+                empty(trim($data['linkVideo'])) ? null : trim($data['linkVideo'])
+            );
 
         $paragraphsAndTitles = \App\Models\Article\Paragraph::getParagraphsAndTitles($data);
         if (isset($paragraphsAndTitles['position'])) {
@@ -254,11 +254,12 @@ class ArticleController extends Controller
         if (!$user) return;
 
         $articleId = filter_var($data['articleId'], FILTER_VALIDATE_INT);
-        $comment = static::getModel('Comment')->bootstrap(
-            $user->id,
-            $articleId,
-            trim($data['comment'])
-        );
+        $comment = static::getModel('Comment')
+            ->bootstrap(
+                $user->id,
+                $articleId,
+                trim($data['comment'])
+            );
 
         if ($comment->createComment()) {
             $this->message->make(MessageType::SUCCESS, 'Comentário realizado com sucesso!')->flash(true);
@@ -281,13 +282,21 @@ class ArticleController extends Controller
      */
     public function deleteComment(array $data): void
     {
-        //TODO: verificar melhor
-        $comment = static::getModel('Comment')->findById($data['commentId']);
+        $user = AuthUser::authenticateUser(true);
+        if (!$user) return;
 
+        $commentId = filter_var($data['commentId'], FILTER_VALIDATE_INT);
+        $comment = static::getModel('Comment')->findById($commentId);
         if (!$comment) {
             $this->message->make(MessageType::ERROR, 'Comentário não encontrado para exclusão')->flash(true);
             back();
         }
+        if($comment->id_user != $user->id) {
+            $this->message->make(MessageType::ERROR, 'Você pode deletar somente seus comentários')->flash(true);
+            back();
+            return;
+        }
+
 
         $comment->destroy();
         $this->message->make(MessageType::SUCCESS, 'Comentário excluído com sucesso')->flash(true);

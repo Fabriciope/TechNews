@@ -60,11 +60,12 @@ class Article extends Model
     {
         if ($userId = $this->id_user) {
             $user = (new User)->findById($userId);
-
+            
             if($field) return $user->$field;
 
             return $user;
         }
+
         return null;
     }
     
@@ -160,17 +161,18 @@ class Article extends Model
             return false;
         }
 
-        if (!$this->uploadImage(
-            'cover',
-            $coverData,
-            CONF_IMAGE_COVER_SIZE,
-            CONF_UPLOAD_COVER_DIR
-        )) return false;
-
         if ($this->findByUri($this->uri)) {
             $this->message->make(MessageType::WARNING, 'Já existe um artigo com este titulo')->fixed()->render();
             return false;
         }
+
+        $upload = $this->uploadImage(
+            'cover',
+            $coverData,
+            CONF_IMAGE_COVER_SIZE,
+            CONF_UPLOAD_COVER_DIR
+        );
+        if (!$upload) return false;
 
         $articleId = $this->create($this->safe());
         if ($this->failed('Erro ao criar um novo artigo')) return false;
@@ -203,7 +205,7 @@ class Article extends Model
         }
 
         $imagePath = __DIR__ . "./../../../{$this->cover}";
-        if (is_file($imagePath) &&file_exists($imagePath)) {
+        if (is_file($imagePath) && file_exists($imagePath)) {
             @unlink($imagePath);
         }
         
@@ -214,7 +216,6 @@ class Article extends Model
 
         return true;
     }
-
     
     /**
      * validateFields
@@ -227,6 +228,15 @@ class Article extends Model
         $ignore = $coverData ? 'cover' : null;
         if (!$this->required($ignore)) {
             $this->message->make(MessageType::INFO, 'Preencha todos os campos requeridos');
+            return false;
+        }
+
+        if(mb_strlen($this->title) < 5) {
+            $this->message->make(MessageType::WARNING, 'Insira um título com no mínimo 5 caracteres');
+            return false;
+        }
+        if(mb_strlen($this->subtitle) < 10) {
+            $this->message->make(MessageType::WARNING, 'Insira um subtitulo com no mínimo 10 caracteres');
             return false;
         }
 
