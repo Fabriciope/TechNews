@@ -122,7 +122,7 @@ class AuthUser
 
         $email = new Email;
         $email->bootstrap(
-            'Ative sua conta na TechNes',
+            'Ative sua conta na TechNews',
             $message,
             $user->email,
             "{$user->first_name} {$user->last_name}"
@@ -165,6 +165,11 @@ class AuthUser
         if (!passwordVerify($password, $user->password)) {
             $this->message->make(MessageType::WARNING, 'A senha informada está incorreta');
             return false;
+        }
+
+        if(password_rehash($user->password)) {
+            $user->password = generatePassword($user->password);
+            $user->updateUser();
         }
 
         (new Session)->set('userId', $user->id);

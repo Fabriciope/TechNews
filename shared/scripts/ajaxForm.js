@@ -25,7 +25,6 @@ Object.values(document.forms).forEach( form => {
                         let boxResponse = document.querySelector('.fixedMessage');
                         boxResponse.innerHTML = response.fixedMessage;
                     }
-
                     document.querySelector(".ajax_load").style.display = "none";
                 })
             } catch(error) {

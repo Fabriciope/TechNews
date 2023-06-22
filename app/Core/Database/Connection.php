@@ -22,9 +22,9 @@ class Connection
     /**
      * getInstance
      *
-     * @return PDO
+     * @return ?PDO
      */
-    public static function getInstance(): PDO
+    public static function getInstance(): ?PDO
     {
         if(empty(self::$instance)) {
             try {
@@ -36,6 +36,7 @@ class Connection
                 );
             } catch (PDOException) {
                 redirect("/oops/problemas");
+                return null;
             }
         }
         return self::$instance;

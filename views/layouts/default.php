@@ -104,53 +104,26 @@
             <article>
                 <h5>Sobre:</h5>
                 <p>
-                    asdasdasdads
+                    Site de artigos de tecnologia
                 </p>
             </article>
             <article>
                 <h5>Mais:</h5>
                 <ul>
-                    <ol>asdad</ol>
-                    <ol>asdad</ol>
-                    <ol>asdad</ol>
-                </ul>
-            </article>
-            <article>
-                <h5>Contato:</h5>
-                <ul>
-                    <ol>asdad</ol>
-                    <ol>asdad</ol>
-                    <ol>asdad</ol>
+                    <ol><a href="<?=url('/')?>">Home</a></ol>
+                    <ol><a href="<?=url('/sobre')?>">Sobre</a></ol>
                 </ul>
             </article>
             <article>
                 <h5>Social:</h5>
                 <ul>
-                    <ol>asdad</ol>
-                    <ol>asdad</ol>
-                    <ol>asdad</ol>
+                    <ol><a href="#">Instagram</a></ol>
+                    <ol><a href="#">Facebook</a></ol>
+                    <ol><a href="#">Linkedin</a></ol>
                 </ul>
             </article>
         </div>
     </footer>
-    
-<!-- 
-    <svg viewBox="0 0 243 243" style="display: ;">
-        <filter id="noiseFilter">
-            <feTurbulence type="franctalNoise" baseFrequency="6.29" numOctaves="6" stichTiles="stitch"></feTurbulence>
-        </filter>
-    </svg>
-        
-    <svg>
-      <filter id="noiseFilter">
-        <feTurbulence
-          type="franctalNoise"
-          baseFrequency="5.7"
-          numOctaves="6"
-          stichTiles="stitch"
-        ></feTurbulence>
-      </filter>
-    </svg> -->
 
     <script src="<?= theme("assets/scripts.js") ?>"></script>
 
