@@ -5,7 +5,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
 
 ## Índices
 - [⚙️ Funcionalidades do site](#funcionalidades-do-site)
-- [👨‍💻 Tecnologias utilizadas](#tecnologias-utilizadas)
+- [🛠 Tecnologias utilizadas](#tecnologias-utilizadas)
 - [🏛️ Arquitetura da aplicação](#arquitetura-da-aplicação)
 - [🔒 Segurança de proteção de dados](#segurança-e-proteção-de-dados)
 - [📈 Escalabilidade e desempenho](#escalabilidade-e-desempenho)
@@ -54,3 +54,47 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
  
 
 ## Tenologias utilizadas
+
+### Front-End
+- [HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+- [CSS](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
+- [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+- [Font Awesome](https://fontawesome.com)
+
+### Back-End
+- [PHP](https://www.php.net)
+- [MySQL](https://www.mysql.com)
+- [Composer](https://getcomposer.org)
+  - #### Bibliotecas utilizadas
+    - **coffeecode/router :** responsável por fazer o sistema de rotas.
+    -  **league/plates :** engine utilizada para fazer a renderização das views.
+    -  **phpmailer/phpmailer :** utilizada para fazer o disparo de e-mails.
+    -  **coffeecode/uploader :** responsável por fazer o upload dos arquivos da aplicação.
+    -  **matthiasmullie/minify :** usado para gerar um arquivo minificaado, tanto do css quanto do javascript.
+    -  **nette/utils :** utilizado para fazer a paginação
+      ##### Todas as dependências utilizadas do composer foram abstraidas em uma classe separada para o seu uso, de forma desacoplada da aplicação, tendo assim mais segurança, mais flexibilidade na hora de usa-lo e não dependendo 100% daquele componente caso seja descontinuado, mesmo utilizado as ultimas versões destas bibliotecas.
+      
+      
+## Arquitetura da aplicação
+
+ Todo o sistema foi desenvolvido com uma base sólida no padrão de arquitetura MVC, onde toda a estrutura foi separada em models, views e controllers, tendo assim uma responsabilidade clara sobre cada camada, uma melhora na organização do código, manutenção simplificada e uma alta capacidade de escalabilidade do sistema como um todo, e assim atendendo demandas de um sistema muito mais complexo, que ao mesmo tempo nos proporciona um código limpo, coeso e de fácil leitura.
+ 
+ Neste projeto, em um ambiente MVC, utilizei o design pattern Active Record, para fazer todas as interações com o banco de dados, que foi responsável por mapear objetos do modelo diretamente para tabelas do banco de dados, fornecendo uma camada de abstração que simplifica a interação com os dados. Trazendo uma série de benefícios, como transparência na persistência de dados, redução de código repetitivo e flexibilidade no acesso aos dados. Tendo assim um aumento na qualidade do código ao facilitar a manutenção em sistemas web baseados nesta arquitetura.
+ 
+ Para gerenciar a conexão com o banco de dados foi utilizado o design pattern Singleton. Por mais que haja controvérsias à respeito do uso deste pattern, vi diversas vantagens para a sua utilização neste caso em específico, ao fazer a conexão com o banco de dados, pois garante uma única instância da conexão, economiza recursos da aplicação, por ter uma maior flexibilidade e ter o seu acesso de maneira global na aplicação, embora seu uso seja restrito somente ao Active Record, por ser uma classe que isola todas as interações com o banco de dados.
+ 
+ ## Segurança e proteção de dados
+  ### SQL injection
+   Ataques de SQL injection ocorrem quando um invasor insere ou “injeta” um código SQL malicioso em uma aplicação web por meio de entradas de dados não confiáveis, podendo assim fazer qualquer tipo de ação à base de dados que está sendo atacada. Para proteger a minha aplicação desse tipo de ataque não fica muito difícil usando o PHP, pois toda comunicação com o banco de dados está sendo feita com o módulo PDO do PHP, que por padrão nos protege contra esse tipo de ataque, permitindo que trabalhemos com consultas parametrizadas ou prepared statements, que permitem a separação clara entre o código SQL e os dados fornecidos pelo usuário, além disto estamos validando e sanitizando todas as entradas de dados, garantindo que apenas informações válidas e seguras sejam aceitas. 
+   
+  ### XSS
+   Ataques XSS (Cross-Site Scripting) é uma vulnerabilidade de segurança comum em aplicações web, que ocorrem quando um invasor consegue injetar e executar código malicioso na aplicação, geralmente escritos em javascript, que são executados no navegador do usuário final. Para proteger a sistema desse tipo de ataque, fiz a filtração, validação e sanitização de todos os dados de entrada, tanto na camada do servidor quanto na camada do cliente, removendo e escapando qualquer código HTML ou scripts indesejados.
+ 
+  ### CSRF
+   Ataques CSRF (Cross-Site Request Forgery) é um tipo de ataque onde o invasor explora a confiança do sistema em uma solicitação HTTP originada de um site confiável, enganando o usuário legítimo. Para proteger a aplicação desse tipo de ataque foi implementado um mecanismo de proteção baseado em tokens CSRF, onde em todo o formulário da aplicação é inserido um input hidden com o nome csrf_token e o valor com um número seguro gerado aleatoriamente e que também foi salvo na sessão do usuário, ao receber esta requisição no back-end da aplicação eu faço a verificação se o token enviado pelo formulário é o mesmo salvo na sessão, validando assim cada solicitação, para garantir que ela seja legítima e não seja proveniente de um ataque CSRF.
+   
+  ### Criptografia de senhas
+   A criptografia de senhas é uma prática essencial para garantir a segurança das informações confidenciais dos usuários no sistema. Para garantir uma autenticação segura, quando o  usuário se cadastra no site ou quando ele faz a alteração da sua senha ao esquecer, antes de salvar as informações no banco de dados, fazemos a criptografia da senha, e sempre ao realizar o login, antes de fazer a validação da senha informada com a hash salvo no banco, verificamos se aquela senha criptografada precisa de um novo hash,  para verificar se a senha esta de acordo com as constantes globais definidas como padrão de criptografia na aplicação, se sim geramos outra criptografia desta senha e salvamos no banco.
+   
+## Escalabilidade e desempenho
+   
