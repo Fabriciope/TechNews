@@ -109,7 +109,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
  ### Abaixo esta o modelo relacional desenvolvido para este projeto:
  >⚠️ Para vizualizar o código dee criação do banco de dados, [clique aqui!👈](https://github.com/Fabriciope/TechNews/blob/main/sql-TechNews.sql).
 
-  ![mer-db](https://github.com/Fabriciope/QuiroBrazil/assets/79289410/604ad5cb-ec03-46d9-bdeb-ce64e6ba85ed)
+  ![mer-db](https://github.com/Fabriciope/QuiroBrazil/assets/79289410/bb573c53-743a-4b8e-bb7d-d8eec55120e0)
 
 ---
 <br>
