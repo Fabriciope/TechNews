@@ -53,7 +53,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
  
  
 
-## Tenologias utilizadas
+## Tecnologias utilizadas
 
 ### Front-End
 - [HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
@@ -72,7 +72,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
     -  **coffeecode/uploader :** responsável por fazer o upload dos arquivos da aplicação.
     -  **matthiasmullie/minify :** usado para gerar um arquivo minificaado, tanto do css quanto do javascript.
     -  **nette/utils :** utilizado para fazer a paginação
-      ##### Todas as dependências utilizadas do composer foram abstraidas em uma classe separada para o seu uso, de forma desacoplada da aplicação, tendo assim mais segurança, mais flexibilidade na hora de usa-lo e não dependendo 100% daquele componente caso seja descontinuado, mesmo utilizado as ultimas versões destas bibliotecas.
+      #### Todas as dependências utilizadas do composer foram abstraidas em uma classe separada para o seu uso, de forma desacoplada da aplicação, tendo assim mais segurança, mais flexibilidade na hora de usa-lo e não dependendo 100% daquele componente caso seja descontinuado, mesmo utilizado as ultimas versões destas bibliotecas.
       
       
 ## Arquitetura da aplicação
@@ -97,4 +97,21 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
    A criptografia de senhas é uma prática essencial para garantir a segurança das informações confidenciais dos usuários no sistema. Para garantir uma autenticação segura, quando o  usuário se cadastra no site ou quando ele faz a alteração da sua senha ao esquecer, antes de salvar as informações no banco de dados, fazemos a criptografia da senha, e sempre ao realizar o login, antes de fazer a validação da senha informada com a hash salvo no banco, verificamos se aquela senha criptografada precisa de um novo hash,  para verificar se a senha esta de acordo com as constantes globais definidas como padrão de criptografia na aplicação, se sim geramos outra criptografia desta senha e salvamos no banco.
    
 ## Escalabilidade e desempenho
-   
+ Este projeto foi desenvolvido utilizando as melhores práticas de programação da linguagem, e já utilizando todos os novos recursos a partir do PHP 8.0 para a otimização do código, como enums, constructor promotion property, named parameters e muito mais. Além disto a adoção da arquitetura MVC facilita o gerenciamento e a manutenção do código.
+
+### Otimização das consutas ao banco de dados
+ A utilização de técnicas eficientes para acesso ao banco de dados é fundamental para melhorar o desempenho da aplicação, para a otimização das consultas e pesquisas feitas pelo usuário aos artigos. Para isto, na criação do banco de dados, também foi criado um índice FULLTEXT à tabela dos artigos, nas colunas do titulo e subtitulo, tendo assim uma melhor consulta de dados ao fazer a busca, aproveitando recurso avançados para melhorar a experiência do usuário.
+
+### Requisições assíncronas
+ A maioria das as requisições POST do sistema são assíncronas, que quando combinado com a estrutura MVC traz inúmeros benefícios adicionais à aplicação que podem melhorar a eficiência e a experiência do usuário, como o desempenho aprimorado, pois requisições assíncronas permitem que o servidor atenda a um maior número de solicitações simultâneas, pois o servidor pode alocar seus recursos de forma mais eficiente, permitindo que ele dimensione verticalmente e suporte um aumento na carga de trabalho, podendo assim executar várias tarefas ao mesmo tempo, em vez de esperar pela resposta de cada requisição antes de prosseguir para a próxima.
+
+## Banco de dados
+ ### Abaixo esta o modelo relacional desenvolvido para este projeto:
+ >⚠️ Para vizualizar o código dee criação do banco de dados, [clique aqui!👈](https://github.com/Fabriciope/BestMovies/tree/main/imgs-paginas).
+
+  ![mer-db](https://github.com/Fabriciope/QuiroBrazil/assets/79289410/604ad5cb-ec03-46d9-bdeb-ce64e6ba85ed)
+
+---
+<br>
+
+### Contato: <a target="_black" href="mailto:fabricioalves.dev@gmail.com"> fabricioalves.dev@gmail.com <a>
