@@ -107,7 +107,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
 
 ## Banco de dados
  ### Abaixo esta o modelo relacional desenvolvido para este projeto:
- >⚠️ Para vizualizar o código dee criação do banco de dados, [clique aqui!👈](https://github.com/Fabriciope/BestMovies/tree/main/imgs-paginas).
+ >⚠️ Para vizualizar o código dee criação do banco de dados, [clique aqui!👈](https://github.com/Fabriciope/TechNews/blob/main/sql-TechNews.sql).
 
   ![mer-db](https://github.com/Fabriciope/QuiroBrazil/assets/79289410/604ad5cb-ec03-46d9-bdeb-ce64e6ba85ed)
 
