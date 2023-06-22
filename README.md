@@ -70,7 +70,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
     -  **league/plates :** engine utilizada para fazer a renderização das views.
     -  **phpmailer/phpmailer :** utilizada para fazer o disparo de e-mails.
     -  **coffeecode/uploader :** responsável por fazer o upload dos arquivos da aplicação.
-    -  **matthiasmullie/minify :** usado para gerar um arquivo minificaado, tanto do css quanto do javascript.
+    -  **matthiasmullie/minify :** usado para gerar um arquivo minificado, tanto do css quanto do javascript.
     -  **nette/utils :** utilizado para fazer a paginação
       #### Todas as dependências utilizadas do composer foram abstraidas em uma classe separada para o seu uso, de forma desacoplada da aplicação, tendo assim mais segurança, mais flexibilidade na hora de usa-lo e não dependendo 100% daquele componente caso seja descontinuado, mesmo utilizado as ultimas versões destas bibliotecas.
       
