@@ -9,7 +9,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
 - [🏛️ Arquitetura da aplicação](#arquitetura-da-aplicação)
 - [🔒 Segurança de proteção de dados](#segurança-e-proteção-de-dados)
 - [📈 Escalabilidade e desempenho](#escalabilidade-e-desempenho)
-- [🎲 banco de dados](#banco-de-dados)
+- [🎲 Banco de dados](#banco-de-dados)
   
 ## Funcionalidades do site
 ### Cadastrar
