@@ -7,7 +7,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
 - [⚙️ Funcionalidades do site](#funcionalidades-do-site)
 - [🛠 Tecnologias utilizadas](#tecnologias-utilizadas)
 - [🏛️ Arquitetura da aplicação](#arquitetura-da-aplicação)
-- [🔒 Segurança de proteção de dados](#segurança-e-proteção-de-dados)
+- [🔒 Segurança e proteção de dados](#segurança-e-proteção-de-dados)
 - [📈 Escalabilidade e desempenho](#escalabilidade-e-desempenho)
 - [🎲 Banco de dados](#banco-de-dados)
   
@@ -82,6 +82,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
  Neste projeto, em um ambiente MVC, utilizei o design pattern Active Record, para fazer todas as interações com o banco de dados, que foi responsável por mapear objetos do modelo diretamente para tabelas do banco de dados, fornecendo uma camada de abstração que simplifica a interação com os dados. Trazendo uma série de benefícios, como transparência na persistência de dados, redução de código repetitivo e flexibilidade no acesso aos dados. Tendo assim um aumento na qualidade do código ao facilitar a manutenção em sistemas web baseados nesta arquitetura.
  
  Para gerenciar a conexão com o banco de dados foi utilizado o design pattern Singleton. Por mais que haja controvérsias à respeito do uso deste pattern, vi diversas vantagens para a sua utilização neste caso em específico, ao fazer a conexão com o banco de dados, pois garante uma única instância da conexão, economiza recursos da aplicação, por ter uma maior flexibilidade e ter o seu acesso de maneira global na aplicação, embora seu uso seja restrito somente ao Active Record, por ser uma classe que isola todas as interações com o banco de dados.
+
  
  ## Segurança e proteção de dados
   ### SQL injection
@@ -95,6 +96,7 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
    
   ### Criptografia de senhas
    A criptografia de senhas é uma prática essencial para garantir a segurança das informações confidenciais dos usuários no sistema. Para garantir uma autenticação segura, quando o  usuário se cadastra no site ou quando ele faz a alteração da sua senha ao esquecer, antes de salvar as informações no banco de dados, fazemos a criptografia da senha, e sempre ao realizar o login, antes de fazer a validação da senha informada com a hash salvo no banco, verificamos se aquela senha criptografada precisa de um novo hash,  para verificar se a senha esta de acordo com as constantes globais definidas como padrão de criptografia na aplicação, se sim geramos outra criptografia desta senha e salvamos no banco.
+
    
 ## Escalabilidade e desempenho
  Este projeto foi desenvolvido utilizando as melhores práticas de programação da linguagem, e já utilizando todos os novos recursos a partir do PHP 8.0 para a otimização do código, como enums, constructor promotion property, named parameters e muito mais. Além disto a adoção da arquitetura MVC facilita o gerenciamento e a manutenção do código.
