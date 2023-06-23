@@ -2,14 +2,14 @@
 
 namespace App\Models\Article;
 
-use App\Core\Database\Model;
+use App\Core\Database\ActiveRecord;
 use App\Core\Database\SupportModels;
 use App\Support\MessageType;
 
 /**
  * Model dos comentários
  */
-class Comment extends Model
+class Comment extends ActiveRecord
 {
     use SupportModels;
 

@@ -32,9 +32,9 @@ abstract class Controller
      * getModel
      *
      * @param  string $model
-     * @return \App\Core\Database\Model
+     * @return \App\Core\Database\ActiveRecord
      */
-    protected static function getModel(string $model): \App\Core\Database\Model
+    protected static function getModel(string $model): \App\Core\Database\ActiveRecord
     {
         if (str_contains($model, 'User')) {
             $class = "\\App\\Models\\" . ucfirst($model);

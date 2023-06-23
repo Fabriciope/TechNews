@@ -2,14 +2,14 @@
 
 namespace App\Models\Article;
 
-use App\Core\Database\Model;
+use App\Core\Database\ActiveRecord;
 use App\Core\Database\SupportModels;
 use App\Support\MessageType;
 
 /**
  * Model da categoria
  */
-class Category  extends Model
+class Category  extends ActiveRecord
 {
     use SupportModels;
 

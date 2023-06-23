@@ -8,7 +8,7 @@ use App\Support\Message;
 use PDO;
 use PDOException;
 
-abstract class Model
+abstract class ActiveRecord
 {
     /** @var Message|null */
     protected ?Message $message;
@@ -112,9 +112,9 @@ abstract class Model
      * @param  ?string $terms
      * @param  ?string $params
      * @param  string $columns
-     * @return Model
+     * @return ActiveRecord
      */
-    public function find(?string $terms = null, ?string $params = null, string $columns = '*'): Model
+    public function find(?string $terms = null, ?string $params = null, string $columns = '*'): ActiveRecord
     {
         if ($terms !== null) {
             $this->query = "SELECT {$columns} FROM " . static::$entity . " WHERE {$terms} ";
@@ -130,9 +130,9 @@ abstract class Model
      *
      * @param  string $column
      * @param  string $order
-     * @return Model
+     * @return ActiveRecord
      */
-    public function order(string $column, string $order = 'DESC'): Model
+    public function order(string $column, string $order = 'DESC'): ActiveRecord
     {
         $this->order = " ORDER BY {$column} {$order}";
         return $this;
@@ -142,9 +142,9 @@ abstract class Model
      * limit
      *
      * @param  int $limit
-     * @return Model
+     * @return ActiveRecord
      */
-    public function limit(int $limit): Model
+    public function limit(int $limit): ActiveRecord
     {
         $this->limit = " LIMIT {$limit}";
         return $this;
@@ -154,9 +154,9 @@ abstract class Model
      * offset
      *
      * @param  int $offset
-     * @return Model
+     * @return ActiveRecord
      */
-    public function offset(int $offset): Model
+    public function offset(int $offset): ActiveRecord
     {
         $this->offset = " OFFSET {$offset}";
         return $this;

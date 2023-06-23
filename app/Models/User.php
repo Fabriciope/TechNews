@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Core\Database\Model;
+use App\Core\Database\ActiveRecord;
 use App\Core\Database\SupportModels;
 use App\Support\MessageType;
 
 /**
  * Modelo de usuário
  */
-class User extends Model
+class User extends ActiveRecord
 {
 
     use SupportModels;

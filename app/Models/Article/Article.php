@@ -2,7 +2,7 @@
 
 namespace App\Models\Article;
 
-use App\Core\Database\Model;
+use App\Core\Database\ActiveRecord;
 use App\Core\Database\SupportModels;
 use App\Models\User;
 use App\Models\Article\Paragraph;
@@ -11,7 +11,7 @@ use App\Support\MessageType;
 /**
  * Model do artigo
  */
-class Article extends Model
+class Article extends ActiveRecord
 {
     use SupportModels;
 

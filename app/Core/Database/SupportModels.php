@@ -2,7 +2,7 @@
 
 namespace App\Core\Database;
 
-use App\Core\Database\Model;
+use App\Core\Database\ActiveRecord;
 use App\Support\MessageType;
 
 /**
@@ -16,9 +16,9 @@ trait SupportModels
      *
      * @param  int $id
      * @param  string $columns
-     * @return Model
+     * @return ActiveRecord
      */
-    public function findById(int $id, string $columns = '*'): ?Model
+    public function findById(int $id, string $columns = '*'): ?ActiveRecord
     {
         $fetch = $this->find('id = :id', "id={$id}", $columns)->fetch();
         if ($this->failed('Erro ao encontrar ' . static::$entity)) return null;
@@ -31,9 +31,9 @@ trait SupportModels
      *
      * @param  string $uri
      * @param  string $columns
-     * @return Model
+     * @return ActiveRecord
      */
-    public function findByUri(string $uri, string $columns = '*'): ?Model
+    public function findByUri(string $uri, string $columns = '*'): ?ActiveRecord
     {
         $article = $this->find('uri = :uri', "uri={$uri}", $columns)->fetch();
 
