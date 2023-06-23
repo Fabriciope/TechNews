@@ -87,11 +87,21 @@ class Paragraph extends ActiveRecord
                 list($type, $position) = explode('-', $field);
                 switch ($type) {
                     case 'titleParagraph':
-                        $titles[$position] = filter_var($content, FILTER_SANITIZE_SPECIAL_CHARS);
+                        if(empty($content)) {
+                            $titles[$position] = null;
+                        } else {
+                            if(mb_strlen($content) < 5) {
+                                return ['error' => "Insira um título com no mínimo 5 caracteres ao {$position}° parágrafo"];
+                            }
+                            $titles[$position] = filter_var($content, FILTER_SANITIZE_SPECIAL_CHARS);
+                        }
                         break;
                     case 'contentParagraph':
                         if (empty($content)) {
-                            return ['position' => $position];
+                            return ['error' => "Insira um conteúdo ao {$position}° parágrafo"];
+                        }
+                        if(mb_strlen($content) < 10) {
+                            return ['error' => "Insira mínimo 10 caracteres ao {$position}° parágrafo"];
                         }
                         $paragraphs[$position] = filter_var($content, FILTER_SANITIZE_SPECIAL_CHARS);
                         break;
