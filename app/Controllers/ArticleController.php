@@ -217,10 +217,10 @@ class ArticleController extends Controller
             );
 
         $paragraphsAndTitles = \App\Models\Article\Paragraph::getParagraphsAndTitles($data);
-        if (isset($paragraphsAndTitles['position'])) {
-            $position = $paragraphsAndTitles['position'];
+        if (isset($paragraphsAndTitles['error'])) {
+            $error = $paragraphsAndTitles['error'];
             $json['fixedMessage'] = $this->message
-                ->make(MessageType::WARNING, "Insira um conteúdo ao {$position}° parágrafo")
+                ->make(MessageType::WARNING, $error)
                 ->render(true);
 
             echo json_encode($json);
