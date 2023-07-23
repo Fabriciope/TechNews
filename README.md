@@ -1,5 +1,7 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/Fabriciope/TechNews/blob/main/LICENSE)
 
+![banner-TechNews](https://github.com/Fabriciope/API_movies_JS/assets/79289410/154c285b-d9b8-40a1-b397-fb6ec361a51f)
+
 # TechNews
 Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos pelos próprios usuários, criando assim uma comunidade de entusiastas.
 
