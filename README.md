@@ -115,6 +115,8 @@ Este projeto é um site de artigos sobre tecnologia, onde os artigos são feitos
 
   ![mer-db](https://github.com/Fabriciope/proj-tailwind/assets/79289410/8b0adaa4-0fe0-4ee8-bc77-b038d390148b)
 
+[mer-db](https://github.com/Fabriciope/TechNews/blob/main/mer-db.png)
+
 ---
 <br>
 
