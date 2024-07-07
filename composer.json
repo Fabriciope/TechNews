@@ -1,0 +1,19 @@
+{
+  "name": "fabriciope/technews",
+  "description": "This project is a technology articles website, where articles are made by the users themselves, creating a community of enthusiasts",
+  "type": "project",
+  "license": "mit",
+  "autoload": {
+    "psr-4": {
+      "Src\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Fabrício Pereira Alves",
+      "email": "fabricioalves.dev@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {}
+}
