@@ -2,4 +2,4 @@
 
 require_once __DIR__ . "./../vendor/autoload.php";
 
-echo "hello world!";
+require_once __DIR__ . "./../bootstrap/init.php";
