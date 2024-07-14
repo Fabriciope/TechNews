@@ -2,19 +2,20 @@
 
 namespace Src\Core\Routing\Exceptions;
 
-use Src\Exceptions\NonExistentClassException;
+use Src\Exceptions\NonExistentException;
 
-class NonExistentActionException extends NonExistentClassException
+class NonExistentActionException extends NonExistentException
 {
-    public function __construct(
-        string $message = "",
-        private string $action,
-    ) {
-        parent::__construct($message, $action);
+    private string $actionName;
+
+    public function __construct(string $message = '', string $actionName)
+    {
+        parent::__construct($message);
+        $this->actionName = $actionName;
     }
 
     public function getAction(): string
     {
-        return parent::getClass();
+        return $this->actionName;
     }
 }

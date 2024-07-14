@@ -6,10 +6,8 @@ use Src\Exceptions\NonExistentClassException;
 
 class NonExistentControllerException extends NonExistentClassException
 {
-    public function __construct(
-        string $message = "",
-        private string $controller,
-    ) {
+    public function __construct(string $message = '', string $controller)
+    {
         parent::__construct($message, $controller);
     }
 

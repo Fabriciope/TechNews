@@ -32,7 +32,7 @@ class Router
     /**
     * Match route from request
     *
-    * @throws \Src\Core\Routing\Exceptions\InvalidRouteRequestException
+    * @throws Src\Core\Routing\Exceptions\InvalidRouteRequestException
     */
     private function match(Request $request)
     {
@@ -76,6 +76,8 @@ class Router
 
         return true;
     }
+
+    // TODO: create method to go through the middlewares
 
     public function performControllerAction(Route $route, Request $request): void
     {

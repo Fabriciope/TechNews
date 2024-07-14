@@ -2,8 +2,8 @@
 
 namespace Src\Core\Routing;
 
+use InvalidArgumentException;
 use Src\Http\HttpMethods;
-use Src\Http\Middleware\MiddlewareInterface;
 
 class RouteGroupManagerDecorator extends RouteRecorder
 {
@@ -23,27 +23,52 @@ class RouteGroupManagerDecorator extends RouteRecorder
     ) {
     }
 
+    /**
+    * sets the group prefix path
+    *
+    * @throws \InvalidArgumentException
+    */
     public function setPrefix(string $prefix): RouteGroupManagerDecorator
     {
-        // TODO: verificar parametro
+        if (empty($prefix)) {
+            throw new \InvalidArgumentException('the prefix parameter must not be emtpy');
+        }
+
         $this->prefix = $prefix;
+
         return $this;
     }
 
     public function setController(string $controllerClass): RouteGroupManagerDecorator
     {
-        // TODO: verificar parametro
         $this->controllerClass = $controllerClass;
         return $this;
     }
 
-    public function setMiddlewares(MiddlewareInterface ...$middlewares): RouteGroupManagerDecorator
+    /**
+    * sets the group route middlewares
+    *
+    * @param string ...$middlewares
+    * @throws \InvalidArgumentException
+    */
+    public function setMiddlewares(string ...$middlewares): RouteGroupManagerDecorator
     {
-        // TODO: verificar parametro
-        // TODO: do
+        foreach ($middlewares as $middleware) {
+            array_push($this->middlewares, $middleware);
+        }
+
         return $this;
     }
 
+    /**
+    * Resgister the routes given in the $groupFunc parameter function
+    *
+    * @param Src\Core\Routing\Route $route
+    * @throws Src\Core\Routing\Exceptions\NonExistentControllerException
+    * @throws Src\Core\Routing\Exceptions\NonExistentActionException
+    * @throws Src\Core\Routing\Exceptions\NonExistentMiddlewareException
+    * @throws \InvalidArgumentException
+    */
     public function group(callable $groupFunc): void
     {
         call_user_func($groupFunc, $this);

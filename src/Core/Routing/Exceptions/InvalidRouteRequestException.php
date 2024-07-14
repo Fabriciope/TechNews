@@ -2,22 +2,21 @@
 
 namespace Src\Core\Routing\Exceptions;
 
-use Src\Http\HttpMethods;
 use Src\Http\Requests\Request;
-use Src\Core\Routing\Route;
 
 class InvalidRouteRequestException extends \Exception
 {
-    public function __construct(
-        string $message = "",
-        private Request $request,
-    ) {
+    private Request $request;
+
+    public function __construct(string $message = '', Request $request)
+    {
         parent::__construct($message);
+        $this->request = $request;
     }
 
-    public function getMethod(): HttpMethods
+    public function getMethodName(): string
     {
-        return $this->request->getMethod();
+        return $this->request->getMethodName();
     }
 
     public function getPath(): string

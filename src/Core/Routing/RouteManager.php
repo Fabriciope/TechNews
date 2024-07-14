@@ -2,15 +2,10 @@
 
 namespace Src\Core\Routing;
 
-use Src\Core\Routing\Exceptions\{NonExistentControllerException, NonExistentMiddlewareException};
-use Src\Exceptions\NonExistentException;
-use Src\Core\Traits\ClassAndMethodChecker;
 use Src\Http\HttpMethods;
 
 class RouteManager extends RouteRecorder
 {
-    use ClassAndMethodChecker;
-
     private array $routes;
 
     public function __construct()
@@ -44,32 +39,8 @@ class RouteManager extends RouteRecorder
         return $route;
     }
 
-    /**
-    * Resgister a new route
-    *
-    * @param \Src\Core\Routing\Route $route
-    * @throws \Src\Core\Routing\Exceptions\NonExistentController
-    * @throws \Src\Core\Routing\Exceptions\NonExistentAction
-    */
     public function appendRoute(Route $route): void
     {
-        $controller = $route->controllerClass;
-        $action = $route->actionName;
-
-        if(!$this->classExists($controller)) {
-            throw new NonExistentControllerException("the {$controller} controller does not exist for the path {$route->path}", $controller);
-        }
-
-        if(!$this->methodExists($controller, $action)) {
-            throw new NonExistentException("the {$action} method does not exists in {$controller} controller");
-        }
-
-        foreach ($route->middlewares as $middleware) {
-            if(!$this->classExists($middleware)) {
-                throw new NonExistentMiddlewareException("the {$middleware} middleware does not exist", $middleware);
-            }
-        }
-
         array_push($this->routes[$route->method->name], $route);
     }
 
