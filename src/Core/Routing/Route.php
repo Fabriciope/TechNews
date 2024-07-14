@@ -32,7 +32,7 @@ class Route
         private string $controllerClass,
         private string $actionName,
     ) {
-        $controller = $this->controller;
+        $controller = $this->controllerClass;
         $action = $this->actionName;
 
         if(!$this->classExists($controller)) {

@@ -2,6 +2,7 @@
 
 namespace Src\Core\Routing;
 
+use Src\Core\Middleware\MiddlewareManager;
 use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
 use Src\Http\Requests\Request;
 
@@ -24,27 +25,23 @@ class Router
         return $this->routeManager->getRoutes();
     }
 
-    public function handleRequest(Request $request): void
-    {
-        $this->match($request);
-    }
-
     /**
     * Match route from request
     *
     * @throws Src\Core\Routing\Exceptions\InvalidRouteRequestException
     */
-    private function match(Request $request)
+    public function handleRequest(Request $request)
     {
         $routes = $this->getRoutes()[$request->getMethodName()];
         $requestPath = $request->path;
 
         foreach ($routes as $route) {
-            if (!$this->matchRequestPath($route->path, $requestPath)) {
+            if (!self::matchRequestPath($route->path, $requestPath)) {
                 continue;
             }
 
             $request->bindPathParameters($route->path);
+            $this->performMiddlewares($route, $request);
             $this->performControllerAction($route, $request);
             return;
         }
@@ -55,7 +52,7 @@ class Router
         );
     }
 
-    private function matchRequestPath(string $routePath, string $requestPath): bool
+    private static function matchRequestPath(string $routePath, string $requestPath): bool
     {
         $splittedRequestPath = explode("/", trim($requestPath, '/'));
         $splittedRoutePath = explode("/", trim($routePath, '/'));
@@ -77,9 +74,13 @@ class Router
         return true;
     }
 
-    // TODO: create method to go through the middlewares
+    private function performMiddlewares(Route $route, Request $request): void
+    {
+        $middlewareManager = new MiddlewareManager($route->middlewares);
+        $middlewareManager->handle($request);
+    }
 
-    public function performControllerAction(Route $route, Request $request): void
+    private function performControllerAction(Route $route, Request $request): void
     {
         $controller = new $route->controllerClass();
         $controller->{$route->actionName}($request);
