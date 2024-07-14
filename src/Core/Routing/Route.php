@@ -29,7 +29,7 @@ class Route
 
     public function setMiddlewares(MiddlewareInterface ...$middlewares): void
     {
-        foreach($middlewares as $middleware) {
+        foreach ($middlewares as $middleware) {
             $this->addMiddleware($middleware);
         }
     }

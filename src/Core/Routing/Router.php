@@ -39,7 +39,7 @@ class Router
         $routes = $this->getRoutes()[$request->getMethodName()];
         $requestPath = $request->path;
 
-        foreach($routes as $route) {
+        foreach ($routes as $route) {
             if (!$this->matchRequestPath($route->path, $requestPath)) {
                 continue;
             }
@@ -64,7 +64,7 @@ class Router
             return false;
         }
 
-        foreach($splittedRoutePath as $subPathIndex => $subPath) {
+        foreach ($splittedRoutePath as $subPathIndex => $subPath) {
             if ((substr($subPath, 0, 1) == "{") and (substr($subPath, -1) == "}")) {
                 continue; // NOTE: indicates that the route has a parameter
             }

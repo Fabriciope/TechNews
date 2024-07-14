@@ -100,7 +100,7 @@ class Request
         $splittedRequestPath = explode("/", trim($this->path, '/'));
         $splittedRoutePath = explode("/", trim($routePath, '/'));
 
-        foreach($splittedRoutePath as $subPathIndex => $subPath) {
+        foreach ($splittedRoutePath as $subPathIndex => $subPath) {
             if((substr($subPath, 0, 1) == "{") and (substr($subPath, -1) == "}")) {
                 $this->addPathParameter(
                     key: substr($subPath, 1, -1),

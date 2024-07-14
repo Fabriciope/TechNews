@@ -15,7 +15,7 @@ class RouteManager extends RouteRecorder
 
     public function __construct()
     {
-        foreach(HttpMethods::cases() as $method) {
+        foreach (HttpMethods::cases() as $method) {
             $this->routes[$method->name] = array();
         }
     }
@@ -64,7 +64,7 @@ class RouteManager extends RouteRecorder
             throw new NonExistentException("the {$action} method does not exists in {$controller} controller");
         }
 
-        foreach($route->middlewares as $middleware) {
+        foreach ($route->middlewares as $middleware) {
             if(!$this->classExists($middleware)) {
                 throw new NonExistentMiddlewareException("the {$middleware} middleware does not exist", $middleware);
             }
