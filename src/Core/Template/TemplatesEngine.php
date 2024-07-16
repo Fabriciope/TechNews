@@ -1,0 +1,48 @@
+<?php
+
+namespace Src\Core\Template;
+
+use League\Plates\Engine as PlatesEngine;
+use League\Plates\Template\Template;
+
+class TemplatesEngine
+{
+    private PlatesEngine $platesEngine;
+
+    public function __construct(string $path)
+    {
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException("the {$path} directory does not exists");
+        }
+
+        $engine = new PlatesEngine();
+        $engine->setDirectory($path);
+        $engine->setFileExtension('php');
+
+        $this->platesEngine = $engine;
+    }
+
+    /**
+    * Add a new folder to templates engine
+    *
+    * @throws \InvalidArgumentException
+    */
+    public function addFolder(string $name, string $path): void
+    {
+        if (empty($name)) {
+            throw new \InvalidArgumentException("the \$name parameter must not be empty");
+        }
+
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException("the {$path} directory does not exists");
+        }
+
+        $this->platesEngine->addFolder($name, $path);
+    }
+
+    public function make(string $view): Template
+    {
+        return $this->platesEngine->make($view);
+    }
+
+}

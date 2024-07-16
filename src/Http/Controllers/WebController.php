@@ -4,13 +4,16 @@ namespace Src\Http\Controllers;
 
 use Src\Http\Requests\Request;
 
-class WebController
+class WebController extends Controller
 {
-    public function home(Request $request): void
+    public function __construct()
     {
-        echo "<pre>";
-        var_dump($request);
-        echo "</pre>";
+        parent::setUpTemplatesEngine(__DIR__ . '/../../../resources/templates/views/site');
+    }
+
+    public function home(): void
+    {
+        echo $this->renderTemplate('home', ['title' => 'home page']);
     }
 
     public function user(Request $request): void
