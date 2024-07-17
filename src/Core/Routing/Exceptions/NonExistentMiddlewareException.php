@@ -6,7 +6,7 @@ use Src\Exceptions\NonExistentClassException;
 
 class NonExistentMiddlewareException extends NonExistentClassException
 {
-    public function __construct(string $message = '', string $middleware)
+    public function __construct(string $middleware, string $message = '')
     {
         parent::__construct($message, $middleware);
     }

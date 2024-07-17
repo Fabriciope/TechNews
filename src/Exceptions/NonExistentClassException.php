@@ -6,7 +6,7 @@ class NonExistentClassException extends NonExistentException
 {
     private string $className;
 
-    public function __construct(string $message = '', string $class)
+    public function __construct(string $class, string $message = '')
     {
         parent::__construct($message);
         $this->className = $class;

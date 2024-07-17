@@ -36,11 +36,11 @@ class Route
         $action = $this->actionName;
 
         if(!$this->classExists($controller)) {
-            throw new NonExistentControllerException("the {$controller} controller does not exist for the path {$this->path}", $controller);
+            throw new NonExistentControllerException($controller, "the {$controller} controller does not exist for the path {$this->path}");
         }
 
         if(!$this->methodExists($controller, $action)) {
-            throw new NonExistentActionException("the {$action} method does not exists in {$controller} controller", $action);
+            throw new NonExistentActionException($action, "the {$action} method does not exists in {$controller} controller");
         }
     }
 
@@ -67,7 +67,7 @@ class Route
     private function addMiddleware(string $middleware): void
     {
         if(!$this->classExists($middleware)) {
-            throw new NonExistentMiddlewareException("the {$middleware} middleware does not exist", $middleware);
+            throw new NonExistentMiddlewareException($middleware, "the {$middleware} middleware does not exist");
         }
 
         if (!in_array(MiddlewareInterface::class, class_implements($middleware))) {

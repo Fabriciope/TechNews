@@ -8,7 +8,7 @@ class NonExistentActionException extends NonExistentException
 {
     private string $actionName;
 
-    public function __construct(string $message = '', string $actionName)
+    public function __construct(string $actionName, string $message = '')
     {
         parent::__construct($message);
         $this->actionName = $actionName;

@@ -8,7 +8,7 @@ class InvalidRouteRequestException extends \Exception
 {
     private Request $request;
 
-    public function __construct(string $message = '', Request $request)
+    public function __construct(Request $request, string $message = '')
     {
         parent::__construct($message);
         $this->request = $request;

@@ -47,8 +47,7 @@ class Router
         }
 
         throw new InvalidRouteRequestException(
-            "Route not found for the path \"{$request->path}\" and {$request->getMethodName()} method",
-            $request
+            $request, "Route not found for the path \"{$request->path}\" and {$request->getMethodName()} method"
         );
     }
 
