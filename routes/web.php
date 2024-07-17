@@ -2,6 +2,8 @@
 
 use Src\Core\Routing\Router;
 use Src\Core\Routing\RouteRecorder;
+use Src\Core\Template\TemplatesEngine;
+use Src\Exceptions\NonExistentException;
 use Src\Http\Controllers\WebController;
 use Src\Http\Middlewares\Authenticate;
 use Src\Http\Middlewares\Guest;
@@ -12,33 +14,14 @@ $route = $router->getRouteManager();
 try {
     // TODO: add path rules
 
-    $route->get("/", [WebController::class, "home"])
-        ->setMiddlewares(
-            Authenticate::class,
-            Guest::class,
-        );
+    $route->get("/", [WebController::class, "home"]);
 
-    $route->get("/{other}/article/{id}", [WebController::class, "user"]);
-    $route->get("/test/user/{test}", [WebController::class, "user"]);
-    $route->get("/route/artiacle/{id}", [WebController::class, "user"]);
-    $route->get("/test/user/{test}/{outro}", [WebController::class, "user"]);
-
-    $route->newGroup()
-        ->setPrefix('test')
-        ->setController(WebController::class)
-        ->setMiddlewares(
-            Authenticate::class,
-            Guest::class
-        )->group(function (RouteRecorder $route) {
-            $route->get('/seila', 'user');
-        });
-
-} catch(\Src\Exceptions\NonExistentException $exception) {
-    // TODO: redirecionar para pagina de error loggar
-    echo "<h1>Error: {$exception->getMessage()}</h1>";
-    exit;
-} catch(\InvalidArgumentException $exception) {
-    // TODO: redirecionar para pagina de error loggar
-    echo "<h1>Error: {$exception->getMessage()}</h1>";
+} catch(NonExistentException|\InvalidArgumentException $exception) {
+    // TODO: log error ($this->getMessage())
+    echo TemplatesEngine::renderErrorView(
+        title: 'erro interno',
+        message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
+        code: 505
+    );
     exit;
 }

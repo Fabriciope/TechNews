@@ -1,19 +1,38 @@
 <?php
 
+use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
 use Src\Core\Routing\Router;
+use Src\Core\Template\TemplatesEngine;
 use Src\Http\Requests\Request;
 
 final class AppLauncher
 {
     public static function bootstrap(Router $router): void
     {
+        self::loadEnvironmentVariables();
+        self::initializeRouter($router);
+    }
+
+    private static function initializeRouter(Router $router): void
+    {
         try {
             $request = new Request();
             $router->handleRequest($request);
-        } catch(Src\Core\Routing\Exceptions\InvalidRouteRequestException $exception) {
-            // TODO: redirecionar para pagina de error loggar
-            echo "<h1>Error: {$exception->getMessage()}</h1>";
+        } catch(InvalidRouteRequestException $exception) {
+            // TODO: log error ($this->getMessage())
+            echo TemplatesEngine::renderErrorView(
+                title: 'error',
+                message:  'iiiiiinvalid route',
+                code:  404
+            );
             exit;
         }
+    }
+
+    private static function loadEnvironmentVariables(): void
+    {
+        $dir = __DIR__.'/../';
+        $dotenv = Dotenv\Dotenv::createImmutable($dir);
+        $dotenv->load();
     }
 }

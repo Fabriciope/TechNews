@@ -4,8 +4,7 @@ namespace Src\Core\Routing;
 
 use InvalidArgumentException;
 use Src\Core\Middleware\MiddlewareInterface;
-use Src\Core\Routing\Exceptions\{NonExistentControllerException, NonExistentActionException, NonExistentMiddlewareException};
-use Src\Core\Traits\ClassAndMethodChecker;
+use Src\Core\Routing\Exceptions\{NonExistentControllerException, NonExistentActionException, NonExistentMiddlewareException}; use Src\Core\Traits\ClassAndMethodChecker;
 use Src\Http\HttpMethods;
 
 class Route
@@ -71,13 +70,13 @@ class Route
         }
 
         if (!in_array(MiddlewareInterface::class, class_implements($middleware))) {
-            throw new InvalidArgumentException("the {$middleware} middleware does not exists");
+            $interfaceClass = MiddlewareInterface::class;
+            throw new InvalidArgumentException("the {$middleware} middleware does not implement {$interfaceClass}");
         }
 
         array_push($this->middlewares, $middleware);
     }
 
-    // TODO: ver como ira ficar o array final com as rotas
     public function toArray(): array
     {
         return [];

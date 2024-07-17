@@ -45,4 +45,19 @@ class TemplatesEngine
         return $this->platesEngine->make($view);
     }
 
+    public static function renderViewDirectly(string $view, array $data = []): string
+    {
+        $templatesEngine = new self(__DIR__.'/../../../resources/templates/views/');
+        $templatesEngine->addFolder('layouts', __DIR__.'/../../../resources/templates/views/layouts/');
+        return $templatesEngine->make($view)->render($data);
+    }
+
+    public static function renderErrorView(string $title, string $message, int $code): string
+    {
+        return self::renderViewDirectly('error', [
+            'title' => $title,
+            'message' => $message,
+            'code' => $code
+        ]);
+    }
 }
