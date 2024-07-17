@@ -13,7 +13,7 @@ class WebController extends Controller
 
     public function home(): void
     {
-        echo $this->renderTemplate('home', ['title' => 'home page']);
+        echo $this->renderTemplate('home', ['title' => env('APP_NAME')]);
     }
 
     public function user(Request $request): void

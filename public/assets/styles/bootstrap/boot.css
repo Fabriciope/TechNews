@@ -1,0 +1,222 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;300;400;500;600;700;800&display=swap");
+
+@font-face {
+  font-family: "tommy";
+  src: url("/assets/fonts/MADETOMMY.woff");
+}
+
+:root {
+  --orange: #ff6200;
+  --gray: #33333d;
+
+  --bg-box: #282c3d;
+  --bg-main: #181824;
+
+  --title-color: #f0f0f0;
+  --subtitle-color: #dfdddd;
+  --dark-font: #0f0f0f;
+
+  --green-button-color: #14cc2a;
+  --green-button-shadow: #107d1d;
+
+  --red-button-color: #ff031c;
+  --red-button-shadow: #a40010;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "tommy";
+}
+
+html,
+body {
+  font-size: 62.5%;
+  background: var(--bg-main);
+}
+
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--bg-box);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--bg-main);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.142);
+}
+
+a {
+  text-decoration: none;
+}
+
+main {
+  width: 100%;
+}
+
+section {
+  margin-bottom: 4.1rem;
+}
+.site_width {
+  width: 94%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.gb_btn {
+  padding: 1rem;
+  font-weight: 800;
+  text-align: center;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  border: none;
+  color: var(--dark-font);
+  box-shadow: 0 2px 0 var(--dark-font);
+  background: rgb(255, 97, 0);
+  background: linear-gradient(
+    82deg,
+    rgba(255, 97, 0, 1) 40%,
+    rgba(255, 204, 0, 1) 100%
+  );
+  background-size: 150% auto;
+  background-position: center;
+  transition: 0.2s;
+}
+.gb_btn:hover {
+  background-position: left center;
+  transition: 0.2s;
+}
+.title_section {
+  display: block;
+  margin: 0 auto 1.7rem auto;
+  font-size: clamp(22px, 3.7vw, 32px);
+  text-align: center;
+  color: var(--title-color);
+}
+
+.input {
+  padding: 1.45rem 1.2rem;
+  font-size: 1.4rem;
+  color: var(--subtitle-color);
+  border-radius: 0.5rem;
+  border: none;
+  background: var(--bg-box);
+  outline: none;
+  transition: 0.2s;
+  box-shadow: 1px 1px 11px rgba(0, 0, 0, 0.5);
+}
+
+.btn_green {
+  padding: 0.9rem 1.8em;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 0 black;
+  cursor: pointer;
+  color: var(--title-color);
+  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--green-button-color);
+  box-shadow: 0 3px 0 var(--green-button-shadow);
+}
+.btn_green:hover {
+  box-shadow: 0 4px 0 #107d1d;
+}
+
+.btn_yellow {
+  background-color: #ffae21;
+  box-shadow: 0 3px 0 #cc7400;
+}
+.btn_yellow:hover {
+  box-shadow: 0 4px 0 #cc7400;
+}
+
+.btn_red {
+  background-color: #ed2121;
+  box-shadow: 0 3px 0 #b01010;
+}
+.btn_red:hover {
+  box-shadow: 0 4px 0 #b01010;
+}
+
+.text_effect {
+  position: relative;
+  z-index: 100;
+  text-shadow: 2px 2px 0 black;
+}
+.text_effect::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 10px;
+  right: 10px;
+  bottom: 0px;
+  top: 18px;
+  background: rgb(255, 62, 0);
+  background: linear-gradient(
+    82deg,
+    rgba(255, 62, 0, 1) 14%,
+    rgba(255, 157, 0, 1) 100%
+  );
+  box-shadow: 3px 3px 0 black;
+}
+.title_section::before {
+  left: 100px;
+  right: 100px;
+  bottom: -1px;
+}
+
+/*DEFAULT LOAD*/
+.ajax_load {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.ajax_load_box {
+  margin: auto;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 800;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.ajax_load_box_circle {
+  border: 20px solid #e3e3e3;
+  border-top: 20px solid var(--orange);
+  border-radius: 50%;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  animation: spin 1.2s linear infinite;
+}
+.ajax_load_title {
+  margin-top: 2rem;
+  font-size: 3rem;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
