@@ -1,5 +1,7 @@
 <?php
 
+use Src\Core\Session;
+
 function script(string $fileName): string
 {
     return env('APP_URL') . "/assets/scripts/{$fileName}.js";
@@ -15,6 +17,8 @@ function image(string $image): string
     return env('APP_URL') . "/assets/images/{$image}";
 }
 
+
+
 /**
 * Get an invironment variable from .env file
 *
@@ -25,4 +29,10 @@ function image(string $image): string
 function env(string $key, string $default = ''): string|int|bool
 {
     return @$_ENV[$key] ? $_ENV[$key] : $default;
+}
+
+
+function session(): Src\Core\Session
+{
+    return Src\Core\Session::getInstance();
 }

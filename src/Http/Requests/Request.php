@@ -2,6 +2,7 @@
 
 namespace Src\Http\Requests;
 
+use Src\Core\Session;
 use Src\Http\HttpMethods;
 
 class Request
@@ -16,10 +17,15 @@ class Request
 
     private string $queryStr;
 
+    private Session $session;
+
     public function __construct()
     {
         $this->pupulateRequest();
+        $this->session = Session::getInstance();
     }
+
+    public static function test() {}
 
     private function pupulateRequest(): void
     {
@@ -44,9 +50,13 @@ class Request
         return $this->{$name};
     }
 
+    public function getSession(): Session
+    {
+        return $this->session;
+    }
+
     public function getFromServerVar(string $varName): string|int|null
     {
-        // TODO: throw new Exception
         if (!isset($_SERVER[$varName])) {
             return null;
         }
