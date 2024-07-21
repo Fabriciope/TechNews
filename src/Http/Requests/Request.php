@@ -17,12 +17,9 @@ class Request
 
     private string $queryStr;
 
-    private Session $session;
-
     public function __construct()
     {
         $this->pupulateRequest();
-        $this->session = Session::getInstance();
     }
 
     public static function test() {}
@@ -52,7 +49,7 @@ class Request
 
     public function getSession(): Session
     {
-        return $this->session;
+        return Session::getInstance();
     }
 
     public function getFromServerVar(string $varName): string|int|null
