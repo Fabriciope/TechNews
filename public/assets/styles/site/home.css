@@ -85,7 +85,7 @@
 }
 .container_right_banner img {
     display: block;
-    width: 93%;
+    width: 88%;
     margin: 0 auto;
 }
 
@@ -105,7 +105,7 @@
     margin-bottom: 1.8rem;
 }
 .services .box_icon_services i {
-    font-size: 3.8rem;
+    font-size: 3.4rem;
     text-shadow: 2px 2px 0 var(--dark-font);
     /* filter: saturate(2.4); */
     color: var(--orange);
@@ -129,9 +129,9 @@
     color: var(--title-color);
 }
 .services article p {
-    font-size: 1.5rem;
+    font-size: 1.65rem;
     text-align: center;
-    font-weight: 200;
+    font-weight: 300;
     color: var(--subtitle-color);
 }
 
@@ -146,7 +146,7 @@
     box-shadow: 0 0 22px 5px rgba(0, 0, 0, 0.35);
 }
 .section_register_home h2 {
-    margin-bottom: .1rem;
+    margin-bottom: 1rem;
 }
 .section_register_home p {
     margin-bottom: 1.3rem;
@@ -183,7 +183,7 @@
     margin: 0 auto;
 }
 .box_right_register form h3 {
-    margin-bottom: 1.3rem;
+    margin-bottom: .4rem;
     font-size: 4rem;
     text-align: center;
     text-shadow: 2px 2px 0 var(--dark-font);

@@ -1,9 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;300;400;500;600;700;800&display=swap");
+/*@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200;300;400;500;600;700;800&display=swap");*/
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-@font-face {
+/*@font-face {
   font-family: "tommy";
   src: url("/assets/fonts/MADETOMMY.woff");
-}
+}*/
 
 :root {
   --orange: #ff6200;
@@ -27,7 +28,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "tommy";
+  font-family: "Work Sans", sans-serif;
 }
 
 html,
@@ -56,6 +57,7 @@ a {
 
 main {
   width: 100%;
+  min-height: 70%;
 }
 
 section {
