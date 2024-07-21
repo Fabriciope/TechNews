@@ -14,7 +14,9 @@ class Session
 
     private const array COOKIE_PARAMS = [
         'path' => '/',
-        'httponly' => true
+        'httponly' => true, // prevent JavaScript access to session cookie
+        //'secure' => true // if you only want to receive the cookie over HTTPS
+        'samesite' => 'Strict',
     ];
 
     private function __construct()
