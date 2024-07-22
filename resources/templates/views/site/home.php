@@ -79,14 +79,13 @@
             </div>
         </div>
         <div class="box_right_register">
-            <form class="formAjax" action="<?php //url('/cadastrar') ?>" method="post">
+            <form class="formAjax" action="<?php //url('/cadastrar')?>" method="post">
                 <h3>Cadastrar-se</h3>
 
-                <div class="ajax_response">
-                    <?php //flash() ?>
-                </div>
+                <!-- TODO: gerar essa div dinamicamente no javascript -->
+                <div class="ajax_response"></div>
 
-                <?php //csrf_input() ?>
+                <?php //csrf_input()?>
 
                 <input type="text" name="first_name" class="input" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" class="input" placeholder="Último nome:" />
@@ -103,8 +102,8 @@
 <section class="site_width latest_news">
     <h2 class="title_section text_effect">Veja os últimos artigos pulicados</h2>
     <div class="container_article">
-        <?php //foreach ($articles as $article) : ?>
-            <?php //$this->insert("includes::article-list", ['article' => $article]) ?>
-        <?php //endforeach; ?>
+        <?php //foreach ($articles as $article) :?>
+            <?php //$this->insert("includes::article-list", ['article' => $article])?>
+        <?php //endforeach;?>
     </div>
 </section>

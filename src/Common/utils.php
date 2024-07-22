@@ -1,7 +1,10 @@
 <?php
 
-use Src\Core\Session;
-
+/**
+ * ###########################
+ * ###   VIEWS FUNCTIONS   ###
+ * ###########################
+ */
 function script(string $fileName): string
 {
     return env('APP_URL') . "/assets/scripts/{$fileName}.js";
@@ -15,6 +18,17 @@ function css(string $fileName): string
 function image(string $image): string
 {
     return env('APP_URL') . "/assets/images/{$image}";
+}
+
+function flash_message(): string
+{
+    if (isset(session()->flash_message)) {
+        $flashMessage = session()->get('flash_message');
+        session()->unset('flash_message');
+        return $flashMessage;
+    }
+
+    return '';
 }
 
 

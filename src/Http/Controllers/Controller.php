@@ -3,10 +3,28 @@
 namespace Src\Http\Controllers;
 
 use Src\Core\Template\TemplatesEngine;
+use Src\Support\FlashMessages\FlashMessage;
+use Src\Support\FlashMessages\{FlashMessagesPublisher, FlashMessages};
 
-abstract class Controller
+abstract class Controller implements FlashMessagesPublisher
 {
+    use FlashMessages {
+        FlashMessages::success as successMessage;
+        FlashMessages::info as infoMessage;
+        FlashMessages::warning as warningMessage;
+        FlashMessages::error as errorMessage;
+        FlashMessages::floatSuccess as floatSuccessMessage;
+        FlashMessages::floatInfo as floatInfoMessage;
+        FlashMessages::floatWarning as floatWarningMessage;
+        FlashMessages::floatError as floatErrorMessage;
+    }
+
     private TemplatesEngine $templatesEngine;
+
+    public function __construct()
+    {
+        $this->flashMessage = new FlashMessage();
+    }
 
     /**
     * Controller constructor
