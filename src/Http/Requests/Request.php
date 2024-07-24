@@ -22,14 +22,12 @@ class Request
         $this->pupulateRequest();
     }
 
-    public static function test() {}
-
     private function pupulateRequest(): void
     {
-        $method = strtoupper($this->getFromServerVar("REQUEST_METHOD"));
+        $method = strtoupper($this->getServerVar("REQUEST_METHOD"));
         $this->method = HttpMethods::{$method};
 
-        $this->uri = $this->getFromServerVar("REQUEST_URI");
+        $this->uri = $this->getServerVar("REQUEST_URI");
 
         $this->path = parse_url($this->uri, PHP_URL_PATH);
 
@@ -52,7 +50,7 @@ class Request
         return Session::getInstance();
     }
 
-    public function getFromServerVar(string $varName): string|int|null
+    public function getServerVar(string $varName): string|int|null
     {
         if (!isset($_SERVER[$varName])) {
             return null;
@@ -66,7 +64,7 @@ class Request
         return $this->method->name;
     }
 
-    public function getFromQuery(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
+    public function getQueryVar(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
     {
         $value = filter_input(INPUT_GET, $key, $filter);
         if (empty($value)) {
@@ -76,12 +74,12 @@ class Request
         return  $value;
     }
 
-    public function addPathParameter(string $key, string|int $value): void
+    private function addPathParameter(string $key, string|int $value): void
     {
         $this->pathParameters[$key] = $value;
     }
 
-    public function getFromPath(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
+    public function getPathVar(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
     {
         if (array_key_exists($key, $this->pathParameters)) {
             if ($value = filter_var($this->pathParameters[$key], $filter)){
@@ -92,7 +90,7 @@ class Request
         return $default;
     }
 
-    public function getPost(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
+    public function getBodyVar(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
     {
         $value = filter_input(INPUT_POST, $key, $filter);
         if (empty($value)) {

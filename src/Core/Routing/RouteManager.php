@@ -6,18 +6,18 @@ use Src\Http\HttpMethods;
 
 class RouteManager extends RouteRecorder
 {
-    private array $routes;
+    private array $routesMap;
 
     public function __construct()
     {
         foreach (HttpMethods::cases() as $method) {
-            $this->routes[$method->name] = array();
+            $this->routesMap[$method->name] = array();
         }
     }
 
     public function getRoutes(): array
     {
-        return $this->routes;
+        return $this->routesMap;
     }
 
     protected function addRoute(HttpMethods $method, string $path, array|string $controllerData): Route
@@ -41,7 +41,7 @@ class RouteManager extends RouteRecorder
 
     public function appendRoute(Route $route): void
     {
-        array_push($this->routes[$route->method->name], $route);
+        array_push($this->routesMap[$route->method->name], $route);
     }
 
 

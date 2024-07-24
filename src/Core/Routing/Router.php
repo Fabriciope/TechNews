@@ -2,7 +2,7 @@
 
 namespace Src\Core\Routing;
 
-use Src\Core\Middleware\MiddlewareManager;
+use Src\Core\Middleware\MiddlewaresHandler;
 use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
 use Src\Http\Requests\Request;
 
@@ -47,7 +47,8 @@ class Router
         }
 
         throw new InvalidRouteRequestException(
-            $request, "Route not found for the path \"{$request->path}\" and {$request->getMethodName()} method"
+            $request,
+            "Route not found for the path \"{$request->path}\" and {$request->getMethodName()} method"
         );
     }
 
@@ -75,7 +76,7 @@ class Router
 
     private function performMiddlewares(Route $route, Request $request): void
     {
-        $middlewareManager = new MiddlewareManager($route->middlewares);
+        $middlewareManager = new MiddlewaresHandler($route->middlewares);
         $middlewareManager->handle($request);
     }
 
