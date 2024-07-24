@@ -8,7 +8,7 @@ class NonExistentControllerException extends NonExistentClassException
 {
     public function __construct(string $controller, string $message = '')
     {
-        parent::__construct($message, $controller);
+        parent::__construct($controller, $message);
     }
 
     public function getController(): string

@@ -8,7 +8,7 @@ class NonExistentMiddlewareException extends NonExistentClassException
 {
     public function __construct(string $middleware, string $message = '')
     {
-        parent::__construct($message, $middleware);
+        parent::__construct($middleware, $message);
     }
 
     public function getMiddleware(): string
