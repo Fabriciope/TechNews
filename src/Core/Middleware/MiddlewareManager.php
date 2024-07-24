@@ -4,7 +4,7 @@ namespace Src\Core\Middleware;
 
 use Src\Http\Requests\Request;
 
-class MiddlewareManager
+class MiddlewareManager // TODO: rename this class
 {
     public function __construct(
         private array $middlewares

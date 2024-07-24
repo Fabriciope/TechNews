@@ -1,12 +1,12 @@
 <?php
 
-namespace Src\Http\Controllers;
+namespace Src\Core\Controller;
 
 use Src\Core\Template\TemplatesEngine;
 use Src\Support\FlashMessages\FlashMessage;
 use Src\Support\FlashMessages\{FlashMessagesPublisher, FlashMessages};
 
-abstract class Controller implements FlashMessagesPublisher
+abstract class WebController implements FlashMessagesPublisher
 {
     use FlashMessages {
         FlashMessages::success as successMessage;
@@ -31,11 +31,11 @@ abstract class Controller implements FlashMessagesPublisher
     *
     * @throws \InvalidArgumentException
     */
-    protected function setUpTemplatesEngine(string $viewsPath = __DIR__.'/../../../resources/templates/views/'): void
+    protected function setUpTemplatesEngine(string $viewsPath = __DIR__.'/../../../../resources/templates/views/'): void
     {
         $this->templatesEngine = new TemplatesEngine($viewsPath);
-        $this->getTemplatesEngine()->addFolder('layouts', __DIR__.'/../../../resources/templates/views/layouts/');
-        $this->getTemplatesEngine()->addFolder('includes', __DIR__.'/../../../resources/templates/views/includes/');
+        $this->getTemplatesEngine()->addFolder('layouts', __DIR__.'/../../../../resources/templates/views/layouts/');
+        $this->getTemplatesEngine()->addFolder('includes', __DIR__.'/../../../../resources/templates/views/includes/');
     }
 
     protected function getTemplatesEngine(): TemplatesEngine
