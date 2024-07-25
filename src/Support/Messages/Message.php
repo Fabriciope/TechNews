@@ -20,6 +20,11 @@ class Message
         return $this->type;
     }
 
+    public function isFloat(): bool
+    {
+        return $this->float;
+    }
+
     private function getFloatCSSClass(): string
     {
         return $this->float ? 'fixed' : '';

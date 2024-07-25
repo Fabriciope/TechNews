@@ -20,12 +20,27 @@ function image(string $image): string
     return env('APP_URL') . "/assets/images/{$image}";
 }
 
+function float_flash_message(): string
+{
+    if (isset(session()->flash_message)) {
+        $flashMessage = session()->get('flash_message');
+        if ($flashMessage->isFloat()) {
+            session()->unset('flash_message');
+            return (string) $flashMessage;
+        }
+    }
+
+    return '';
+}
+
 function flash_message(): string
 {
     if (isset(session()->flash_message)) {
         $flashMessage = session()->get('flash_message');
-        session()->unset('flash_message');
-        return $flashMessage;
+        if (!$flashMessage->isFloat()) {
+            session()->unset('flash_message');
+            return (string) $flashMessage;
+        }
     }
 
     return '';
@@ -45,6 +60,10 @@ function env(string $key, string $default = ''): string|int|bool
     return @$_ENV[$key] ? $_ENV[$key] : $default;
 }
 
+function tojson(array $data): string
+{
+    return ''; // TODO: do this
+}
 
 function session(): Src\Core\Session
 {

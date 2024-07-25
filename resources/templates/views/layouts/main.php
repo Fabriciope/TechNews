@@ -21,7 +21,7 @@
 <body>
 
     <div class="fixedMessage">
-        <?= flash_message() ?>
+        <?= float_flash_message() ?>
     </div>
 
     <?= $this->fetch('layouts::components/header') ?>

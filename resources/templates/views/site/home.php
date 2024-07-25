@@ -82,8 +82,9 @@
             <form class="formAjax" action="<?php //url('/cadastrar')?>" method="post">
                 <h3>Cadastrar-se</h3>
 
-                <!-- TODO: gerar essa div dinamicamente no javascript -->
-                <div class="ajax_response"></div>
+                <div class="ajax_response">
+                    <?= flash_message() ?>
+                </div>
 
                 <?php //csrf_input()?>
 
