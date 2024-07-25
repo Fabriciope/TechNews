@@ -4,29 +4,17 @@ namespace Src\Core\Controller;
 
 use Src\Core\Template\TemplatesEngine;
 use Src\Http\Response;
-use Src\Support\FlashMessages\FlashMessage;
-use Src\Support\FlashMessages\{FlashMessagesPublisher, FlashMessages};
+use Src\Support\Messages\FlashMessages;
 
-abstract class WebController extends Controller implements FlashMessagesPublisher
+abstract class WebController extends Controller
 {
-    use FlashMessages {
-        FlashMessages::success as successMessage;
-        FlashMessages::info as infoMessage;
-        FlashMessages::warning as warningMessage;
-        FlashMessages::error as errorMessage;
-        FlashMessages::floatSuccess as floatSuccessMessage;
-        FlashMessages::floatInfo as floatInfoMessage;
-        FlashMessages::floatWarning as floatWarningMessage;
-        FlashMessages::floatError as floatErrorMessage;
-    }
+    use FlashMessages;
 
     private TemplatesEngine $templatesEngine;
 
     public function __construct()
     {
         parent::__construct();
-
-        $this->flashMessage = new FlashMessage();
     }
 
     protected function setResponseHeaders()

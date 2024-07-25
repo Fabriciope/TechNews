@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Support\FlashMessages;
+namespace Src\Support\Messages;
 
 /**
 * Enum responsible for managing message types

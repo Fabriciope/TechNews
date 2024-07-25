@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Support\FlashMessages;
+namespace Src\Support\Messages;
 
-class FlashMessage
+class Message
 {
     private string $text;
 
@@ -25,7 +25,7 @@ class FlashMessage
         return $this->float ? 'fixed' : '';
     }
 
-    public function create(string $message, MessageType $type): FlashMessage
+    public function create(string $message, MessageType $type): Message
     {
         if (empty($message)) {
             throw new \InvalidArgumentException('the text message cannot be empty');
@@ -36,7 +36,7 @@ class FlashMessage
         return $this;
     }
 
-    public function float(): FlashMessage
+    public function float(): Message
     {
         $this->float = true;
         return $this;
