@@ -26,23 +26,23 @@ trait FlashMessages
         parent::errorMessage($message, MessageType::ERROR)->flash();
     }
 
-    protected function floatSuccessFlashMessage(string $message): void
+    protected function floatingSuccessFlashMessage(string $message): void
     {
-        $this->floatSuccessMessage($message, MessageType::SUCCESS)->flash();
+        $this->floatingSuccessMessage($message, MessageType::SUCCESS)->flash();
     }
 
-    protected function floatInfoFlashMessage(string $message): void
+    protected function floatingInfoFlashMessage(string $message): void
     {
-        $this->floatInfoMessage($message, MessageType::INFO)->flash();
+        $this->floatingInfoMessage($message, MessageType::INFO)->flash();
     }
 
-    protected function floatWarningFlashMessage(string $message): void
+    protected function floatingWarningFlashMessage(string $message): void
     {
-        $this->floatWarningMessage($message, MessageType::WARNING)->flash();
+        $this->floatingWarningMessage($message, MessageType::WARNING)->flash();
     }
 
-    protected function floatErrorFlashMessage(string $message): void
+    protected function floatingErrorFlashMessage(string $message): void
     {
-        $this->floatErrorMessage($message, MessageType::ERROR)->flash();
+        $this->floatingErrorMessage($message, MessageType::ERROR)->flash();
     }
 }

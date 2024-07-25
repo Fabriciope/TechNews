@@ -30,28 +30,28 @@ trait Messages
            ->make($message, MessageType::ERROR);
     }
 
-    protected function floatSuccessMessage(string $message): Message
+    protected function floatingSuccessMessage(string $message): Message
     {
         return $this
            ->make($message, MessageType::SUCCESS)
            ->float();
     }
 
-    protected function floatInfoMessage(string $message): Message
+    protected function floatingInfoMessage(string $message): Message
     {
         return $this
            ->make($message, MessageType::INFO)
            ->float();
     }
 
-    protected function floatWarningMessage(string $message): Message
+    protected function floatingWarningMessage(string $message): Message
     {
         return $this
            ->make($message, MessageType::WARNING)
            ->float();
     }
 
-    protected function floatErrorMessage(string $message): Message
+    protected function floatingErrorMessage(string $message): Message
     {
         return $this
            ->make($message, MessageType::ERROR)
