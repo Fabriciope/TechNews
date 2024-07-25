@@ -3,10 +3,11 @@
 namespace Src\Core\Controller;
 
 use Src\Core\Template\TemplatesEngine;
+use Src\Http\Response;
 use Src\Support\FlashMessages\FlashMessage;
 use Src\Support\FlashMessages\{FlashMessagesPublisher, FlashMessages};
 
-abstract class WebController implements FlashMessagesPublisher
+abstract class WebController extends Controller implements FlashMessagesPublisher
 {
     use FlashMessages {
         FlashMessages::success as successMessage;
@@ -23,7 +24,14 @@ abstract class WebController implements FlashMessagesPublisher
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->flashMessage = new FlashMessage();
+    }
+
+    protected function setResponseHeaders()
+    {
+        Response::setContentType('text/html');
     }
 
     /**
