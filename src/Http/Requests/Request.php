@@ -24,10 +24,10 @@ class Request
 
     private function pupulateRequest(): void
     {
-        $method = strtoupper($this->getServerVar("REQUEST_METHOD"));
+        $method = strtoupper(self::getServerVar("REQUEST_METHOD"));
         $this->method = HttpMethods::{$method};
 
-        $this->uri = $this->getServerVar("REQUEST_URI");
+        $this->uri = self::getServerVar("REQUEST_URI");
 
         $this->path = parse_url($this->uri, PHP_URL_PATH);
 
@@ -35,9 +35,9 @@ class Request
 
         if(count($_GET) != 0) {
             $this->queryStr = parse_url($this->uri, PHP_URL_QUERY);
-        } else {
-            $this->queryStr = '';
-        }
+            return;
+        }  
+        $this->queryStr = '';
     }
 
     public function __get($name) 
@@ -45,12 +45,12 @@ class Request
         return $this->{$name};
     }
 
-    public function getSession(): Session
+    public static function getSession(): Session
     {
         return Session::getInstance();
     }
 
-    public function getServerVar(string $varName): string|int|null
+    public static function getServerVar(string $varName): string|int|null
     {
         if (!isset($_SERVER[$varName])) {
             return null;
