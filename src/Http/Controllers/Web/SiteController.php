@@ -4,6 +4,7 @@ namespace Src\Http\Controllers\Web;
 
 use Src\Core\Controller\WebController;
 use Src\Http\Requests\Request;
+use Src\Http\Requests\TestRequest;
 
 class SiteController extends WebController
 {
@@ -17,5 +18,10 @@ class SiteController extends WebController
     {
         dd($_SERVER, $_ENV);
         echo $this->renderTemplate('home', ['title' => env('APP_NAME')]);
+    }
+
+    public function test(TestRequest $request): void
+    {
+        dd($request::class);
     }
 }

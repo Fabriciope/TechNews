@@ -2,7 +2,9 @@
 
 namespace Src\Core\Routing;
 
+use Src\Core\Interfaces\Validatable;
 use Src\Core\Middleware\MiddlewaresHandler;
+use Src\Core\Routing\Exceptions\InvalidMethodRequestParameterException;
 use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
 use Src\Http\Requests\Request;
 
@@ -29,10 +31,18 @@ class Router
     * Match route from request
     *
     * @throws Src\Core\Routing\Exceptions\InvalidRouteRequestException
+    * @throws Src\Exceptions\InvalidRequestInputDataException
+    * @throws Src\Exceptions\InvalidRequestBodyException
     */
     public function handleRequest(Request $request)
     {
-        $routes = $this->getRoutes()[$request->getMethodName()];
+        $this->dispatch($request);
+    }
+
+    private function dispatch(Request $request): void
+    {
+        $methodName = $request->getMethodName();
+        $routes = $this->getRoutes()[$methodName];
         $requestPath = $request->path;
 
         foreach ($routes as $route) {
@@ -40,9 +50,7 @@ class Router
                 continue;
             }
 
-            $request->bindPathParameters($route->path);
-            $this->performMiddlewares($route, $request);
-            $this->performControllerAction($route, $request);
+            $this->runRoute($route, $request);
             return;
         }
 
@@ -74,10 +82,60 @@ class Router
         return true;
     }
 
+    private function runRoute(Route $route, Request $request): void
+    {
+        $request->bindPathParameters($route->path);
+        $this->performMiddlewares($route, $request);
+
+        try {
+            $newRequest = $this->getRequestValidatableFromActionParameter($route);
+            if (!is_null($newRequest)) {
+                $request = $newRequest;
+                $this->performRequestValidator($request);
+            }
+        } catch (InvalidMethodRequestParameterException $exception) {
+            $wrongObjectClass = $exception->getParameterClass();
+            $request =  new $wrongObjectClass();
+        }
+
+        $this->performControllerAction($route, $request);
+        return;
+    }
+
+    private function getRequestValidatableFromActionParameter(Route $route): ?Request
+    {
+        $controller = new $route->controllerClass();
+        $rMethod = new \ReflectionMethod($controller, $route->actionName);
+        $rParameters = $rMethod->getParameters();
+
+        if (count($rParameters) == 0) {
+            return null;
+        }
+
+        $requestClass = $rParameters[0]->getType()->getName();
+        if (!in_array(Validatable::class, class_implements($requestClass))) {
+            if ($requestClass != Request::class) {
+                throw new InvalidMethodRequestParameterException(
+                    $requestClass,
+                    'if the first parameter of the controller action is diferent from Request class, it must implements the Validatable interface'
+                );
+            }
+            return null;
+        }
+
+        return new $requestClass();
+    }
+
+
     private function performMiddlewares(Route $route, Request $request): void
     {
         $middlewareManager = new MiddlewaresHandler($route->middlewares);
         $middlewareManager->handle($request);
+    }
+
+    private function performRequestValidator(\Src\Core\Interfaces\Validatable $request): void
+    {
+        $request->validate();
     }
 
     private function performControllerAction(Route $route, Request $request): void

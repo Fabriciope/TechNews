@@ -3,6 +3,7 @@
 use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
 use Src\Core\Routing\Router;
 use Src\Core\Template\TemplatesEngine;
+use Src\Exceptions\InvalidRequestInputDataException;
 use Src\Http\Requests\Request;
 
 final class AppLauncher
@@ -18,7 +19,7 @@ final class AppLauncher
         try {
             $request = new Request();
             $router->handleRequest($request);
-        } catch(InvalidRouteRequestException $exception) {
+        } catch (InvalidRouteRequestException $exception) {
             // TODO: log error ($this->getMessage())
             echo TemplatesEngine::renderErrorView(
                 title: 'error',
@@ -26,6 +27,9 @@ final class AppLauncher
                 code:  404
             );
             exit;
+        } catch (InvalidRequestInputDataException $exception) {
+            // TODO: redirecionar para a página anterior com a menssagem da exception
+            dump($exception);
         }
     }
 
