@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="box_right_register">
-            <form class="formAjax" action="<?php //url('/cadastrar')?>" method="post">
+            <form class="formAjax" action="/test/create" method="POST">
                 <h3>Cadastrar-se</h3>
 
                 <div class="ajax_response">
@@ -87,6 +87,8 @@
                 </div>
 
                 <?php //csrf_input()?>
+
+                <?=method('POST')?>
 
                 <input type="text" name="first_name" class="input" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" class="input" placeholder="Último nome:" />

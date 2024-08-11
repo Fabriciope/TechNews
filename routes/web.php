@@ -1,12 +1,15 @@
 <?php
 
-use Src\Core\Routing\RouteRecorderInterface;
+use Src\Framework\Http\Routing\RouteRecorderInterface as RouteRecorder;
 use Src\Http\Controllers\Web\SiteController;
-use Src\Http\Middlewares\Authenticate;
 use Src\Http\Middlewares\Guest;
 
-function defineWebRoutes(RouteRecorderInterface $route)
+// TODO: arrumar problema de agrupamento
+function defineWebRoutes(RouteRecorder $route): void
 {
-    $route->get("/", [SiteController::class, "home"]);
-    $route->post('/test', [SiteController::class, 'test']);
+    $route->get("/", [SiteController::class, "home"])
+        ->setMiddlewares(Guest::class);
+    $route->get('/test', [SiteController::class, 'test']);
+    $route->patch('/test/{id}/{name}', [SiteController::class, 'otherTest']);
+    $route->post('/test/create', [SiteController::class, 'otherTest2']);
 }

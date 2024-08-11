@@ -1,10 +1,10 @@
 <?php
 
-use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
-use Src\Core\Routing\Router;
-use Src\Core\Template\TemplatesEngine;
-use Src\Exceptions\InvalidRequestInputDataException;
-use Src\Core\Request\Request;
+use Src\Framework\Http\Exceptions\InvalidRequestInputDataException;
+use Src\Framework\Core\Template\TemplatesEngine;
+use Src\Framework\Http\Exceptions\InvalidRouteRequestException;
+use Src\Framework\Http\Request\DefaultRequest;
+use Src\Framework\Http\Routing\Router;
 
 final class AppLauncher
 {
@@ -17,7 +17,7 @@ final class AppLauncher
     private static function initializeRouter(Router $router): void
     {
         try {
-            $request = new Request();
+            $request = new DefaultRequest();
             $router->handleRequest($request);
         } catch (InvalidRouteRequestException $exception) {
             // TODO: log error ($this->getMessage())

@@ -1,9 +1,8 @@
 <?php
 
-use Src\Core\Routing\RouteManager;
-use Src\Core\Routing\Router;
-use Src\Core\Template\TemplatesEngine;
-use Src\Exceptions\NonExistentException;
+use Src\Framework\Core\Template\TemplatesEngine;
+use Src\Framework\Exceptions\NonExistentException;
+use Src\Framework\Http\Routing\Router;
 
 error_reporting(E_ALL);
 
@@ -14,15 +13,17 @@ require_once __DIR__ . "/AppLauncher.php";
 $router = new Router();
 
 try {
-    $route = $router->getRouteManager();
+    $routeManager = $router->getRouteManager();
 
-    defineWebRoutes($route);
+    // TODO: arrumar problema de agrupamento
+    defineWebRoutes($routeManager);
 
-    $route->newGroup()
+    $routeManager->newGroup()
         ->setPrefix('api')
         ->setMiddlewares(
-            Src\Core\Middleware\Middlewares\APIMiddleware::class
-        )->group('defineAPIRoutes');
+            Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class
+        )->group('defineAPIRoutes');// TODO: arrumar problema de agrupamento
+
 
 } catch (NonExistentException|\InvalidArgumentException $exception) {
     // TODO: log error ($this->getMessage())

@@ -8,7 +8,7 @@
       "Src\\": "src/"
     },
     "files": [
-      "src/Common/utils.php"
+      "src/Framework/Boot/utils.php"
     ]
   },
   "authors": [

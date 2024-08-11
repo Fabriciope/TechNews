@@ -2,8 +2,8 @@
 
 namespace Src\Http\Middlewares;
 
-use Src\Core\Middleware\MiddlewareInterface;
-use Src\Core\Request\Request;
+use Src\Framework\Http\Middleware\MiddlewareInterface;
+use Src\Framework\Http\Request\Request;
 
 class Authenticate implements MiddlewareInterface
 {

@@ -2,11 +2,11 @@
 
 namespace Src\Http\Requests;
 
-use Src\Core\Interfaces\Validatable;
-use Src\Core\Request\Request;
-use Src\Exceptions\InvalidRequestBodyException;
+use Src\Framework\Http\Exception\InvalidRequestBodyException;
+use Src\Framework\Http\Request\DefaultRequest;
+use Src\Framework\Interfaces\Validatable;
 
-class TestRequest extends Request implements Validatable
+class TestRequest extends DefaultRequest implements Validatable
 {
     public function __construct()
     {

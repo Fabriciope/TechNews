@@ -2,10 +2,10 @@
 
 namespace Src\Http\Controllers\Web;
 
-use Src\Core\Controller\WebController;
-use Src\Core\Request\Request;
+use Src\Framework\Core\Controller\WebController;
+use Src\Framework\Http\Request\Request;
+use Src\Framework\Http\Response;
 use Src\Http\Requests\TestRequest;
-use Src\Http\Response;
 
 class SiteController extends WebController
 {
