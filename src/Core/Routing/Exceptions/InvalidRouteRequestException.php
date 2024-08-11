@@ -2,7 +2,7 @@
 
 namespace Src\Core\Routing\Exceptions;
 
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 
 class InvalidRouteRequestException extends \Exception
 {

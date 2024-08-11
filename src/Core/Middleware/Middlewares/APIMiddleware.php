@@ -4,7 +4,7 @@ namespace Src\Core\Middleware\Middlewares;
 
 use Src\Core\Middleware\MiddlewareInterface;
 use Src\Core\Template\TemplatesEngine;
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 use Src\Http\Response;
 
 class APIMiddleware implements MiddlewareInterface

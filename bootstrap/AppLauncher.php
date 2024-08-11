@@ -4,7 +4,7 @@ use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
 use Src\Core\Routing\Router;
 use Src\Core\Template\TemplatesEngine;
 use Src\Exceptions\InvalidRequestInputDataException;
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 
 final class AppLauncher
 {
@@ -23,7 +23,7 @@ final class AppLauncher
             // TODO: log error ($this->getMessage())
             echo TemplatesEngine::renderErrorView(
                 title: 'error',
-                message:  'iiiiiinvalid route',
+                message:  $exception->getMessage(),
                 code:  404
             );
             exit;
@@ -35,6 +35,7 @@ final class AppLauncher
 
     private static function loadEnvironmentVariables(): void
     {
+        // TODO: abstrai o uso da biblioteca em uma classe
         $dir = __DIR__.'/../';
         $dotenv = Dotenv\Dotenv::createImmutable($dir);
         $dotenv->load();

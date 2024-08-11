@@ -2,8 +2,6 @@
 
 namespace Src\Core\Routing\Exceptions;
 
-use Src\Http\Requests\Request;
-
 class InvalidMethodRequestParameterException extends \BadMethodCallException
 {
     private string $parameterClass;

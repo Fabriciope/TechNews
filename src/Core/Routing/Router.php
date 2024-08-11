@@ -6,12 +6,13 @@ use Src\Core\Interfaces\Validatable;
 use Src\Core\Middleware\MiddlewaresHandler;
 use Src\Core\Routing\Exceptions\InvalidMethodRequestParameterException;
 use Src\Core\Routing\Exceptions\InvalidRouteRequestException;
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 
 class Router
 {
     private RouteManager $routeManager;
 
+    // TODO: pass request thorugh construct parameter
     public function __construct()
     {
         $this->routeManager = new RouteManager();
@@ -43,10 +44,9 @@ class Router
     {
         $methodName = $request->getMethodName();
         $routes = $this->getRoutes()[$methodName];
-        $requestPath = $request->path;
 
         foreach ($routes as $route) {
-            if (!self::matchRequestPath($route->path, $requestPath)) {
+            if (!self::matchRequestPath($route->path, $request->path)) {
                 continue;
             }
 
@@ -94,6 +94,7 @@ class Router
                 $this->performRequestValidator($request);
             }
         } catch (InvalidMethodRequestParameterException $exception) {
+            // TODO: loggar o erro
             $wrongObjectClass = $exception->getParameterClass();
             $request =  new $wrongObjectClass();
         }
@@ -123,7 +124,9 @@ class Router
             return null;
         }
 
-        return new $requestClass();
+        $newRequest = new $requestClass();
+        $newRequest->bindPathParameters($route->path);
+        return $newRequest;
     }
 
 

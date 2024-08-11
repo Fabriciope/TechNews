@@ -2,17 +2,17 @@
 
 namespace Src\Http;
 
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 
 class Response
 {
-    public static function setHeader(string $key, string $value): void
+    public static function setHeader(string $key, string $value, int $statusCode = 0): void
     {
         if (empty($key) or empty($value)) {
             throw new \InvalidArgumentException('the parameters must not be emtpy');
         }
 
-        header("{$key}: {$value}");
+        header("{$key}: {$value}", $statusCode);
     }
 
     public static function setStatusLine(string $line): void
@@ -40,5 +40,31 @@ class Response
                 $message
             )
         );
+    }
+
+    public static function redirect(string $url, int $statusCode = 308): void
+    {
+        $urlParsed = parse_url($url);
+        if (isset($urlParsed['scheme']) || isset($urlParsed['host'])) {
+            $opts = ['flags' => FILTER_SANITIZE_URL | FILTER_FLAG_PATH_REQUIRED];
+            $url = filter_var($url, FILTER_VALIDATE_URL, $opts);
+            if (!$url) {
+                throw new \InvalidArgumentException('the given url is invalid');
+            }
+
+            self::setStatusCode($statusCode);
+            self::setHeader('Location', $url, $statusCode);
+            exit;
+        }
+
+        $url = filter_var($url, options: FILTER_FLAG_PATH_REQUIRED);
+        if (!$url) {
+            throw new \InvalidArgumentException('the given path is invalid');
+        }
+
+        $url = env('APP_URL') . $url;
+        self::setStatusCode($statusCode);
+        self::setHeader('Location', $url, $statusCode);
+        exit;
     }
 }

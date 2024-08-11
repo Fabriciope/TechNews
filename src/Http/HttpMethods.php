@@ -9,4 +9,15 @@ enum HttpMethods
     case PUT;
     case PATCH;
     case DELETE;
+
+    public static function caseExists(string $case): bool
+    {
+        foreach (self::cases() as $httpMethod) {
+            if ($httpMethod->name == $case) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

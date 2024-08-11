@@ -3,7 +3,7 @@
 namespace Src\Http\Middlewares;
 
 use Src\Core\Middleware\MiddlewareInterface;
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 
 class Guest implements MiddlewareInterface
 {

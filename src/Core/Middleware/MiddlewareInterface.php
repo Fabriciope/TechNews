@@ -2,7 +2,7 @@
 
 namespace Src\Core\Middleware;
 
-use Src\Http\Requests\Request;
+use Src\Core\Request\Request;
 
 interface MiddlewareInterface
 {
