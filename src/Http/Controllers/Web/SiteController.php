@@ -19,24 +19,4 @@ class SiteController extends WebController
     {
         echo $this->renderTemplate('home', ['title' => env('APP_NAME')]);
     }
-
-    public function test(TestRequest $request): void
-    {
-        dd($request->getServerVar('HTTP_REFERER'));
-        Response::redirect('/');
-    }
-
-    public function otherTest(Request $request): void
-    {
-        dd(file_get_contents('php://input'), $_SERVER, $_POST);
-
-        //dd($request->getPathVar('name'), $request->getMethodName(), $request->getBodyVar('email', 'default value'), $_POST);
-    }
-
-    public function otherTest2(Request $request): void
-    {
-        dd($request->bodyData);
-
-        //dd($request->getPathVar('name'), $request->getMethodName(), $request->getBodyVar('email', 'default value'), $_POST);
-    }
 }

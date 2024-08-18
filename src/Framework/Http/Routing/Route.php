@@ -57,15 +57,21 @@ class Route
     * @throws Src\Core\Routing\Exceptions\NonExistentMiddlewareException
     * @throws \InvalidArgumentException
     */
-    public function setMiddlewares(string ...$middlewares): void
+    public function setMiddlewares(string ...$middlewares): Route
     {
         foreach ($middlewares as $middleware) {
             $this->addMiddleware($middleware);
         }
+
+        return $this;
     }
 
     private function addMiddleware(string $middleware): void
     {
+        if (in_array($middleware, $this->middlewares)) {
+            throw new \InvalidArgumentException("the {$middleware} already exists");
+        }
+
         if(!$this->classExists($middleware)) {
             throw new NonExistentMiddlewareException($middleware, "the {$middleware} middleware does not exist");
         }

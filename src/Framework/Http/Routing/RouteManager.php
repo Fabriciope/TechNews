@@ -8,6 +8,17 @@ class RouteManager extends RouteRecorder
 {
     private array $routesMap;// TODO: estudar pq isso esta na variavel @GLOBALS
 
+    private string $prefix;
+
+    private string $controllerClass;
+
+    /**
+    * Registered middlewares
+    *
+    * @var \Http\Middleware\MiddlewareInterface[] $middlewares
+    */
+    private array $middlewares = array();
+
     public function __construct()
     {
         foreach (HttpMethods::cases() as $method) {
@@ -39,14 +50,8 @@ class RouteManager extends RouteRecorder
         return $route;
     }
 
-    public function appendRoute(Route $route): void
+    private function appendRoute(Route $route): void
     {
         array_push($this->routesMap[$route->method->name], $route);
-    }
-
-
-    public function newGroup(): RouteGroupManagerDecorator
-    {
-        return new RouteGroupManagerDecorator($this);
     }
 }

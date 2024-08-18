@@ -9,7 +9,7 @@ class Authenticate implements MiddlewareInterface
 {
     public function handle(Request $request, callable $next): void
     {
-        var_dump('auth', $request);
+        //TODO: add logic
         $next();
     }
 }

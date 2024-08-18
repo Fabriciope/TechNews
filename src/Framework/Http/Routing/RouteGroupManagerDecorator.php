@@ -7,7 +7,7 @@ use Src\Framework\Http\HttpMethods;
 
 class RouteGroupManagerDecorator extends RouteRecorder
 {
-    private string $prefix;
+    private string $prefix = '';
 
     private string $controllerClass;
 
@@ -19,12 +19,12 @@ class RouteGroupManagerDecorator extends RouteRecorder
     private array $middlewares = array();
 
     public function __construct(
-        private RouteManager $routeManager
+        private RouteRecorder $routeManager
     ) {
     }
 
     /**
-    * sets the group prefix path
+    * Sets the group prefix path
     *
     * @throws \InvalidArgumentException
     */
@@ -41,12 +41,16 @@ class RouteGroupManagerDecorator extends RouteRecorder
 
     public function setController(string $controllerClass): RouteGroupManagerDecorator
     {
+        if (empty($controllerClass)) {
+            throw new \InvalidArgumentException('the controllerClass parameter must not be emtpy');
+        }
+
         $this->controllerClass = $controllerClass;
         return $this;
     }
 
     /**
-    * sets the group route middlewares
+    * Sets the group route middlewares
     *
     * @param string ...$middlewares
     * @throws \InvalidArgumentException
@@ -76,29 +80,56 @@ class RouteGroupManagerDecorator extends RouteRecorder
 
     protected function addRoute(HttpMethods $method, string $path, array|string $controllerData): Route
     {
-        $controller = null;
-        $action = null;
+        $controller = $this->getActualController($controllerData);
+        $action = $this->getActualAction($controllerData);
+        $path = $this->getFullPath($path);
 
-        if (is_array($controllerData)) {
-            list($controller, $action) = $controllerData;
-        } elseif (is_string($controllerData)) {
-            $controller = $this->controllerClass;
-            $action = $controllerData;
+        $registeredRoute = $this->routeManager->addRoute($method, $path, [$controller, $action]);
+        $registeredRoute->setMiddlewares(...$this->middlewares);
+
+        return $registeredRoute;
+    }
+
+    private function getActualController(array|string $controllerData): string
+    {
+        if (is_string($controllerData)) {
+            if (!empty($this->controllerClass)) {
+                return $this->controllerClass;
+            }
+
+            if ($this->routeManager instanceof RouteGroupManagerDecorator) {
+                $controller = $this->routeManager->controllerClass;
+
+                return $controller;
+            }
         }
 
+        if (is_array($controllerData)) {
+            return $controllerData[0];
+        }
+
+        throw new \InvalidArgumentException('Set the controller class first');
+    }
+
+    private function getActualAction(array|string $controllerData): string
+    {
+        if (is_string($controllerData)) {
+            return $controllerData;
+        }
+
+        if (is_array($controllerData)) {
+            return $controllerData[1];
+        }
+
+        return '';
+    }
+
+    private function getFullPath(string $path): string
+    {
         if (!empty($this->prefix)) {
             $path = "/{$this->prefix}{$path}";
         }
 
-        $route = new Route(
-            method: $method,
-            path: $path,
-            controllerClass: $controller,
-            actionName: $action
-        );
-        $route->setMiddlewares(...$this->middlewares);
-
-        $this->routeManager->appendRoute($route);
-        return $route;
+        return substr($path, 0, 2) === '//' ? substr($path, 1) : $path;
     }
 }

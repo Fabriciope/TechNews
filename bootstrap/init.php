@@ -15,25 +15,24 @@ $router = new Router();
 try {
     $routeManager = $router->getRouteManager();
 
-    // TODO: arrumar problema de agrupamento
     defineWebRoutes($routeManager);
 
     $routeManager->newGroup()
         ->setPrefix('api')
         ->setMiddlewares(
             Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class
-        )->group('defineAPIRoutes');// TODO: arrumar problema de agrupamento
+        )->group('defineAPIRoutes');
 
 
 } catch (NonExistentException|\InvalidArgumentException $exception) {
     // TODO: log error ($this->getMessage())
+    dd($exception->getMessage());
     echo TemplatesEngine::renderErrorView(
         title: 'erro interno',
         //message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
         message: $exception->getMessage(),
         code: 505
     );
-    exit;
 }
 
 AppLauncher::bootstrap($router);

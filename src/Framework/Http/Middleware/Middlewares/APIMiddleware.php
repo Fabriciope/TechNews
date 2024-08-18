@@ -17,10 +17,9 @@ class APIMiddleware implements MiddlewareInterface
             Response::setContentType('text/html');
             echo TemplatesEngine::renderErrorView(
                 title: 'erro na requisição',
-                message: '',
+                message: 'Invalid api request',
                 code: 400,
             );
-            exit;
         }
 
         $next();

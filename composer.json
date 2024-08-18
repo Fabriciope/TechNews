@@ -11,6 +11,11 @@
       "src/Framework/Boot/utils.php"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "Fabrício Pereira Alves",
@@ -24,6 +29,12 @@
     "vlucas/phpdotenv": "^5.6"
   },
   "require-dev": {
-    "symfony/var-dumper": "^7.1"
+    "symfony/var-dumper": "^7.1",
+    "phpunit/phpunit": "^11.3"
+  },
+  "scripts": {
+    "unitTests": "./vendor/bin/phpunit --colors --testdox --testsuite=Unit",
+    "featureTests": "./vendor/bin/phpunit --colors --testdox --testsuite=Feature",
+    "test": "./vendor/bin/phpunit --colors --testdox"
   }
 }
