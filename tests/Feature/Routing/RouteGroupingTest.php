@@ -17,14 +17,9 @@ class RouteGroupingTest extends TestCase
 {
     private RouteManager $routeManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->routeManager = new RouteManager();
-    }
-
-    public function tearDown(): void
-    {
-        unset($this->routeManager);
     }
 
     #[DataProvider('routeDataProvider')]

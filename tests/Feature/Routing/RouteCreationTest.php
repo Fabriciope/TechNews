@@ -16,14 +16,9 @@ class RouteCreationTest extends TestCase
 {
     private RouteManager $routeManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->routeManager = new RouteManager();
-    }
-
-    public function tearDown(): void
-    {
-        unset($this->routeManager);
     }
 
     public function test_if_can_be_created(): void
