@@ -14,6 +14,11 @@ class FlashMessagesTest extends TestCase
 
     private string $customMessageStr = 'my sutom message';
 
+    public static function tearDownAfterClass(): void
+    {
+        session()->destroy();
+    }
+
     public function test_if_can_get_right_html_div(): void
     {
         $messageClass = $this->infoMessage($this->customMessageStr);
@@ -66,7 +71,5 @@ class FlashMessagesTest extends TestCase
         DIV;
 
         $this->assertEquals($expectedDiv, $flashMessage->render(), 'invalid html div');
-
-        session()->destroy();
     }
 }

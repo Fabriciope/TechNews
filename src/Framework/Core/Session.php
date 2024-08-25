@@ -4,7 +4,7 @@ namespace Src\Framework\Core;
 
 class Session
 {
-    private static Session $instance;
+    private static ?Session $instance;
 
     private string $sessionName;
 
@@ -114,6 +114,10 @@ class Session
 
     public function destroy(): void
     {
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            return;
+        }
+
         $this->unsetAll();
 
         if (ini_get("session.use_cookies")) {
@@ -130,6 +134,7 @@ class Session
         }
 
         session_destroy();
+        self::$instance = null;
     }
 
     public function regenerateId(): void
