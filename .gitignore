@@ -1,6 +1,7 @@
 /vendor/
 /sessions/
 .phpunit.result.cache
+/tests/logs/
 .php-cs-fixer.cache
 todo
 tailwind.config.js
