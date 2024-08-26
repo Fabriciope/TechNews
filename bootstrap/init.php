@@ -2,26 +2,26 @@
 
 use Src\Framework\Exceptions\NonExistentException;
 use Src\Framework\Http\Routing\Router;
+use Src\Framework\Http\Routing\RouteRecorderInterface as RouteRecorder;
 
 error_reporting(E_ALL);
 
-require_once __DIR__ . "./../routes/web.php";
-require_once __DIR__ . "./../routes/api.php";
 require_once __DIR__ . "/AppLauncher.php";
 
-$router = new Router();
 
 try {
-    $routeManager = $router->getRouteManager();
+    $router = new Router();
+    $route = $router->getRouteManager();
 
-    defineWebRoutes($routeManager);
+    require_once __DIR__ . "./../routes/web.php";
 
-    $routeManager->newGroup()
+    $route->newGroup()
         ->setPrefix('api')
         ->setMiddlewares(
             Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class
-        )->group('defineAPIRoutes');
-
+        )->group(function (RouteRecorder $route) {
+            require_once __DIR__ . "./../routes/api.php";
+        });
 
 } catch (NonExistentException|\InvalidArgumentException $exception) {
     // TODO: log error ($this->getMessage())

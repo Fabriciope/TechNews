@@ -43,6 +43,7 @@ class Router
     private function dispatch(Request $request): void
     {
         $methodName = $request->getMethodName();
+
         $routes = $this->getRoutes()[$methodName];
 
         foreach ($routes as $route) {
@@ -56,7 +57,7 @@ class Router
 
         throw new InvalidRouteRequestException(
             $request,
-            "Route not found for the path \"{$request->path}\" and {$request->getMethodName()} method"
+            "Route not found for the path \"{$request->path}\" and {$methodName} method"
         );
     }
 
