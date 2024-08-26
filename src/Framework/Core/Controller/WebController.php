@@ -2,7 +2,7 @@
 
 namespace Src\Framework\Core\Controller;
 
-use Src\Framework\Core\Template\TemplatesEngine;
+use Src\Framework\Core\TemplatesEngine;
 use Src\Framework\Http\Response;
 use Src\Framework\Support\Messages\FlashMessages;
 

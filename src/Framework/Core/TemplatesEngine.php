@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Framework\Core\Template;
+namespace Src\Framework\Core;
 
 use League\Plates\Engine as PlatesEngine;
 use League\Plates\Template\Template;
@@ -47,17 +47,19 @@ class TemplatesEngine
 
     public static function renderViewDirectly(string $view, array $data = []): string
     {
-        $templatesEngine = new self(__DIR__.'/../../../../resources/templates/views/');
-        $templatesEngine->addFolder('layouts', __DIR__.'/../../../../resources/templates/views/layouts/');
-        return $templatesEngine->make($view)->render($data);
+        $templatesEngine = new self(__DIR__.'/../../../resources/templates/views/');
+        $templatesEngine->addFolder('layouts', __DIR__.'/../../../resources/templates/views/layouts/');
+        echo $templatesEngine->make($view)->render($data);
+        exit(1);
     }
 
     public static function renderErrorView(string $title, string $message, int $code): string
     {
-        return self::renderViewDirectly('error', [
+        echo self::renderViewDirectly('error', [
             'title' => $title,
             'message' => $message,
             'code' => $code
         ]);
+        exit(1);
     }
 }

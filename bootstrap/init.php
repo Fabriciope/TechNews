@@ -1,6 +1,5 @@
 <?php
 
-use Src\Framework\Core\Template\TemplatesEngine;
 use Src\Framework\Exceptions\NonExistentException;
 use Src\Framework\Http\Routing\Router;
 
@@ -27,10 +26,9 @@ try {
 } catch (NonExistentException|\InvalidArgumentException $exception) {
     // TODO: log error ($this->getMessage())
     dd($exception->getMessage());
-    echo TemplatesEngine::renderErrorView(
+    renderErrorViewAndExit(
         title: 'erro interno',
-        //message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
-        message: $exception->getMessage(),
+        message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
         code: 505
     );
 }

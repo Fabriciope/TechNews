@@ -1,7 +1,6 @@
 <?php
 
 use Src\Framework\Http\Exceptions\InvalidRequestInputDataException;
-use Src\Framework\Core\Template\TemplatesEngine;
 use Src\Framework\Http\Exceptions\InvalidRouteRequestException;
 use Src\Framework\Http\Request\DefaultRequest;
 use Src\Framework\Http\Routing\Router;
@@ -19,16 +18,17 @@ final class AppLauncher
         try {
             $request = new DefaultRequest();
             $router->handleRequest($request);
+            // TODO: tratar melhor a request com a class router aqui, ou definir como propriedade da classe router
         } catch (InvalidRouteRequestException $exception) {
             // TODO: log error ($this->getMessage())
-            echo TemplatesEngine::renderErrorView(
-                title: 'error',
-                message:  $exception->getMessage(),
+            renderErrorViewAndExit(
+                title: 'Error',
+                message: $exception->getMessage(),
                 code:  404
             );
-            exit;
         } catch (InvalidRequestInputDataException $exception) {
             // TODO: redirecionar para a página anterior com a menssagem da exception
+            //message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
             dump($exception);
         }
     }

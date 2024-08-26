@@ -85,3 +85,13 @@ function session(): Src\Framework\Core\Session
 {
     return Src\Framework\Core\Session::getInstance();
 }
+
+function renderErrorViewAndExit(string $title, string $message = '', int $code = 500): void
+{
+    echo Src\Framework\Core\TemplatesEngine::renderErrorView(
+        title: $title,
+        message: $message,
+        code: $code
+    );
+    exit(1);
+}
