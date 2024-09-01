@@ -76,7 +76,7 @@ function env(string $key, string $default = ''): string|int|bool
     return @$_ENV[$key] ? $_ENV[$key] : $default;
 }
 
-function tojson(array $data): string
+function toJson(array $data): string
 {
     return ''; // TODO: do this
 }
@@ -86,6 +86,7 @@ function session(): Src\Framework\Core\Session
     return Src\Framework\Core\Session::getInstance();
 }
 
+// TODO: verificar se os lugares onde esta funcao esta sendo usada se e web ou api
 function renderErrorViewAndExit(string $title, string $message = '', int $code = 500): void
 {
     echo Src\Framework\Core\TemplatesEngine::renderErrorView(

@@ -1,6 +1,8 @@
 <?php
 
 use Src\Framework\Exceptions\NonExistentException;
+use Src\Framework\Http\Exceptions\InvalidRouteRequestException;
+use Src\Framework\Http\Routing\RouteManager;
 use Src\Framework\Http\Routing\Router;
 use Src\Framework\Http\Routing\RouteRecorderInterface as RouteRecorder;
 
@@ -8,11 +10,9 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . "/AppLauncher.php";
 
+$route = new RouteManager();
 
 try {
-    $router = new Router();
-    $route = $router->getRouteManager();
-
     require_once __DIR__ . "./../routes/web.php";
 
     $route->newGroup()
@@ -33,4 +33,4 @@ try {
     );
 }
 
-AppLauncher::bootstrap($router);
+AppLauncher::bootstrap($route);

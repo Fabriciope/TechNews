@@ -2,10 +2,19 @@
 
 namespace Src\Framework\Http\Exceptions;
 
-class InvalidRequestInputDataException extends \Exception
+class InvalidRequestInputDataException extends InvalidRequestBodyException
 {
-    public function __construct(string $message)
+    private string $inputName;
+
+    public function __construct(string $input, string $message)
     {
         parent::__construct($message);
+
+        $this->inputName = $input;
+    }
+
+    public function getInputName(): string
+    {
+        return $this->inputName;
     }
 }

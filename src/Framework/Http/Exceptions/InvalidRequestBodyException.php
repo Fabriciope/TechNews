@@ -2,7 +2,7 @@
 
 namespace Src\Framework\Http\Exceptions;
 
-class InvalidRequestBodyException extends InvalidRequestInputDataException
+class InvalidRequestBodyException extends  \Exception
 {
     public function __construct(string $message)
     {

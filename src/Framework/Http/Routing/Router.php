@@ -2,20 +2,20 @@
 
 namespace Src\Framework\Http\Routing;
 
-use Src\Framework\Interfaces\Validatable;
+use Src\Framework\Http\Exceptions\InvalidControllerMethodSignatureException;
+use Src\Framework\Http\Middleware\MiddlewareInterface;
 use Src\Framework\Http\Middleware\MiddlewaresHandler;
-use Src\Framework\Http\Exceptions\InvalidMethodRequestParameterException;
-use Src\Framework\Http\Exceptions\InvalidRouteRequestException;
+use Src\Framework\Http\Request\DefaultRequest;
 use Src\Framework\Http\Request\Request;
+use Src\Framework\Interfaces\Validatable;
 
 class Router
 {
-    private RouteManager $routeManager;
-
-    // TODO: pass request thorugh construct parameter
-    public function __construct()
+    public function __construct(
+        private RouteManager $routeManager,
+        private Request      $request
+    )
     {
-        $this->routeManager = new RouteManager();
     }
 
     public function getRouteManager(): RouteManager
@@ -28,42 +28,35 @@ class Router
         return $this->routeManager->getRoutes();
     }
 
-    /**
-    * Match route from request
-    *
-    * @throws Src\Core\Routing\Exceptions\InvalidRouteRequestException
-    * @throws Src\Exceptions\InvalidRequestInputDataException
-    * @throws Src\Exceptions\InvalidRequestBodyException
-    */
-    public function handleRequest(Request $request)
+    public function getRequest(): Request
     {
-        $this->dispatch($request);
+        return $this->request;
     }
 
-    private function dispatch(Request $request): void
+    /**
+     * Match route from request
+     *
+     * @return false|\Src\Framework\Http\Routing\Route
+     */
+    public function matchRequest(): false|Route
     {
-        $methodName = $request->getMethodName();
-
-        $routes = $this->getRoutes()[$methodName];
+        $routes = $this->getRoutes()[$this->getRequest()->getMethodName()];
 
         foreach ($routes as $route) {
-            if (!self::matchRequestPath($route->path, $request->path)) {
+            if (!$this->matchRequestPath($route->path)) {
                 continue;
             }
 
-            $this->runRoute($route, $request);
-            return;
+            $this->request = $this->getRealRequest($route);
+            return $route;
         }
 
-        throw new InvalidRouteRequestException(
-            $request,
-            "Route not found for the path \"{$request->path}\" and {$methodName} method"
-        );
+        return false;
     }
 
-    private static function matchRequestPath(string $routePath, string $requestPath): bool
+    private function matchRequestPath(string $routePath): bool
     {
-        $splittedRequestPath = explode("/", trim($requestPath, '/'));
+        $splittedRequestPath = explode("/", trim($this->getRequest()->path, '/'));
         $splittedRoutePath = explode("/", trim($routePath, '/'));
 
         if (count($splittedRequestPath) != count($splittedRoutePath)) {
@@ -72,7 +65,7 @@ class Router
 
         foreach ($splittedRoutePath as $subPathIndex => $subPath) {
             if ((substr($subPath, 0, 1) == "{") and (substr($subPath, -1) == "}")) {
-                continue; // NOTE: indicates that the route has a parameter
+                continue; // NOTE: it indicates that the route has a parameter
             }
 
             if ($subPath != $splittedRequestPath[$subPathIndex]) {
@@ -83,68 +76,70 @@ class Router
         return true;
     }
 
-    private function runRoute(Route $route, Request $request): void
+    private function getRealRequest(Route $route): ?Request
     {
-        $request->bindPathParameters($route->path);
-        $this->performMiddlewares($route, $request);
+        $realRequest = $this->getRequest();
 
-        try {
-            $newRequest = $this->getRequestValidatableFromActionParameter($route);
-            if (!is_null($newRequest)) {
-                $request = $newRequest;
-                $this->performRequestValidator($request);
-            }
-        } catch (InvalidMethodRequestParameterException $exception) {
-            // TODO: loggar o erro
-            $wrongObjectClass = $exception->getParameterClass();
-            $request =  new $wrongObjectClass();
-        }
-
-        $this->performControllerAction($route, $request);
-        return;
-    }
-
-    private function getRequestValidatableFromActionParameter(Route $route): ?Request
-    {
-        $controller = new $route->controllerClass();
-        $rMethod = new \ReflectionMethod($controller, $route->actionName);
+        $rMethod = new \ReflectionMethod($route->controllerClass, $route->actionName);
         $rParameters = $rMethod->getParameters();
 
-        if (count($rParameters) == 0) {
-            return null;
+        if (count($rParameters) <= 0) {
+            $realRequest->bindPathParameters($route->path);
+            return $realRequest;
         }
 
         $requestClass = $rParameters[0]->getType()->getName();
-        if (!in_array(Validatable::class, class_implements($requestClass))) {
-            if ($requestClass != Request::class) {
-                throw new InvalidMethodRequestParameterException(
-                    $requestClass,
-                    'if the first parameter of the controller action is diferent from Request class, it must implements the Validatable interface'
-                );
-            }
-            return null;
+
+        if ($requestClass === Request::class or $requestClass === DefaultRequest::class) {
+            $realRequest->bindPathParameters($route->path);
+            return $realRequest;
         }
 
-        $newRequest = new $requestClass();
-        $newRequest->bindPathParameters($route->path);
-        return $newRequest;
+        if (!is_subclass_of($requestClass, Request::class)) {
+            throw new InvalidControllerMethodSignatureException(
+                $realRequest,
+                $route->controllerClass,
+                $route->actionName,
+                'the first controller argument must be a subclass of Request class'
+            );
+        }
+
+        $realRequest = new $requestClass();
+        $realRequest->bindPathParameters($route->path);
+        return $realRequest;
     }
 
+    /**
+     * Dispatches the given route
+     *
+     * @throws Src\Framework\Http\Exceptions\InvalidRequestInputDataException
+     */
+    public function dispatchRoute(Route $route): void
+    {
+        $this->performMiddlewares($route);
 
-    private function performMiddlewares(Route $route, Request $request): void
+        $this->performRequestValidator();
+
+        $this->performControllerAction($route);
+    }
+
+    private function performMiddlewares(Route $route): void
     {
         $middlewareManager = new MiddlewaresHandler($route->middlewares);
-        $middlewareManager->handle($request);
+        $middlewareManager->handle($this->getRequest());
     }
 
-    private function performRequestValidator(Validatable $request): void
+    private function performRequestValidator(): void
     {
-        $request->validate();
+        $request = $this->getRequest();
+        if ($request instanceof Validatable) {
+            $request->validate();
+        }
     }
 
-    private function performControllerAction(Route $route, Request $request): void
+    private function performControllerAction(Route $route): void
     {
         $controller = new $route->controllerClass();
-        $controller->{$route->actionName}($request);
+        $controller->{$route->actionName}($this->getRequest());
     }
 }

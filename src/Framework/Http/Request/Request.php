@@ -62,32 +62,32 @@ abstract class Request
 
         $data = [];
 
-        switch($contentType) {
+        switch ($contentType) {
             case 'application/json':
                 $parser = new ApplicationJsonParser($body);
                 $data = $parser->toArray();
                 break;
 
-                // TODO: apply parser for these content types
+            // TODO: apply parser for these content types
 
-                //case 'multipart/form-data':
-                //    if (!str_contains($contentType, 'boundary=')) {
-                //        throw new InvalidRequestBodyException('the give form data in request body does not have a boundary attribute');
-                //    }
+            //case 'multipart/form-data':
+            //    if (!str_contains($contentType, 'boundary=')) {
+            //        throw new InvalidRequestBodyException('the give form data in request body does not have a boundary attribute');
+            //    }
 
-                //    $boundary = '';
+            //    $boundary = '';
 
-                //    foreach ($contentTypeData as $data) {
-                //        if (str_contains($data, 'boundary=')) {
-                //            $boundary = explode('=', $data)[1];
-                //        }
-                //    }
+            //    foreach ($contentTypeData as $data) {
+            //        if (str_contains($data, 'boundary=')) {
+            //            $boundary = explode('=', $data)[1];
+            //        }
+            //    }
 
-                //    $data = $this->getFormDataFromBody($body, $boundary);
-                //    break;
+            //    $data = $this->getFormDataFromBody($body, $boundary);
+            //    break;
 
-                //case 'application/x-www-form-urlencoded':
-                //    break;
+            //case 'application/x-www-form-urlencoded':
+            //    break;
             default:
                 throw new InvalidRouteRequestException(
                     $this,
@@ -100,10 +100,10 @@ abstract class Request
     }
 
     /**
-    * Sets the actual request method
-    *
-    * @throws Src\Core\Routing\Exceptions\InvalidRouteRequestException
-    */
+     * Sets the actual request method
+     *
+     * @throws Src\Core\Routing\Exceptions\InvalidRouteRequestException
+     */
     private function setMethod(): void
     {
         $methodName = strtoupper(self::getServerVar("REQUEST_METHOD"));
@@ -137,7 +137,7 @@ abstract class Request
         $splittedRoutePath = explode("/", trim($routePath, '/'));
 
         foreach ($splittedRoutePath as $subPathIndex => $subPath) {
-            if((substr($subPath, 0, 1) == "{") and (substr($subPath, -1) == "}")) {
+            if ((substr($subPath, 0, 1) == "{") and (substr($subPath, -1) == "}")) {
                 $this->addPathParameter(
                     key: substr($subPath, 1, -1),
                     value: $splittedRequestPath[$subPathIndex]
@@ -183,7 +183,7 @@ abstract class Request
             return $default;
         }
 
-        return  $value;
+        return $value;
     }
 
     public function bodyVar(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int
@@ -201,7 +201,6 @@ abstract class Request
 
     public function allInputs(): array
     {
-        return array_merge(
-        );
+        return array_merge();
     }
 }
