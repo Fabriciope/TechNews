@@ -6,9 +6,13 @@ use Src\Framework\Http\Request\Request;
 
 class MiddlewaresHandler
 {
+    /**
+     * @param \Src\Framework\Http\Middleware\MiddlewareInterface[] $middlewares
+     */
     public function __construct(
         private array $middlewares
-    ) {
+    )
+    {
     }
 
     public function handle(Request $request): void
@@ -19,8 +23,7 @@ class MiddlewaresHandler
 
     private function createIterator(Request $request): callable
     {
-        // TODO: find out another way to create a copied array
-        $copiedMiddlewares = array_filter($this->middlewares, fn () => true);
+        $copiedMiddlewares = $this->middlewares;
         return $this->nextFunc($request, $copiedMiddlewares);
     }
 
@@ -36,7 +39,7 @@ class MiddlewaresHandler
             $currentMiddleware = new $currentMiddlewareClass();
             $currentMiddleware->handle(
                 request: $request,
-                next:  $this->nextFunc($request, $remainingMiddlewares)
+                next: $this->nextFunc($request, $remainingMiddlewares)
             );
         };
     }
