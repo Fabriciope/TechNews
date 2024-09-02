@@ -67,4 +67,9 @@ class Response
         self::setHeader('Location', $url, $statusCode);
         exit;
     }
+
+    public static function setAPIHeaders(): void
+    {
+        Response::setContentType('application/json');
+    }
 }

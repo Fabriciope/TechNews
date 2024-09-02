@@ -25,9 +25,9 @@ final class AppLauncher
 
             $route = $router->matchRequest();
             if (!$route) {
-                renderErrorViewAndExit(
+                renderErrorAndExit(
                     title: 'Error',
-                    message: "Route not found for the path \"{$request->path}\" or invalid request method for this route",
+                    message: "Route not found for the path ({$router->getRequest()->path}) or invalid request method for this route",
                     code: 404
                 );
             }

@@ -1,10 +1,13 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 /**
  * ###########################
  * ###   VIEWS FUNCTIONS   ###
  * ###########################
  */
+
 function script(string $fileName): string
 {
     return env('APP_URL') . "/assets/scripts/{$fileName}.js";
@@ -26,7 +29,7 @@ function float_flash_message(): string
         $flashMessage = session()->get('flash_message');
         if ($flashMessage->isFloat()) {
             session()->unset('flash_message');
-            return (string) $flashMessage;
+            return (string)$flashMessage;
         }
     }
 
@@ -39,7 +42,7 @@ function flash_message(): string
         $flashMessage = session()->get('flash_message');
         if (!$flashMessage->isFloat()) {
             session()->unset('flash_message');
-            return (string) $flashMessage;
+            return (string)$flashMessage;
         }
     }
 
@@ -57,7 +60,6 @@ function method(string $method): string
     INPUT;
 }
 
-
 function route(string $path): string
 {
     return '';
@@ -65,20 +67,20 @@ function route(string $path): string
 
 
 /**
-* Get an invironment variable from .env file
-*
-* @param string $key
-* @param string $default
-* @return string|int|bool
-*/
+ * Get an invironment variable from .env file
+ *
+ * @param string $key
+ * @param string $default
+ * @return string|int|bool
+ */
 function env(string $key, string $default = ''): string|int|bool
 {
     return @$_ENV[$key] ? $_ENV[$key] : $default;
 }
 
-function toJson(array $data): string
+function toJson(array $data, int $flags = JSON_PRETTY_PRINT): string
 {
-    return ''; // TODO: do this
+    return json_encode($data, $flags);
 }
 
 function session(): Src\Framework\Core\Session
@@ -86,7 +88,33 @@ function session(): Src\Framework\Core\Session
     return Src\Framework\Core\Session::getInstance();
 }
 
-// TODO: verificar se os lugares onde esta funcao esta sendo usada se e web ou api
+
+/**
+ * ##############################
+ * ###   RENDER ERROR VIEWS   ###
+ * ##############################
+ */
+
+function renderErrorAndExit(string $title, string $message = '', int $code = 500): void
+{
+    if (\Src\Framework\Http\Request\Request::isAPIRequest()) {
+        Src\Framework\Http\Response::setAPIHeaders();
+        renderAPIErrorAndExit($message, $code);
+    }
+
+    renderErrorViewAndExit($title, $message, $code);
+}
+
+function renderAPIErrorAndExit(string $message = '', int $code = 500): void
+{
+    echo toJson([
+        'error' => true,
+        'message' => $message,
+        'response_code' => $code,
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit(1);
+}
+
 function renderErrorViewAndExit(string $title, string $message = '', int $code = 500): void
 {
     echo Src\Framework\Core\TemplatesEngine::renderErrorView(

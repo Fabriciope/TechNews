@@ -18,15 +18,16 @@ try {
     $route->newGroup()
         ->setPrefix('api')
         ->setMiddlewares(
-            Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class
+            Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class,
+            \Src\Http\Middlewares\Guest::class,
+            \Src\Http\Middlewares\Authenticate::class,
         )->group(function (RouteRecorder $route) {
             require_once __DIR__ . "./../routes/api.php";
         });
 
 } catch (NonExistentException|\InvalidArgumentException $exception) {
     // TODO: log error ($this->getMessage())
-    dd($exception->getMessage());
-    renderErrorViewAndExit(
+    renderErrorAndExit(
         title: 'erro interno',
         message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
         code: 505

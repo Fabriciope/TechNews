@@ -17,9 +17,11 @@ abstract class Request
 
     private array $bodyData = [];
 
+    private static bool $isAPIRequest;
+
     public function __construct()
     {
-        $this->pupulateRequest();
+        $this->populateRequest();
     }
 
     public function __get($name)
@@ -28,7 +30,7 @@ abstract class Request
         return $this->{$name};
     }
 
-    private function pupulateRequest(): void
+    private function populateRequest(): void
     {
         if (self::getServerVar('REQUEST_METHOD') != 'GET') {
             $this->populateBodyData();
@@ -37,6 +39,9 @@ abstract class Request
         $this->setMethod();
 
         $this->path = parse_url(self::getServerVar("REQUEST_URI"), PHP_URL_PATH);
+
+        $acceptMimes = self::getServerVar('HTTP_ACCEPT');
+        self::$isAPIRequest = str_starts_with($this->path, '/api') && str_contains($acceptMimes, 'application/json');
     }
 
     private function populateBodyData(): void
@@ -202,5 +207,10 @@ abstract class Request
     public function allInputs(): array
     {
         return array_merge();
+    }
+
+    public static function isAPIRequest(): bool
+    {
+        return self::$isAPIRequest;
     }
 }

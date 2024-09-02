@@ -14,8 +14,8 @@ abstract class APIController extends Controller
         parent::__construct();
     }
 
-    protected function setResponseHeaders()
+    protected function setResponseHeaders(): void
     {
-        Response::setContentType('application/json');
+        Response::setAPIHeaders();
     }
 }

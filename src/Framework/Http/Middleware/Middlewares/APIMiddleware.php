@@ -8,28 +8,27 @@ use Src\Framework\Http\Response;
 
 class APIMiddleware implements MiddlewareInterface
 {
+    /**
+     * This middleware verifies if a request is a API request
+     *
+     * @param \Src\Framework\Http\Request\Request $request
+     * @param callable $next
+     * @return void
+     */
     public function handle(Request $request, callable $next): void
     {
-        $requestPath = $request->path;
-        $acceptMimes = Request::getServerVar('HTTP_ACCEPT');
-        if (!str_starts_with($requestPath, '/api') or !str_contains($acceptMimes, 'application/json')) {
-            $this->setResponseHeaders();
-            renderErrorViewAndExit(
-                title: 'erro na requisição',
-                message: 'Invalid api request' . $acceptMimes,
+        if (Request::isAPIRequest()) {
+            $next();
+            Response::setContentType('text/html');
+            Response::setStatusCode(400, 'Invalid api request');
+
+            renderErrorAndExit(
+                title: 'Invalid Request',
+                message: 'Invalid api request',
                 code: 400,
             );
         }
 
         $next();
-    }
-
-    /**
-     * @return void
-     */
-    public function setResponseHeaders(): void
-    {
-        Response::setContentType('text/html');
-        Response::setStatusCode(400, 'Invalid api request');
     }
 }
