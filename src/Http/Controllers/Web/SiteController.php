@@ -9,6 +9,11 @@ use Src\Http\Requests\TestRequest;
 
 class SiteController extends WebController
 {
+    /**
+     * SiteController constructor
+     *
+     * @throws \InvalidArgumentException
+     */
     public function __construct()
     {
         parent::__construct();

@@ -34,10 +34,14 @@ final class AppLauncher
 
             $router->dispatchRoute($route);
 
-        } catch (InvalidControllerMethodSignatureException $exception) {
-            dump($exception);
         } catch (InvalidRequestInputDataException $exception) {
-            echo($exception->getMessage());
+            // TODO: redirect back and save error at session
+            dd($exception->getMessage());
+        } catch (InvalidControllerMethodSignatureException|\InvalidArgumentException $exception) {
+            renderErrorAndExit(
+                title: 'Erro interno',
+                message: "Oops!, algo deu errado. Já estamos trabalhando nisso",
+            );
         }
     }
 

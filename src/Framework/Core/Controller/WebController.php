@@ -17,26 +17,16 @@ abstract class WebController extends Controller
         parent::__construct();
     }
 
-    protected function setResponseHeaders()
+    protected function setResponseHeaders(): void
     {
         Response::setContentType('text/html');
     }
 
-    /**
-    * Controller constructor
-    *
-    * @throws \InvalidArgumentException
-    */
-    protected function setUpTemplatesEngine(string $viewsPath = __DIR__.'/../../../../resources/templates/views/'): void
+    protected function setUpTemplatesEngine(string $viewsPath = __DIR__ . '/../../../../resources/templates/views/'): void
     {
-        try {
-            $this->templatesEngine = new TemplatesEngine($viewsPath);
-            $this->getTemplatesEngine()->addFolder('layouts', __DIR__.'/../../../../resources/templates/views/layouts/');
-            $this->getTemplatesEngine()->addFolder('includes', __DIR__.'/../../../../resources/templates/views/includes/');
-        } catch (\InvalidArgumentException $exception) {
-            // TODO: return internal error and log it
-            dd($exception);
-        }
+        $this->templatesEngine = new TemplatesEngine($viewsPath);
+        $this->getTemplatesEngine()->addFolder('layouts', __DIR__ . '/../../../../resources/templates/views/layouts/');
+        $this->getTemplatesEngine()->addFolder('includes', __DIR__ . '/../../../../resources/templates/views/includes/');
     }
 
     protected function getTemplatesEngine(): TemplatesEngine
