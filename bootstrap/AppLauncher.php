@@ -43,9 +43,6 @@ final class AppLauncher
 
     private static function loadEnvironmentVariables(): void
     {
-        // TODO: abstrai o uso da biblioteca em uma classe
-        $dir = __DIR__ . '/../';
-        $dotenv = Dotenv\Dotenv::createImmutable($dir);
-        $dotenv->load();
+        (new \Src\Framework\Core\DotEnv(__DIR__ . '/../'))->loadEnvironment();
     }
 }

@@ -26,7 +26,6 @@ try {
         });
 
 } catch (NonExistentException|\InvalidArgumentException $exception) {
-    // TODO: log error ($this->getMessage())
     renderErrorAndExit(
         title: 'erro interno',
         message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
