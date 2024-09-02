@@ -19,16 +19,16 @@ class APIMiddleware implements MiddlewareInterface
     {
         if (Request::isAPIRequest()) {
             $next();
-            Response::setContentType('text/html');
-            Response::setStatusCode(400, 'Invalid api request');
-
-            renderErrorAndExit(
-                title: 'Invalid Request',
-                message: 'Invalid api request',
-                code: 400,
-            );
+            return;
         }
 
-        $next();
+        Response::setContentType('text/html');
+        Response::setStatusCode(400, 'Invalid api request');
+
+        renderErrorAndExit(
+            title: 'Invalid Request',
+            message: 'Invalid api request',
+            code: 400,
+        );
     }
 }
