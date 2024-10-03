@@ -1,9 +1,7 @@
 <?php
 
 use Src\Framework\Exceptions\NonExistentException;
-use Src\Framework\Http\Exceptions\InvalidRouteRequestException;
 use Src\Framework\Http\Routing\RouteManager;
-use Src\Framework\Http\Routing\Router;
 use Src\Framework\Http\Routing\RouteRecorderInterface as RouteRecorder;
 
 error_reporting(E_ALL);
@@ -16,19 +14,16 @@ try {
     require_once __DIR__ . "./../routes/web.php";
 
     $route->newGroup()
-        ->setPrefix('api')
+        ->setPrefix("api")
         ->setMiddlewares(
-            Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class,
-            \Src\Http\Middlewares\Guest::class,
-            \Src\Http\Middlewares\Authenticate::class,
+            Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class
         )->group(function (RouteRecorder $route) {
             require_once __DIR__ . "./../routes/api.php";
         });
-
-} catch (NonExistentException|\InvalidArgumentException $exception) {
+} catch (NonExistentException | \InvalidArgumentException $exception) {
     renderErrorAndExit(
-        title: 'erro interno',
-        message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
+        title: "erro interno",
+        message: "ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso",
         code: 505
     );
 }

@@ -4,7 +4,7 @@ namespace Src\Framework\Http\Routing;
 
 use InvalidArgumentException;
 use Src\Framework\Http\Middleware\MiddlewareInterface;
-use Src\Framework\Http\Exceptions\{NonExistentControllerException, NonExistentActionException, NonExistentMiddlewareException}; 
+use Src\Framework\Http\Exceptions\{NonExistentControllerException, NonExistentActionException, NonExistentMiddlewareException};
 use Src\Framework\Traits\ClassAndMethodChecker;
 use Src\Framework\Http\HttpMethods;
 
@@ -26,7 +26,7 @@ class Route
     * @throws Src\Core\Routing\Exceptions\NonExistentControllerException
     * @throws Src\Core\Routing\Exceptions\NonExistentActionException
     */
-    public function __construct(
+    public function __construct( // TODO: add getters and setters to these attributes
         private HttpMethods $method,
         private string $path,
         private string $controllerClass,

@@ -14,10 +14,13 @@
             <directory>tests/Feature</directory>
         </testsuite>
 
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+
     </testsuites>
 
     <logging>
         <testdoxText outputFile="tests/logs/logs.txt"/>
     </logging>
 </phpunit>
-

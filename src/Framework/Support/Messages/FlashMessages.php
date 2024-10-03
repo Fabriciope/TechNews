@@ -2,7 +2,7 @@
 
 namespace Src\Framework\Support\Messages;
 
-trait FlashMessages // TODO: ?tornar uma classse statica
+trait FlashMessages
 {
     use Messages;
 
@@ -23,7 +23,7 @@ trait FlashMessages // TODO: ?tornar uma classse statica
 
     protected function errorFlashMessage(string $message): void
     {
-        parent::errorMessage($message, MessageType::ERROR)->flash();
+        $this->errorMessage($message, MessageType::ERROR)->flash();
     }
 
     protected function floatingSuccessFlashMessage(string $message): void
