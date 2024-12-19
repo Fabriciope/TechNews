@@ -20,6 +20,7 @@ try {
         )->group(function (RouteRecorder $route) {
             require_once __DIR__ . "./../routes/api.php";
         });
+
 } catch (NonExistentException | \InvalidArgumentException $exception) {
     renderErrorAndExit(
         title: "erro interno",
