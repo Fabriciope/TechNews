@@ -6,7 +6,7 @@ use Src\Framework\Http\HttpMethods;
 
 class RouteManager extends RouteRecorder
 {
-    private array $routesMap;// TODO: estudar pq isso esta na variavel @GLOBALS
+    private array $routesMap;
 
     public function __construct()
     {

@@ -1,6 +1,7 @@
 <?php
 
 use JetBrains\PhpStorm\NoReturn;
+use Src\Framework\Http\Response;
 
 /**
  * ###########################
@@ -62,7 +63,15 @@ function method(string $method): string
 
 function route(string $path): string
 {
-    return '';
+    // TODO: verificar se é o msm site ou n
+    return env('APP_URL') . str_starts_with($path, '/') ? $path : "/{$path}";
+}
+
+
+function redirectToErrorPage(int $code): void
+{
+    $url = '/error/' . strval($code);
+    Response::redirect(route($url), $code);
 }
 
 
@@ -102,6 +111,7 @@ function renderErrorAndExit(string $title, string $message = '', int $code = 500
         renderAPIErrorAndExit($message, $code);
     }
 
+    Response::setStatusCode($code);
     renderErrorViewAndExit($title, $message, $code);
 }
 

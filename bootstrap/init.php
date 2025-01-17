@@ -25,7 +25,7 @@ try {
     renderErrorAndExit(
         title: "erro interno",
         message: "ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso",
-        code: 505
+        code: 500
     );
 }
 
