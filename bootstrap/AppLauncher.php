@@ -17,7 +17,7 @@ final class AppLauncher
     private static function initializeRouting(RouteManager $routeManager): void
     {
         // TODO: criar um repositorio separado para publicar o modulo de routing no packagist
-        try { // TODO: log errors from catches blocks
+        try {
             $request = new DefaultRequest();
             $router = new Router($routeManager, $request);
 

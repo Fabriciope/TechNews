@@ -12,7 +12,6 @@ $route->get('/', [SiteController::class, 'home']);
 
 
 // NOTE: Errors routes
-
 $route->newGroup()
     ->setController(Src\Http\Controllers\Web\ErrorsController::class)
     ->setPrefix('/error')

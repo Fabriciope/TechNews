@@ -22,7 +22,7 @@ class Session
     private function __construct()
     {
         if (session_status() != PHP_SESSION_ACTIVE) {
-            //session_save_path(__DIR__.'/../../../storage/sessions'); // TODO: resolver erro: Warning: session_start(): Session data file is not created by your uid in
+            //session_save_path(__DIR__.'/../../../storage/sessions');
             session_set_cookie_params(self::COOKIE_PARAMS);
             session_start([                'name' => env('APP_NAME', 'TN') . '_SESSID',
                 'use_only_cookies' => true,

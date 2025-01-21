@@ -20,8 +20,8 @@ try {
         )->group(function (RouteRecorder $route) {
             require_once __DIR__ . "./../routes/api.php";
         });
-
 } catch (NonExistentException | \InvalidArgumentException $exception) {
+    Src\Framework\Support\Logger::fatal($exception->getMessage());
     renderErrorAndExit(
         title: "erro interno",
         message: "ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso",
