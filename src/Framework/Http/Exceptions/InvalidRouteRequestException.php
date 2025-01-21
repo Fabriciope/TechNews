@@ -21,6 +21,6 @@ class InvalidRouteRequestException extends \Exception
 
     public function getPath(): string
     {
-        return $this->request->path;
+        return $this->request->getPath();
     }
 }

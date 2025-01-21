@@ -23,7 +23,7 @@ final class AppLauncher
 
             $route = $router->matchRequest();
             if (!$route) {
-                throw new RouteNotFoundException($router->getRequest()->path);
+                throw new RouteNotFoundException($router->getRequest()->getPath());
             }
 
             $router->dispatchRoute($route);

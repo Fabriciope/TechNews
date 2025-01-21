@@ -63,10 +63,8 @@ function method(string $method): string
 
 function route(string $path): string
 {
-    // TODO: verificar se é o msm site ou n
-    return env('APP_URL') . str_starts_with($path, '/') ? $path : "/{$path}";
+    return env('APP_URL') . (str_starts_with($path, '/') ? $path : "/{$path}");
 }
-
 
 function redirectToErrorPage(int $code): void
 {

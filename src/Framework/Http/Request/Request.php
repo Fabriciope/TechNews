@@ -22,10 +22,14 @@ abstract class Request
         $this->populateRequest();
     }
 
-    public function __get($name)
+    public function getMethod(): HttpMethods
     {
-        // TODO: create getters
-        return $this->{$name};
+        return $this->method;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     private function populateRequest(): void
@@ -133,7 +137,7 @@ abstract class Request
 
     public function bindPathParameters(string $routePath): void
     {
-        $splittedRequestPath = explode("/", trim($this->path, '/'));
+        $splittedRequestPath = explode("/", trim($this->getPath(), '/'));
         $splittedRoutePath = explode("/", trim($routePath, '/'));
 
         foreach ($splittedRoutePath as $subPathIndex => $subPath) {
@@ -162,7 +166,7 @@ abstract class Request
 
     public function getMethodName(): string
     {
-        return $this->method->name;
+        return $this->getMethod()->name;
     }
 
     public function pathVar(string $key, string|int $default = '', int $filter = FILTER_DEFAULT): string|int

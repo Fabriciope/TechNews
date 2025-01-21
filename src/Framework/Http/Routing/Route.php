@@ -26,7 +26,7 @@ class Route
     * @throws Src\Core\Routing\Exceptions\NonExistentControllerException
     * @throws Src\Core\Routing\Exceptions\NonExistentActionException
     */
-    public function __construct( // TODO: add getters and setters to these attributes
+    public function __construct(
         private HttpMethods $method,
         private string $path,
         private string $controllerClass,
@@ -48,7 +48,6 @@ class Route
     {
         return $this->{$name};
     }
-
 
     /**
     * sets the route middlewares

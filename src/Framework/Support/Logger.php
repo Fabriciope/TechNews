@@ -21,7 +21,7 @@ class Logger
 
     public static function debug(string $message): void
     {
-        static::log(sprintf('ERROR: %s%s', $message, PHP_EOL));
+        static::log(sprintf('DEBUG: %s%s', $message, PHP_EOL));
     }
 
     protected static function log(string $message): void

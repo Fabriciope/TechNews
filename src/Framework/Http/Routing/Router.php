@@ -56,7 +56,7 @@ class Router
 
     private function matchRequestPath(string $routePath): bool
     {
-        $splittedRequestPath = explode("/", trim($this->getRequest()->path, '/'));
+        $splittedRequestPath = explode("/", trim($this->getRequest()->getPath(), '/'));
         $splittedRoutePath = explode("/", trim($routePath, '/'));
 
         if (count($splittedRequestPath) != count($splittedRoutePath)) {
