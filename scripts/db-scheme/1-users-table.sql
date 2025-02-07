@@ -1,0 +1,17 @@
+USE tech_news;
+
+CREATE TABLE users (
+	id INT unsigned NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(150) NOT NULL,
+    last_name VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    photo VARCHAR(255) DEFAULT NULL,
+    banner VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'registered',
+    password_recovery VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(id)
+);

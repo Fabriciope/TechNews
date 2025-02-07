@@ -1,0 +1,7 @@
+USE tech_news;
+
+CREATE TABLE categories (
+	id INT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    category VARCHAR(100) NOT NULL UNIQUE,
+    uri VARCHAR(150) NOT NULL UNIQUE
+);

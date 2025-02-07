@@ -11,9 +11,6 @@ services:
   db:
     image: "mysql:8.0"
     restart: always
-    #working_dir: /app
-    #volumes:
-    #  - ".:/app"
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
       MYSQL_DATABASE: "${DB_DATABASE}"
@@ -26,15 +23,16 @@ services:
     networks:
       - technews
     volumes:
-      - "technews-db:/var/lib/mysql"
+      - "db-data:/var/lib/mysql"
+      - "./scripts/db-scheme:/docker-entrypoint-initdb.d:rw"
   webserver:
     image: "nginx:alpine"
     working_dir: /app
     volumes:
       - ".:/app"
       - "./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
-    environment:
-      PHP_IDE_CONFIG: serverName=tech_news_server
+      #environment:
+      #PHP_IDE_CONFIG: serverName=tech_news_server
     ports:
       - "80:80"
     networks:
@@ -51,5 +49,5 @@ networks:
   technews:
     driver: bridge
 volumes:
-  technews-db:
+  db-data:
     driver: local
