@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2471ed6711a4ae243bbb84b9412059a3",
+    "content-hash": "0c64396d285c441f73243a3b88430956",
     "packages": [
+        {
+            "name": "fabriciope/router",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Fabriciope/router.git",
+                "reference": "032199dfadff657258f0ec310dc602cbab440062"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Fabriciope/router/zipball/032199dfadff657258f0ec310dc602cbab440062",
+                "reference": "032199dfadff657258f0ec310dc602cbab440062",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "pestphp/pest": "^3.8",
+                "symfony/var-dumper": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fabriciope\\Router\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabrício Alves",
+                    "email": "fabricioalvespa@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/Fabriciope/router/issues",
+                "source": "https://github.com/Fabriciope/router/tree/v1.0.0"
+            },
+            "time": "2025-05-14T00:20:27+00:00"
+        },
         {
             "name": "graham-campbell/result-type",
             "version": "v1.1.3",
@@ -2250,12 +2293,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

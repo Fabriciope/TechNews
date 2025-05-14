@@ -2,7 +2,7 @@
 
 namespace Src\Framework\Core\Controller;
 
-use Src\Framework\Http\Response;
+use Fabriciope\Router\Response;
 use Src\Framework\Support\Messages\FlashMessages;
 
 abstract class APIController extends Controller

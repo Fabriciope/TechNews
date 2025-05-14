@@ -2,8 +2,8 @@
 
 namespace Src\Http\Middlewares;
 
-use Src\Framework\Http\Middleware\MiddlewareInterface;
-use Src\Framework\Http\Request\Request;
+use Fabriciope\Router\Middleware\MiddlewareInterface;
+use Fabriciope\Router\Request\Request;
 
 class Authenticate implements MiddlewareInterface
 {

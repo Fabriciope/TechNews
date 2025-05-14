@@ -1,7 +1,6 @@
 <?php
 
-use JetBrains\PhpStorm\NoReturn;
-use Src\Framework\Http\Response;
+use Fabriciope\Router\Response;
 
 /**
  * ###########################
@@ -52,7 +51,7 @@ function flash_message(): string
 
 function method(string $method): string
 {
-    if (!Src\Framework\Http\HttpMethods::caseExists($method)) {
+    if (!Fabriciope\Router\HttpMethods::caseExists($method)) {
         return '';
     }
 
@@ -104,8 +103,8 @@ function session(): Src\Framework\Core\Session
 
 function renderErrorAndExit(string $title, string $message = '', int $code = 500): void
 {
-    if (\Src\Framework\Http\Request\Request::isAPIRequest()) {
-        Src\Framework\Http\Response::setAPIHeaders();
+    if (Fabriciope\Router\Request\Request::isAPIRequest()) {
+        Fabriciope\Router\Response::setAPIHeaders();
         renderAPIErrorAndExit($message, $code);
     }
 

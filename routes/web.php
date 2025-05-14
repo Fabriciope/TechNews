@@ -1,15 +1,14 @@
 <?php
 
-use Src\Framework\Http\Routing\RouteRecorder;
+use Fabriciope\Router\Routing\RouteRecorder;
 use Src\Http\Controllers\Web\SiteController;
 
 /**
- * @var Src\Framework\Http\Routing\RouteRecorderInterface $route
+ * @var Fabriciope\Router\Routing\RouteRecorderInterface $route
  */
 
 
 $route->get('/', [SiteController::class, 'home']);
-
 
 // NOTE: Errors routes
 $route->newGroup()

@@ -3,7 +3,7 @@
 namespace Src\Http\Controllers\Web;
 
 use Src\Framework\Core\Controller\WebController;
-use Src\Framework\Http\Request\DefaultRequest as Request;
+use Fabriciope\Router\Request\DefaultRequest as Request;
 
 class ErrorsController extends WebController {
 
@@ -15,7 +15,7 @@ class ErrorsController extends WebController {
     /**
     * 400 - Bad Request
     *
-    * @param Src\Framework\Http\Request\DefaultRequest $request
+    * @param Fabriciope\Router\Request\DefaultRequest $request
     */
     public function badRequest(Request $request): void
     {
@@ -25,7 +25,7 @@ class ErrorsController extends WebController {
     /**
     * 404 - Not Found
     *
-    * @param Src\Framework\Http\Request\DefaultRequest $request
+    * @param Fabriciope\Router\Request\DefaultRequest $request
     */
     public function notFound(Request $request): void
     {
@@ -35,7 +35,7 @@ class ErrorsController extends WebController {
     /**
     * 500 - Internal Server Error
     *
-    * @param Src\Framework\Http\Request\DefaultRequest $request
+    * @param Fabriciope\Router\Request\DefaultRequest $request
     */
     public function internalServerError(Request $request): void
     {
@@ -47,7 +47,7 @@ class ErrorsController extends WebController {
         $session = session();
 
         if (!isset($session->redirectErrorMessage)) {
-            \Src\Framework\Http\Response::redirect(route('/'));
+            \Fabriciope\Router\Response::redirect(route('/'));
         }
 
         $errorMessage = $session->redirectErrorMessage;

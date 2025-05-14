@@ -1,8 +1,7 @@
 <?php
 
-use Src\Framework\Exceptions\NonExistentException;
-use Src\Framework\Http\Routing\RouteManager;
-use Src\Framework\Http\Routing\RouteRecorderInterface as RouteRecorder;
+use Fabriciope\Router\Routing\RouteManager;
+use Fabriciope\Router\Routing\RouteRecorderInterface as RouteRecorder;
 
 error_reporting(E_ALL);
 
@@ -16,11 +15,11 @@ try {
     $route->newGroup()
         ->setPrefix("api")
         ->setMiddlewares(
-            Src\Framework\Http\Middleware\Middlewares\APIMiddleware::class
+            Fabriciope\Router\Middleware\Middlewares\APIMiddleware::class
         )->group(function (RouteRecorder $route) {
             require_once __DIR__ . "./../routes/api.php";
         });
-} catch (NonExistentException | \InvalidArgumentException $exception) {
+} catch (\Exception $exception) {
     Src\Framework\Support\Logger::fatal($exception->getMessage());
     renderErrorAndExit(
         title: "erro interno",

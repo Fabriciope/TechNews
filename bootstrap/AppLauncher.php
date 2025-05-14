@@ -1,9 +1,9 @@
 <?php
 
-use Src\Framework\Http\Exceptions\{InvalidControllerMethodSignatureException, InvalidRequestInputDataException, InvalidRouteRequestException, RouteNotFoundException};
-use Src\Framework\Http\Request\DefaultRequest;
-use Src\Framework\Http\Routing\RouteManager;
-use Src\Framework\Http\Routing\Router;
+use Fabriciope\Router\Exceptions\{InvalidControllerMethodSignatureException, InvalidRequestInputDataException, InvalidRouteRequestException, RouteNotFoundException};
+use Fabriciope\Router\Request\DefaultRequest;
+use Fabriciope\Router\Routing\RouteManager;
+use Fabriciope\Router\Routing\Router;
 
 final class AppLauncher
 {
@@ -16,7 +16,6 @@ final class AppLauncher
 
     private static function initializeRouting(RouteManager $routeManager): void
     {
-        // TODO: criar um repositorio separado para publicar o modulo de routing no packagist
         try {
             $request = new DefaultRequest();
             $router = new Router($routeManager, $request);

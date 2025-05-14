@@ -1,7 +1,7 @@
 USE tech_news;
 
 CREATE TABLE users (
-	id INT unsigned NOT NULL AUTO_INCREMENT,
+	id INT tech_news NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(150) NOT NULL,
     last_name VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,

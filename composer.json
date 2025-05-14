@@ -26,7 +26,8 @@
   "require": {
     "php": "^8.3",
     "league/plates": "^3.5",
-    "vlucas/phpdotenv": "^5.6"
+    "vlucas/phpdotenv": "^5.6",
+    "fabriciope/router": "^1.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^7.1",
