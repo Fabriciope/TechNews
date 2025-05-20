@@ -1,75 +1,66 @@
 <?php
 
-namespace Tests\Unit;
+beforeAll(function () {
+    (new \Src\Framework\Core\DotEnv(__DIR__ . "/../../"))->loadEnvironment();
+});
 
-use PHPUnit\Framework\TestCase;
-use Src\Framework\Support\Messages\FlashMessages;
-use Src\Framework\Support\Messages\Message;
-use Src\Framework\Support\Messages\Messages;
+afterAll(function () {
+    session()->destroy();
+});
 
-class FlashMessagesTest extends TestCase
-{
-    use FlashMessages;
-    use Messages;
+test('if can get right html div', function () {
+    $message = 'my custom message';
 
-    private string $customMessageStr = 'my sutom message';
+    $messageClass = $this->infoMessage($message);
 
-    public static function tearDownAfterClass(): void
-    {
-        session()->destroy();
-    }
-
-    public function test_if_can_get_right_html_div(): void
-    {
-        $messageClass = $this->infoMessage($this->customMessageStr);
-
-        $expectedDiv = <<<DIV
+    $expectedDiv = <<<DIV
             <div class="message  info">
-                {$this->customMessageStr}
+                {$message}
             </div>
         DIV;
 
-        $this->assertEquals(
-            $expectedDiv,
-            $messageClass->render(),
-            'invalid html div'
-        );
-    }
+    $this->assertEquals(
+        $expectedDiv,
+        $messageClass->render(),
+        'invalid html div'
+    );
+});
 
-    public function test_if_can_create_a_floating_message(): void
-    {
-        $messageClass = $this->floatingErrorMessage($this->customMessageStr);
+test('if can create a floating message', function () {
+    $message = 'my custom message';
 
-        $expectedDiv = <<<DIV
+    $messageClass = $this->floatingErrorMessage($message);
+
+    $expectedDiv = <<<DIV
             <div class="message fixed error">
-                {$this->customMessageStr}
+                {$message}
             </div>
         DIV;
 
-        $this->assertEquals(
-            $expectedDiv,
-            $messageClass->render(),
-            'invalid html div'
-        );
-    }
+    $this->assertEquals(
+        $expectedDiv,
+        $messageClass->render(),
+        'invalid html div'
+    );
+});
 
-    public function test_if_can_register_a_flash_message(): void
-    {
-        $this->floatingSuccessFlashMessage($this->customMessageStr);
+test('if can register a flash message', function () {
+    $message = 'my custom message';
 
-        $flashMessage = session()->get('flash_message');
-        $this->assertInstanceOf(
-            Message::class,
-            $flashMessage,
-            'invalid received class or flash message was not registered'
-        );
+    $this->floatingSuccessFlashMessage($message);
 
-        $expectedDiv = <<<DIV
+    $flashMessage = session()->get('flash_message');
+    $this->assertInstanceOf(
+        Src\Framework\Support\Messages\Message::class,
+        $flashMessage,
+        'invalid received class or flash message was not registered'
+    );
+
+    $expectedDiv = <<<DIV
             <div class="message fixed success">
-                {$this->customMessageStr}
+                {$message}
             </div>
         DIV;
 
-        $this->assertEquals($expectedDiv, $flashMessage->render(), 'invalid html div');
-    }
-}
+    $this->assertEquals($expectedDiv, $flashMessage->render(), 'invalid html div');
+});

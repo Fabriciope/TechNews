@@ -2,42 +2,37 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use Src\Framework\Core\Session;
 
-class SessionTest extends TestCase
-{
-    protected function setUp(): void
-    {
-        session()->destroy();
-    }
+beforeAll(function () {
+    (new \Src\Framework\Core\DotEnv(__DIR__ . "/../../"))->loadEnvironment();
+});
 
-    protected function tearDown(): void
-    {
-        session()->destroy();
-    }
+beforeEach(function () {
+    session()->destroy();
+});
 
-    public function test_session_is_a_singleton_class(): void
-    {
-        $this->assertEquals(
-            Session::getInstance(),
-            Session::getInstance()
-        );
-    }
+afterEach(function () {
+    session()->destroy();
+});
 
-    public function test_if_can_initialize_a_new_session(): void
-    {
-        Session::getInstance();
+test('session is a singleton class', function () {
+    $this->assertEquals(
+        Session::getInstance(),
+        Session::getInstance()
+    );
+});
 
-        $this->assertEquals(session_status(), PHP_SESSION_ACTIVE);
-        $this->assertEquals(session_save_path(), session()->getSavePath());
-    }
+test('if can initialize a new session', function () {
+    Session::getInstance();
 
-    public function test_if_can_save_data_at_session(): void
-    {
-        session()->set('key', 'value');
+    $this->assertEquals(session_status(), PHP_SESSION_ACTIVE);
+    $this->assertEquals(session_save_path(), session()->getSavePath());
+});
 
-        $this->assertTrue(session()->has('key'));
-        $this->assertEquals('value', session()->get('key'));
-    }
-}
+test('if can save data at session', function () {
+    session()->set('key', 'value');
+
+    $this->assertTrue(session()->has('key'));
+    $this->assertEquals('value', session()->get('key'));
+});

@@ -3,6 +3,13 @@
   "description": "This project is a technology articles website, where articles are made by the users themselves, creating a community of enthusiasts",
   "type": "project",
   "license": "mit",
+  "authors": [
+    {
+      "name": "Fabrício Pereira Alves",
+      "email": "fabricioalves.dev@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
       "Src\\": "src/"
@@ -16,13 +23,6 @@
       "Tests\\": "tests/"
     }
   },
-  "authors": [
-    {
-      "name": "Fabrício Pereira Alves",
-      "email": "fabricioalves.dev@gmail.com"
-    }
-  ],
-  "minimum-stability": "stable",
   "require": {
     "php": "^8.3",
     "league/plates": "^3.5",
@@ -31,11 +31,16 @@
   },
   "require-dev": {
     "symfony/var-dumper": "^7.1",
-    "phpunit/phpunit": "^11.3"
+    "pestphp/pest": "^3.8"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
   },
   "scripts": {
-    "unitTests": "./vendor/bin/phpunit --colors --testdox --testsuite=Unit",
-    "featureTests": "./vendor/bin/phpunit --colors --testdox --testsuite=Feature",
-    "test": "./vendor/bin/phpunit --colors --testdox"
+    "unitTests": "./vendor/bin/pest --colors --testsuite=Unit",
+    "featureTests": "./vendor/bin/pest --colors --testsuite=Feature",
+    "test": "./vendor/bin/pest --colors"
   }
 }
