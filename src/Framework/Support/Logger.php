@@ -26,6 +26,6 @@ class Logger
 
     protected static function log(string $message): void
     {
-        error_log($message, 3, env('APP_LOG_FILE', '/var/www/technews/logs/php-fpm/www.app.log'));
+        error_log($message, 3, env('APP_LOG_FILE'));
     }
 }
