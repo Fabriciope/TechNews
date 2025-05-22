@@ -41,7 +41,6 @@ services:
     volumes:
       - db_technews:/var/lib/mysql
       - ./scripts/db-scheme:/docker-entrypoint-initdb.d
-
     networks:
       - technews
 
