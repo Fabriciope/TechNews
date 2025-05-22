@@ -12,10 +12,12 @@ services:
     networks:
       - technews
     ports:
-      - 8080:80
+      - 8888:80
     depends_on:
       - php-fpm
+      - db
   php-fpm:
+    # TODO: estudar healthcheck e rodar tests antes
     container_name: php-fpm
     build:
       context: build-development/php-fpm
@@ -26,10 +28,30 @@ services:
       - .:/var/www/technews
     networks:
       - technews
+    depends_on:
+      - db
+  db:
+    image: mysql:8.4.5
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_USER: ${DB_USERNAME}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+        MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - db_technews:/var/lib/mysql
+      - ./scripts/db-scheme:/docker-entrypoint-initdb.d
 
-  # TODO: configure mysql and redis
+    networks:
+      - technews
+
+
+  # TODO: configure redis
 
 networks:
   technews:
     driver: bridge
 
+volumes:
+  db_technews:
+    driver: local
