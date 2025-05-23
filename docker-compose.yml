@@ -4,8 +4,8 @@ services:
     image: nginx:1.28.0
     restart: always
     volumes:
-      - ./build-development/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./build-development/nginx/site.conf:/etc/nginx/conf.d/default.conf
+      - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./build/nginx/site.conf:/etc/nginx/conf.d/default.conf
       - ./logs/nginx/access.log:/var/log/nginx/access.log
       - ./logs/nginx/error.log:/var/log/nginx/error.log
       - .:/var/www/technews
@@ -20,7 +20,7 @@ services:
     # TODO: estudar healthcheck e rodar tests antes
     container_name: php-fpm
     build:
-      context: build-development/php-fpm
+      context: build/php-fpm
       dockerfile: Dockerfile
     restart: always
     volumes:
@@ -35,9 +35,9 @@ services:
     restart: always
     environment:
         MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-        MYSQL_USER: ${DB_USERNAME}
-        MYSQL_PASSWORD: ${DB_PASSWORD}
         MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - 5000:3306
     volumes:
       - db_technews:/var/lib/mysql
       - ./scripts/db-scheme:/docker-entrypoint-initdb.d
