@@ -5,8 +5,8 @@ namespace Src\Http\Controllers\Web;
 use Src\Framework\Core\Controller\WebController;
 use Fabriciope\Router\Request\DefaultRequest as Request;
 
-class ErrorsController extends WebController {
-
+class ErrorsController extends WebController
+{
     public function __construct()
     {
         parent::__construct();
@@ -42,7 +42,7 @@ class ErrorsController extends WebController {
         $this->renderError('Internal Server Error', 500);
     }
 
-    private function renderError(string $title, $code): void
+    private function renderError(string $title, int $code): void
     {
         $session = session();
 
@@ -53,9 +53,9 @@ class ErrorsController extends WebController {
         $errorMessage = $session->redirectErrorMessage;
         $session->unset('redirectErrorMessage');
 
-        renderErrorAndExit(
+        renderErrorTemplateAndExit(
             title: $title,
-            message: $errorMessage ?? '',
+            message: $errorMessage,
             code: $code
         );
     }

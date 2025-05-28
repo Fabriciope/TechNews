@@ -65,8 +65,9 @@ function route(string $path): string
     return env('APP_URL') . (str_starts_with($path, '/') ? $path : "/{$path}");
 }
 
-function redirectToErrorPage(int $code): void
+function redirectToErrorPage(string $message, int $code): void
 {
+    session()->set('redirectErrorMessage', $message);
     $url = '/error/' . strval($code);
     Response::redirect(route($url), $code);
 }
@@ -96,20 +97,20 @@ function session(): Src\Framework\Core\Session
 
 
 /**
- * ##############################
- * ###   RENDER ERROR VIEWS   ###
- * ##############################
+ * #########################
+ * ###   RETURN ERRORS   ###
+ * #########################
  */
 
-function renderErrorAndExit(string $title, string $message = '', int $code = 500): void
+function renderErrorTemplateAndExit(int $code, string $title = '', string $message = ''): void
 {
-    if (Fabriciope\Router\Request\Request::isAPIRequest()) {
-        Fabriciope\Router\Response::setAPIHeaders();
-        renderAPIErrorAndExit($message, $code);
-    }
-
-    Response::setStatusCode($code);
-    renderErrorViewAndExit($title, $message, $code);
+    \Fabriciope\Router\Response::setStatusCode($code);
+    echo \Src\Framework\Core\TemplatesEngine::renderErrorView(
+        title: $title,
+        message: $message,
+        code: $code
+    );
+    exit(1);
 }
 
 function renderAPIErrorAndExit(string $message = '', int $code = 500): void
@@ -122,12 +123,13 @@ function renderAPIErrorAndExit(string $message = '', int $code = 500): void
     exit(1);
 }
 
-function renderErrorViewAndExit(string $title, string $message = '', int $code = 500): void
+function endRequestWithError(string $message, int $code): void
 {
-    echo Src\Framework\Core\TemplatesEngine::renderErrorView(
-        title: $title,
-        message: $message,
-        code: $code
-    );
-    exit(1);
+    if (Fabriciope\Router\Request\Request::isAPIRequest()) {
+        Fabriciope\Router\Response::setAPIHeaders();
+        renderAPIErrorAndExit($message, $code);
+        return;
+    }
+
+    redirectToErrorPage($message, $code);
 }
