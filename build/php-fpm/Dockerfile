@@ -13,12 +13,12 @@ WORKDIR /var/www/technews
 COPY ./../../. .
 
 RUN apt-get update && apt install -y libzip-dev unzip libcurl4-openssl-dev libonig-dev && \
-    pecl install ds && \
+    pecl install ds xdebug && \
     docker-php-ext-install pdo_mysql zip opcache curl mbstring && \
-    docker-php-ext-enable pdo_mysql zip opcache curl mbstring ds && \
+    docker-php-ext-enable pdo_mysql zip opcache curl mbstring ds xdebug && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-COPY --from=composer:2.2.6 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.8.9 /usr/bin/composer /usr/local/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-CMD ["/bin/bash", "-c", "composer install --no-dev --optimize-autoloader && php-fpm"]
+CMD ["/bin/bash", "-c", "composer install --verbose && php-fpm"]

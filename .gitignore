@@ -1,9 +1,6 @@
 /vendor/
 /storage/sessions/
-/tests/logs/
 /logs/
-/build/
-docker-compose.yml
 .env
 .phpunit.result.cache
 .php-cs-fixer.cache

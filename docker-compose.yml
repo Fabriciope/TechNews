@@ -22,6 +22,7 @@ services:
     build:
       context: build/php-fpm
       dockerfile: Dockerfile
+    # user: "${UID}:${GID}"
     restart: always
     volumes:
       # NOTE: volume overrides composer install command
