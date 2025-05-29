@@ -1,5 +1,6 @@
 /vendor/
 /storage/sessions/
+/logs/
 /tests/logs/
 .phpunit.result.cache
 .php-cs-fixer.cache
