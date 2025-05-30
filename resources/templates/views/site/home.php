@@ -69,6 +69,7 @@
 </section>
 
 <!-- FORMULÁRIO PARA CADASTRO -->
+<!--
 <section class="site_width section_register_home">
     <h2 class="title_section">Comece ainda hoje</h2>
     <p>Publique sues próprios artigos sobre tecnologia e compartilhe com todos de forma simples e descomplicada.</p>
@@ -100,6 +101,7 @@
         </div>
     </div>
 </section>
+-->
 
 <!-- CAIXA DE PESQUISA E ULTIMAS NOTÍCIAS -->
 <section class="site_width latest_news">

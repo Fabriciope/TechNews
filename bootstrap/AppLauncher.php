@@ -26,22 +26,29 @@ final class AppLauncher
             }
 
             $router->dispatchRoute($route);
+
         } catch (InvalidRequestInputDataException $exception) {
-            session()->set('redirectErrorMessage', $exception->getMessage());
-            redirectToErrorPage(500);
+
+            endRequestWithError($exception->getMessage(), 500);
+
         } catch (InvalidControllerMethodSignatureException | \InvalidArgumentException $exception) {
-            session()->set('redirectErrorMessage', 'Oops!, algo deu errado. Já estamos trabalhando nisso');
-            redirectToErrorPage(500);
+
+            Src\Framework\Support\Logger::critical($exception->getMessage());
+            endRequestWithError('Oops!, algo deu errado. Já estamos trabalhando nisso', 500);
+
         } catch (RouteNotFoundException $exception) {
-            session()->set('redirectErrorMessage', $exception->getMessage());
-            redirectToErrorPage(404);
+
+            endRequestWithError($exception->getMessage(), 404);
+
         } catch (InvalidRouteRequestException $exception) {
-            session()->set('redirectErrorMessage', $exception->getMessage());
-            redirectToErrorPage(400);
+
+            endRequestWithError($exception->getMessage(), 400);
+
         }
     }
 
-    private static function loadEnvironmentVariables(): void {
+    private static function loadEnvironmentVariables(): void
+    {
         (new \Src\Framework\Core\DotEnv(__DIR__ . "/../"))->loadEnvironment();
     }
 }

@@ -20,10 +20,10 @@ try {
             require_once __DIR__ . "./../routes/api.php";
         });
 } catch (\Exception $exception) {
-    Src\Framework\Support\Logger::fatal($exception->getMessage());
-    renderErrorAndExit(
-        title: "erro interno",
-        message: "ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso",
+    Src\Framework\Support\Logger::critical($exception->getMessage());
+    renderErrorTemplateAndExit(
+        title: 'Oops!, algo deu errado',
+        message: 'ocorreu um erro, mas fique tranquilo já estamos trabalhando nisso',
         code: 500
     );
 }

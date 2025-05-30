@@ -1,0 +1,10 @@
+/var/www/technews/tests/Unit/FlashMessagesTest.php
+ [x] if can get right html div
+ [x] if can create a floating message
+ [x] if can register a flash message
+
+/var/www/technews/tests/Unit/SessionTest.php
+ [x] session is a singleton class
+ [x] if can initialize a new session
+ [x] if can save data at session
+
